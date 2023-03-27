@@ -17,7 +17,7 @@
 <!--		这种情况是因为浏览器版本太低，无论你在使用哪款浏览器，请先升级它   -->
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    -->
-<!--		抖音：@林同学不姓林    林同学的备用网站：LinTongXue.com    -->
+<!--		抖音：@林同学不姓林    林同学的小站：LinTongXue.com    -->
 
 <html>
 <head>
@@ -29,10 +29,12 @@
 <link rel="shortcut icon" href="https://openai.com/favicon.ico">
 <!-- 手机端添加到主屏幕时的Logo   *小白不需要改。需要有自己的空间/服务器，才会有意义 -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/chatgpt-icon.png">
-<!-- unpkg是一个前端常用的公共CDN，安全  |  Vue是一款用于构建用户界面的JavaScript框架，网页常用技术 -->
-<script src="https://unpkg.com/vue@3.2.47/dist/vue.global.js"></script>
-<!-- unpkg是一个前端常用的公共CDN，安全  |  Axios是一种常用HTTP 客户端，可工作于浏览器中，网页常用技术 -->
-<script src="https://unpkg.com/axios@1.3.2/dist/axios.min.js"></script>
+<!-- BootCDN是一个前端常用的公共CDN，安全  |  Vue是一款用于构建用户界面的JavaScript框架，网页常用技术 -->
+<!-- 备用：https://unpkg.com/vue@3.2.47/dist/vue.global.js -->
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.47/vue.global.js"></script>
+<!-- BootCDN是一个前端常用的公共CDN，安全  |  Axios是一种常用HTTP 客户端，可工作于浏览器中，网页常用技术 -->
+<!-- 备用：https://unpkg.com/axios@1.3.2/dist/axios.min.js -->
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.2/axios.min.js"></script>
 
 <!-- 网页部分样式  -->
 <style> 
@@ -231,6 +233,9 @@
 		
 		<view class="inpubut"  >
 			<button   class="btn" style="margin-left: 10px; margin-right: 0px; " disabled>Tokens:{{totaltokens}}</button>
+			<!-- 可修改  配合“隐形指令/隐藏指令/隐形提示词/隐藏提示词”，禁止聊天界面上输入新指令。  在下方这行代码中找个位置插入个单词 disabled ，即可禁用[指令输入框]，输入框会变灰色，且不可编辑。  -->
+			<!--     演示： 下方代码中 有段代码：...... v-model="aisystem"  type="text"  class="dh-input"  ......          -->  
+			<!--        插入disabled后这段代码：...... v-model="aisystem"  disabled  type="text"  class="dh-input"  ...... -->
    		 	<input @change="inputsetaisystembtn=false;"  v-model="aisystem"  type="text"  class="dh-input" style="margin-left: 5px; font-size: 12px;" placeholder="留空 或输入预设的指令/提示词" enterkeyhint="done" @confirm="setaisystem()" />
 			<button @click="setaisystem" :disabled="inputsetaisystembtn" class="btn" style="margin-right:5px;width:210px;"  ><< 写入指令</button>
 			<button @click="ExportData(txtname,chathistory)":disabled="inputhistorybtn"   class="btn" >导出对话</button>
@@ -274,9 +279,16 @@
                     msg: "Hi~ 我是ChatGPT 3.5！",  //可修改。欢迎语，双引号之间的内容可随意改，只会在网页中显示，不会回传，不属于聊天记录，不属于上下文
                     my: false
                 }],
-                aisystem: '',  //可修改，不填的话，单引号内留空。 （第一种方法）这是默认的指令、提示词、人设，可以写在单引号内。如果写在这里，同时指令会出现在页面上的指令输入框。 
-                msgContent : [{"role": "system", "content": "" }] , //可修改，不填的话，content后面双引号内留空。 （第二种方法）"content": "" 后面的双引号间，可以写入默认的指令、提示词、人设。如果写在这里，这个指令不会出现在页面上的指令输入框，相当于隐形的指令。   *当页面上写入新指令时(包括空白指令)，会覆盖这里的默认指令。   
-                msg: "",
+				ischeckaisystem: false,
+				
+				//下方这行设置aisystem 是设置[默认的指令/提示词/人设]的第一种方法，指令写在单引号内。 如果默认指令写在这里，这个指令会显示在聊天界面的指令输入框中。 如果还设置有第二种隐形指令的话，以隐形指令为准，第一种会被忽略。
+                aisystem: '',   //可修改，不填的话，单引号内留空，即： aisystem: '',		
+				
+				//下方这行设置aisystemhide 是设置[默认的指令/提示词/人设]的第二种方法，指令写在单引号内。 第二种方法是[隐形指令/隐藏指令/隐形提示词/隐藏提示词]的写法。如果默认指令写在这里，这个指令不会显示在聊天界面的指令输入框中，指令是隐形的。 在本代码中搜索“隐形指令”可查看[添加 disabled 来禁止聊天界面上输入新指令]的方法。
+				aisystemhide: '',   //可修改，不填的话，单引号内留空，即： aisystemhide: '',
+
+                msgContent : [{"role": "system", "content": "" }] ,
+				msg: "",
                 chathistory: '>>>>>>>>>>>>>>>>>> ChatGPT 聊天记录 >>>>>>>>>>>>>>>>>>\r\n\r\n',
                 txtname:"ChatGPT_History.txt"
             }
@@ -295,9 +307,18 @@
 			  }, 
 			//按钮：写入指令/提示词/AI人设
 			setaisystem(){
+			
+				    //为false，表示新窗口从未检测过[是否设置了默认system]
+					if(!this.ischeckaisystem){
+						this.ischeckaisystem = true
+						this.chathistory  += ('\r\n\r\n========操作：默认的ChatGPT指令（提示词）========\r\n' + this.aisystem.trim() + '\r\n===========================================\r\n')
+					}
+					else {
+						this.chathistory  += ('\r\n\r\n========操作：新的ChatGPT指令（提示词）========\r\n' + this.aisystem.trim() + '\r\n===========================================\r\n')
+					} 
+			
 				this.inputsetaisystembtn = true
 				this.msgContent[0] =  {"role": "system", "content": this.aisystem.trim() }
-				this.chathistory  += ('\r\n\r\n========操作：新的ChatGPT指令（提示词）========\r\n' + this.aisystem.trim() + '\r\n===========================================\r\n')
 				}, 
 			//按钮：清空记忆
 			clearmessages(){
@@ -310,7 +331,7 @@
 			//按钮：说明
 			readmealert(){
 			     //GPT3.5版本代码中的max_tokens当前设为2048。不是越高越好。\r\n关于max_tokens参数的逻辑：改过小，tokens利用率提升，单次发问字数的上限提升，但回复的字数受限(可发继续让AI补全)，适合问题字数较多+回复内容不长+要求连续对话多的场景。 改过大，tokens利用率降低，单次问题的字数受限，适合问题字数较少+回复内容超长+不要求连续对话的场景。
-				alert("按钮状态：绿色-可用，白色-不可用\r\n\r\n1. 填入API-Key后，先检测，连接成功后[发送]按钮变绿色，会话开始。（等待数秒没反应可再次检测。API-Key随时可改)\r\n\r\n2. [写入指令]: 预先设定的指令，即提示词，为ChatGPT定制人设。\r\n指令/提示词随时可改，但是已有的记忆会影响指令的生效。改动较大时，建议[清空记忆]后重新开始对话，AI会严格执行指令。\r\n    示范：扮演一个英格兰人。无论用什么语言问你，你只能用英语回复。你说话方式哲学又有风趣，喜欢引用谚语，还总会有hey这样的口头禅。\r\n    更多参考指令/提示词：https://ai.lintongxue.com/zhiling \r\n    或自行在搜索引擎中搜索“chatgpt 提示词”  \r\n\r\n3. [撤销]: 撤销一次问答，对应的记忆也会被删除，最多可撤销至上次记忆为空时。\r\n\r\n4. [重问]: 撤销并自动重发最后的问题。\r\n\r\n5. [清空记忆]: 清空AI记忆，开始全新的对话，但是历史记录会保留在页面上。 \r\n每次提问后清空记忆，相当于进入非连续对话模式。\r\n\r\n6. [导出对话]: 可导出页面上所有对话记录，包括撤销掉的。\r\n    代码、表格类回复在聊天对话框中格式上会有些混乱，但在导出后都是原始的正常格式，可直接复制使用。\r\n    表格类回复需要先让AI替换[分隔符]为[tab键]，这样导出后，复制粘贴到Excel时会被自动识别到对应的行列。\r\n\r\n7. [Tokens(已消耗的令牌数)]: 统计只会在AI回复后进行，[撤销]操作不会实时统计。通俗点描述Tokens的上限：GPT3.5理想情况下，最高支持到约四千，实际上最高只能达到两三千。")
+				alert("按钮状态：绿色-可用，白色-不可用\r\n\r\n1. 填入API-Key后，先检测，连接成功后[发送]按钮变绿色，会话开始。（等待数秒没反应可再次检测。API-Key随时可改)\r\n\r\n2. [写入指令]: 预先设定的指令，即提示词，为ChatGPT定制人设。\r\n指令/提示词随时可改，但是已有的记忆会影响指令的生效。改动较大时，建议[清空记忆]后重新开始对话，AI会严格执行指令。\r\n    示范：扮演一个英格兰人。无论用什么语言问你，你只能用英语回复。你说话方式哲学又有风趣，喜欢引用谚语，还总会有hey这样的口头禅。\r\n    更多参考指令/提示词：https://lintongxue.com/#zhiling  \r\n    或自行在搜索引擎中搜索“chatgpt 提示词”或“chatgpt prompt”  \r\n\r\n3. [撤销]: 撤销一次问答，对应的记忆也会被删除，最多可撤销至上次记忆为空时。\r\n\r\n4. [重问]: 撤销并自动重发最后的问题。\r\n\r\n5. [清空记忆]: 清空AI记忆，开始全新的对话，但是历史记录会保留在页面上。 \r\n每次提问后清空记忆，相当于进入非连续对话模式。\r\n\r\n6. [导出对话]: 可导出页面上所有对话记录，包括撤销掉的。\r\n    文章、代码、表格等内容受聊天对话框的限制，格式上会有些混乱，不过导出的记录都保留着ChatGPT输出的原始段落样式/代码格式/表格样式，可直接复制使用。\r\n    表格类回复需要先让AI ①如表格有竖线，让其“禁用Markdown，重新发一遍”或“禁用md格式”或“禁用mk格式” ②分隔符不是tab符号的，让其“替换分隔符为tab键”或“分隔符换成tab符号”。 这样导出后，复制表格粘贴到Excel时会被自动识别到对应的行列。\r\n\r\n7. [Tokens(已消耗的令牌数)]: 统计只会在AI回复后进行，[撤销]操作不会实时统计。通俗点描述Tokens的上限：GPT3.5理想情况下，最高支持到约四千，实际上最高只能达到两三千。")
 			}, 
 			//按钮：撤销
 			deleteonly(){
@@ -376,6 +397,23 @@
 					return 0;
 				}
 				this.sentext = '检测中...'
+				
+			
+			    //为false，表示新窗口从未检测过[是否设置了默认system]。  如果代码里设置了默认system，这里做第一次写入system的动作 
+				if(!this.ischeckaisystem){
+					if(this.aisystem.trim() == "" &&  this.inputsetaisystembtn ){
+						this.ischeckaisystem = true;
+					}
+					else{
+					   //其余情况强行写入system一次+禁用按钮。
+					   this.inputsetaisystembtn = true
+					   this.msgContent[0] =  {"role": "system", "content": this.aisystem.trim() }
+					   this.chathistory  += ('\r\n\r\n========操作：默认的ChatGPT指令（提示词）========\r\n' + this.aisystem.trim() + '\r\n===========================================\r\n')
+					   this.ischeckaisystem = true
+				   }
+				}
+				
+				
 				//下面这行是检测API-Key时的参数，不是聊天的参数，不要改动   **这里的代码仅支持GPT3.5，不支持GPT4，需要修改模型和增加传入组织识别码的参数。关注林同学的频道，下次更新GPT4的代码。
 				axios.post('https://api.openai.com/v1/chat/completions', {
 				    messages: [{"role": "user", "content": "hi" }], max_tokens: 30, model: "gpt-3.5-turbo"
@@ -415,12 +453,12 @@
 					}
 					else if(error.code == 'ERR_NETWORK'){
 						this.sentext = '先检测API'
-						alert("错误提醒\r\n连接ChatGPT服务器失败，网络的问题或是官方服务器问题。\r\n请打开[魔法]再试一次，或过会儿再尝试~")
+						alert("错误提醒\r\n连接ChatGPT服务器失败，网络的问题或是官方服务器问题。\r\n请打开[魔法]，确定网络畅通后再试一次，或过会儿再尝试~")
 						return 0;
 					}
 					else {
 						this.sentext = '先检测API'
-						alert("错误提醒\r\n可能是网络的问题。\r\n请打开[魔法]再试一次，或过会儿再试~\r\n\r\nError Code:" + error.code + "\r\nError Message:" +error.message)
+						alert("错误提醒\r\n可能原因：api-key含有非法符号、网络问题...\r\n\r\nAPI-key以“sk-”开头，建议复制粘帖密钥，避免手打意外输入全角符号。\r\n\r\n请打开[魔法]，确定网络畅通后再试一次，或过会儿再试~\r\n\r\nError Code:" + error.code + "\r\nError Message:" +error.message)
 					}
 				})
 			},
@@ -468,6 +506,18 @@
                     "my": true
                 })
 				
+				//
+				//如果想取消检测api功能，需要在这里补代码：首次写入默认的this.aisystem.trim()到this.msgContent[0]中
+				//
+				
+								
+				//以下if语句的作用：一旦设置了aisystemhide ，即 设置了[隐形指令/隐藏指令/隐形提示词/隐藏提示词]，那么每次发送问题时，都会重置指令为 aisystemhide 的内容，即以代码里的[隐形指令]为准，自动忽略聊天界面上的指令（包括空白的指令）。不要改动这里的代码。
+				//			    如果未设置隐形指令，那么当aisystem(默认指令或聊天界面)
+				if (this.aisystemhide.trim() != "") {
+                    this.msgContent[0] =  {"role": "system", "content": this.aisystemhide.trim() }
+                }
+				
+							
 				this.msgContent.push({"role": "user", "content": this.msg })
 				this.chathistory += ('\r\n:::我:::\r\n' + this.msg.replace(/\n/g, "\r\n") + '\r\n')
                 this.msgLoad = true
@@ -497,7 +547,14 @@
                     
 					this.msgContent.push({"role": jiaose, "content": text })
  
-					this.chathistory  += ('\r\n:::ChatGPT:::\r\n' + text.replace(/\n/g, "\r\n") + '\r\n\r\n')
+					if (this.aisystemhide.trim() != "") {
+						//若存在隐形的System设置，在聊天记录中做个标记
+                    	this.chathistory  += ('\r\n:::ChatGPT:::Hidden:::\r\n' + text.replace(/\n/g, "\r\n") + '\r\n\r\n')
+                	}
+					else {
+						this.chathistory  += ('\r\n:::ChatGPT:::\r\n' + text.replace(/\n/g, "\r\n") + '\r\n\r\n')
+					}
+					
                     this.msgLoad = false
                     this.sentext = '发送'
 					this.totaltokens = restokens		
