@@ -1,38 +1,31 @@
-# gpt3.5
+# ChatGPT 3.5 静态网页版
 
 #### 介绍
-零门槛 10秒搞定的GPT3.5 仅一个html文件
+ 零门槛 10秒就能搞定的GPT3.5 _(gpt-3.5-turbo)_ 
 
-直接打开试用吧～ 
-[ https://lin2025.github.io/gpt3.5/](https://lin2025.github.io/gpt3.5/)
+ _静态网页 无依赖 无需部署 仅一个html文件 在线使用或本地使用_ 
 
-版本ChatGPT 3.5（gpt-3.5-turbo）
+ **在线试用：** [https://lin2025.gitee.io/gpt3.5/](https://lin2025.gitee.io/gpt3.5/) 或 [https://lin2025.github.io/gpt3.5/](https://lin2025.github.io/gpt3.5/)
 
-在线 或下载到本地使用
-零门槛 静态 无依赖 无需部署
-API-Key
-支持：上下文、token统计、撤销、重新回答、清空记忆
-支持：Temperature 和 system的设置
-可导出对话记录
-对话框自适应高度
-PC端Ctrl+Enter快捷键发送
-非[stream]流
+ **网盘等下载方式：** [LinTongXue.com/#gpt3.5-code](https://lin2025.gitee.io/#gpt3.5-code)
+
+  :monkey: 新手博主 B站@[林同学不姓林](https://space.bilibili.com/3493262545389917) 抖音@[林同学不姓林](https://www.douyin.com/user/MS4wLjABAAAAVBMwb4AQWZt3xkbgvVS4FYCuQ2xzHCU9LgSX4vJz_n76JK62kQGEfHjYjzrOCHs7)
+
+
+#### 功能
+ 需使用自己的API-Key / 支持上下文 / 支持token统计 / 支持撤销 / 支持重新回答 / 支持清空记忆
+ / 可设置GPT的"创造力"temperature / 可设置"前置提示词"system / 可导出对话记录
+ / 对话框自适应高度
+ / 电脑端支持Ctrl+Enter快捷键
+
+ _GPT回复是一次性返回，非打字机效果的“流”形式_ 
 
 
 #### 特点
+ 无门槛 / 便捷 / 一秒复制一个 一分钟轻松定制AI小工具 / 不用挤官网 适合轻中度使用场景
 
-无门槛 便捷 10秒搞定 人人都会
-轻中度使用场景 省去登录步骤 打开即用
-一秒复制一个 一分钟完成定制 能复刻多数GPT小工具的功能
+ _使用[记事本]或[文本编辑.app]即可改代码 修改方式已写在代码里 无需懂技术 人人都会改_ 
 
 #### 缺点
-
-和ChatGPT官网一样，国内需使用魔法
-接口版本不适合需要深度记忆的场景
-聊天界面不支持 Markdown 代码高亮 表格样式（但能导出，支持导出代码/表格/文章等源格式）
-
-#### 下载 与 修改
-
-下载 或 直接复制
-使用 记事本 或 文本编辑.app 即可改代码，无需懂技术
+ 使用ChatGPT官方接口 国内需使用魔法（官方接口的好处：高频使用不会被封+不会泄露隐私数据）
 
