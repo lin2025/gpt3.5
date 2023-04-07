@@ -281,7 +281,7 @@
                 textareaAisystemHeight: 25,
 				apitemperature: 0.7, //temperature默认0.7
                 msgList: [{
-                    msg: "ChatGPT 3.5 ~\r\n\r\n提醒：4月封号力度大，传闻若有太多api-key在同一网站使用，会有风险。建议下载到电脑使用（指路 https://lin2025.gitee.io  ），或传到自己的网站上，均可100%排除此类风险。代码是官方接口，与官网一致，因不稳定的魔法而被封，这种情况与代码无关哦，登官网一样会被封",  //可修改。欢迎语，双引号之间的内容可随意改，只会在网页中显示，不会回传，不属于聊天记录，不属于上下文
+                    msg: "ChatGPT 3.5 ~",  //可修改。欢迎语，双引号之间的内容可随意改，只会在网页中显示，不会回传，不属于聊天记录，不属于上下文
                     my: false
                 }],
 				ischeckaisystem: false,
@@ -697,9 +697,11 @@
 		}
 	</script>
 	
-	<!-- 可修改  请删除掉[下面] 以<script>开头 以</script>结尾的内容，这个是林同学的百度流量统计代码。 忘记删也不用担心，只是多余的代码。 -->
-	<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?45a1ecbb10a44dd4e1c1c1907eff38c0";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
-	<!-- 可修改  请删除掉[上面] 以<script>开头 以</script>结尾的内容，这个是林同学的百度流量统计代码。 忘记删也不用担心，只是多余的代码。 -->
-
+	<!-- 可修改  请删除掉[下面] 这些内容，这是流量统计代码。多余的代码。 -->
+		<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?45a1ecbb10a44dd4e1c1c1907eff38c0";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
+		<script>!function(p){"use strict";!function(t){var s=window,e=document,i=p,c="".concat("https:"===e.location.protocol?"https://":"http://","sdk.51.la/js-sdk-pro.min.js"),n=e.createElement("script"),r=e.getElementsByTagName("script")[0];n.type="text/javascript",n.setAttribute("charset","UTF-8"),n.async=!0,n.src=c,n.id="LA_COLLECT",i.d=n;var o=function(){s.LA.ids.push(i)};s.LA?s.LA.ids&&o():(s.LA=p,s.LA.ids=[],o()),r.parentNode.insertBefore(n,r)}()}({id:"K1dyobSMgn13W0ov",ck:"K1dyobSMgn13W0ov"});</script>
+	<!-- 可修改  请删除掉[上面] 这些内容，这是流量统计代码。多余的代码。 -->
+	
+	
 </body>
 </html>
