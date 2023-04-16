@@ -16,7 +16,7 @@
  需使用自己的<kbd>API-Key</kbd> / 上下文记忆 / <kbd>token</kbd>统计 / 撤销问答 / 重新回答 / 清空记忆
  / 可调"创造力·温度"<kbd>temperature</kbd> / 可设置"指令·系统提示词"<kbd>system</kbd> / 可导出"聊天记录·操作记录"
  / 对话框自适应高度
- / 电脑端支持<kbd>Ctrl</kbd>+<kbd>Enter</kbd>发送
+ / ~~电脑端支持Ctrl+Enter发送~~ 已改成回车<kbd>Enter</kbd>发送 电脑端支持多种换行方式<kbd>Shift | Ctrl | Cmd</kbd>+<kbd>Enter</kbd>
 
 > 回复是一次性返回，非打字机效果的“流”
 
