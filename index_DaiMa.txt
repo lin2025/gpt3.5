@@ -14,7 +14,7 @@
 <!--	:::关于文件名:::	 -->
 <!--		1.电脑上使用，文件名随意，但扩展名必须是.html  2.如需上传至虚拟主机、服务器、GitHub、Gitee，文件名改为英文，默认主页的文件名为：index.html  -->
 <!--	:::网页显示报错：打开网页/网站后，对话框和部分按钮显示为{{x.msg}}、{{x.msg}}、{{sentext}}... :::	 -->
-<!--		这种情况是因为浏览器版本太低，无论你在使用哪款浏览器，请先升级它   -->
+<!--		检查网络正常且刷新后还是报错，这种情况是因为浏览器版本过低，不支持当前Vue架构的版本，无论你在使用哪款浏览器，请先升级它   -->
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    -->
 <!--		抖音：@林同学不姓林    最新更新：林同学的小站 https://lin2025.gitee.io    -->
@@ -229,7 +229,7 @@
 
     <view  class="flex-column-center">
         <view class="inpubut" style="margin-top: 3px;height: 45px;">
-            <textarea @click="sendMsgok"  @keyup.ctrl.enter.exact="sendMsg();sendMsgok();" v-model="msg"  type="text"  class="dh-input textareaTips" style="height: 40px;min-height: 40px;max-height: 450px;" @confirm="sendMsg()" placeholder="" enterkeyhint="enter" ></textarea>
+            <textarea @click="sendMsgokForMobile"  @keydown.enter.exact="textareaEnter"  @keydown.ctrl.enter.exact="newLine" @keydown.meta.enter.exact="newLine"  v-model="msg"  type="text"  class="dh-input textareaTips" style="height: 40px;min-height: 40px;max-height: 450px;" @confirm="textareaEnter" placeholder="" enterkeyhint="send" ></textarea>
 			<button @click="sendMsg();sendMsgok();" :disabled="msgLoad" class="btn" style=" line-height: 40px; height: 40px;font-size: 14px;" >{{sentext}}</button> 
         </view>
 		
@@ -246,7 +246,7 @@
 		<view class="inpubut" style="margin-bottom: 8px;">
 		  	<button  @click="clearmessages" :disabled="inputclearbtn"  class="btn" style="margin-left: 10px;margin-right: 5px; width:150px;">清空</button>
 			<button   class="btn" style="margin-right: 0px; " disabled>Tokens:{{totaltokens}}</button>
-		 	<input @change="inputapibtn=false;inputclearbtn=true; inputdeletebtn=true; msgLoad = true;sentext ='重新检测API';apibtntext = '<< 检测';apiinputcolor = 'color: #000000;background-color: #f8f8f8;'":style="apiinputcolor" required v-model="api" type="text"  class="dh-input"  style="margin-left: 5px;font-size: 12px;"  placeholder="API-key粘贴到这里" enterkeyhint="done"/>
+		 	<input @change="inputapibtn=false;inputclearbtn=true; inputdeletebtn=true; msgLoad = true;sentext ='重新检测API';apibtntext = '<< 检测';apiinputcolor = 'color: #000000;background-color: #f8f8f8;'":style="apiinputcolor" required v-model="api" type="text"  class="dh-input"  style="margin-left: 5px;font-size: 12px;"  placeholder="API-key粘贴到这里" enterkeyhint="enter"/>
 			<button @click="entapi" :disabled="inputapibtn" class="btn" style="margin-right:5px;width:210px;"  >{{apibtntext}}</button>
 			<button @click="deleteonly" :disabled="inputdeletebtn" class="btn" style="margin-right:5px;width:90px;"  >撤销</button>
 			<button @click="deleteresend":disabled="inputdeletebtn"  class="btn"  style="margin-right:5px;width:90px;"   >重问</button>
@@ -341,6 +341,9 @@
 			}, 
 			//按钮：撤销
 			deleteonly(){
+			
+				this.sendMsgok()
+				
 				if (this.msgContent.length > 1){
 				  this.chathistory  += ('\r\n\r\n>>>>>>>>>操作：撤销<<<<<<<<<<<\r\n')
 				  let templastmsg =	this.msgList.pop()
@@ -386,6 +389,7 @@
 				  
 					this.msg = templastmsg['msg']
 					this.sendMsg() 
+				 	this.sendMsgok()
 				}
 				else{
 					this.inputdeletebtn = true  
@@ -440,11 +444,33 @@
 					const btnAdisabled = document.getElementById("btnA");
 					btnAdisabled.disabled = false;
 					
-					//检测是否电脑，如果为电脑，提示发送的快捷键
+					//检测是移动端还是电脑  添加小贴士  提示换行的快捷键
+					const tipsss = document.querySelector('.textareaTips');
 					if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
-				    } else {
-				      const tipsss = document.querySelector('.textareaTips');
-				      tipsss.placeholder = '输入内容后，按Ctrl+Enter发送'
+				    	//移动端
+						let itemsMobile = ["", "小贴士:如果打不出换行符，请换个输入法试试","","","","小贴士:如输入法无法换行，请换个输入法试试","",""] ;
+						let tipsMobile = itemsMobile[Math.floor(Math.random()*itemsMobile.length)];
+						tipsss.placeholder = tipsMobile ;
+					
+					} else {
+						//先预设一个，电脑不只有mac或win
+				      	tipsss.placeholder = '支持Shift+Enter换行';
+					  
+					  	//判断电脑类型  随机提示
+						let isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+						let isWindows = /windows|win32/i.test(navigator.userAgent); 
+
+						if(isMac){
+							let itemsMac = ["支持Command+Enter换行", "支持Shift+Enter换行"] ;
+							let tipsMac = itemsMac[Math.floor(Math.random()*itemsMac.length)];
+							tipsss.placeholder = tipsMac ;
+						}
+
+						if(isWindows){
+							let itemsWin = ["支持Ctrl+Enter换行", "支持Shift+Enter换行"] ;
+							let tipsWin = itemsWin[Math.floor(Math.random()*itemsWin.length)];
+							tipsss.placeholder = tipsWin ;
+						}
 				    }
 
 					
@@ -471,7 +497,7 @@
 					}
 				})
 			},
-			//聊天记录滚动至最下方。    发送后会触发；点击输入框时会触发。   *收到AI回复时的滚动，写在sendMsg()里
+			//聊天记录滚动至最下方。    发送后会触发；   *收到AI回复时的滚动，写在sendMsg()里
 			sendMsgok() {
 					const el = document.querySelector('.sendok');
 					
@@ -482,8 +508,74 @@
 					}
 	
 					this.$nextTick(() => {
-				    el.scrollIntoView({behavior: 'smooth',block: 'start'});
+				    	el.scrollIntoView({behavior: 'smooth',block: 'start'});
       				});
+			},
+			//聊天记录滚动至最下方。    点击输入框时会触发（仅为移动端时做出响应）   *收到AI回复时的滚动，写在sendMsg()里
+			sendMsgokForMobile() {
+					//检测是否为移动端
+					if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+				     
+							const el = document.querySelector('.sendok');
+					
+							const gaoducha = document.body.offsetHeight - document.querySelector('#app').offsetHeight
+							//移动端点击输入框触发时，可能出现移位，做些限制，不同设备分辨率的高度差不同，综合考虑设为200，减少移位的情况
+							if (gaoducha > 200) {
+						    	return 0;
+							}
+	
+							this.$nextTick(() => {
+						    	el.scrollIntoView({behavior: 'smooth',block: 'start'});
+		      				});
+					}
+			},
+			//对话框 电脑端支持组合键换行  支持Ctrl+Enter 和 Commond+Enter 和 Win+Enter 换行，另有shift+enter（无需设置）
+			newLine(e) {
+				//解决safari每次都是换两行的bug，其他浏览器正常   e=ee？
+				let ee = window.event || arguments[0];
+				ee.returnValue = false;
+				
+				 // 1.获取光标位置
+				const ele = e.target
+				const cursorIndex = ele.selectionStart
+				// 2.光标后加入换行符
+				let temp_text = this.msg.split('')
+				temp_text.splice(cursorIndex, 0, '\n')
+				this.msg = temp_text.join('')
+				// 3.移动光标 摘：“移动光标时要注意，因为Vue响应式，在修改了text的值后，如果立刻执行移动光标，则紧接着就会因为重新设置了text的值，光标会移动到最后，所以要等dom操作完毕后，再进行移动光标的操作。”
+				Vue.nextTick(() => {
+					ele.selectionStart = ele.selectionEnd = cursorIndex + 1
+					
+					//自适应高度
+					ele.style.height = '40px';
+					ele.style.height = ele.scrollHeight + 'px'; 
+				}) 
+			},
+			//对话框 按回车键Enter发送之前需要判断是否为中文输入法
+			textareaEnter(e) {
+				let ee = window.event || arguments[0];
+				 
+				//  if (!ee){
+				//		e.preventDefault()
+				
+				//		this.sendMsg()
+				//		this.sendMsgok()
+				//	
+				//		return 0;
+				//  }
+     
+	 			//电脑端中文输入法时ee.keyCode为229，即中文输入法/中英混输/拼音状态下输入英文时，避免按回车键后直接发送出去
+				if (ee.key == "Enter" && ee.code == "Enter" && ee.keyCode == 13) {
+					//阻止原始控件回车换行的动作
+					ee.returnValue = false;
+					
+					//执行发送 和 滚动到最底
+					this.sendMsg()
+					//Enter触发的发送有多种可能 只有真的处于发送状态 才需要执行滚动
+					if (this.msgLoad && this.inputapibtn ){
+				 		this.sendMsgok()
+					}
+				}
 			},
 			//按钮：发送  核心代码 
             sendMsg() {
@@ -537,9 +629,9 @@
 				const tipsssheight = document.querySelector('.textareaTips');
 				tipsssheight.style = "height: 40px;min-height: 40px;max-height: 450px;"
 					
-				//temperature参数  如果转换失败或非0.1到2.0的数值，则默认为0.7
+				//temperature参数  如果转换失败或非0.0到2.0的数值，则默认为0.7
 				let btnAValue = parseFloat(document.getElementById("btnA").innerHTML);
-				if (isNaN(btnAValue) || btnAValue < 0.1 || btnAValue > 2.0) {
+				if (isNaN(btnAValue) || btnAValue < 0.0 || btnAValue > 2.0) {
 					//temperature默认0.7
 					this.apitemperature  = 0.7;
 				}else{
@@ -548,7 +640,7 @@
 				
 				
                 //仅支持GPT3.5，不支持GPT4，需要修改模型和增加传入组织识别码的参数。关注林同学的频道，下次更新GPT4的代码。
-				//temperature参数用于控制生成文本的多样性和创造力。范围： 0.1～2.0
+				//temperature参数用于控制生成文本的多样性和创造力。范围： 0.0～2.0
 				//temperature默认0.7 没有特殊用途 建议1.0或以下
                 axios.post('https://api.openai.com/v1/chat/completions', {
                     messages: this.msgContent, max_tokens: 2048, temperature:this.apitemperature, model: "gpt-3.5-turbo"
@@ -583,12 +675,23 @@
 					this.inputdeletebtn = false  
 					this.inputhistorybtn = false  
 					
-					//AI回复后，聊天记录滚动至最下方
-					const el = document.querySelector('.sendok');
-					this.$nextTick(() => {
-					  el.scrollIntoView({behavior: 'smooth',block: 'start'});
-      				});
-	  
+					
+					const gaoducha = document.body.offsetHeight - document.querySelector('#app').offsetHeight
+					//检测是否为移动端
+					//移动端点击输入框触发时，可能出现移位，做些限制，不同设备分辨率的高度差不同，综合考虑设为200，减少移位的情况		
+					if ( gaoducha > 200 && navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
+						//滚动至最上方
+						const el = document.querySelector('#app');
+						this.$nextTick(() => {
+						  el.scrollIntoView({behavior: 'smooth',block: 'start'});
+	      				});
+					} else {
+						//AI回复后，聊天记录滚动至最下方
+						const el = document.querySelector('.sendok');
+						this.$nextTick(() => {
+						  el.scrollIntoView({behavior: 'smooth',block: 'start'});
+	      				});
+	  				}
 	  
 					
                 }).catch(error =>{
@@ -646,7 +749,7 @@
 </script>
  
 <script>
-	//指令输入框自动调整高度    *关于输入框高度的上下限的设置，搜索textareaTips找到对应的max-height值
+	//指令输入框自动调整高度    *关于输入框高度的上下限的设置，搜索textareaAisystem找到对应的max-height值
 	var aisystemautoheight = document.querySelector('.textareaAisystem');
     
 	aisystemautoheight.addEventListener('input', (e) => {
@@ -667,6 +770,24 @@
 		}
 	});
 </script>
+
+<script>
+	//解决小bug
+	window.onload = function(){
+		var aisystemautoheight = document.querySelector('.textareaAisystem');
+		if( parseInt(aisystemautoheight.scrollHeight) > 50){
+			if( parseInt(aisystemautoheight.scrollHeight) < 240){
+				aisystemautoheight.style.maxHeight = aisystemautoheight.scrollHeight + 'px';
+			}
+			else{
+				aisystemautoheight.style.maxHeight = '240px'
+			}
+		}
+		else{
+				aisystemautoheight.style.maxHeight = '50px'
+		}
+	};
+</script>
  
 <script>
 	//关闭或刷新页面前的提示，防止意外关闭。  电脑端有效
@@ -684,12 +805,12 @@
 			if (isNaN(btnAValue)) {
 				btnAValue = 0.7;
 			}
-			var popup = window.prompt("设置temperature参数，用于控制GPT生成文本的多样性和创造力：\r\n    [较低]会导致生成的文本更加保守和重复（生成比较简单和常见的文本，形式/格式会变得单一）。\r\n    [较高]会导致生成的文本更加随机和创造性（过高会生成难以理解的文本。比如调1.3或更高，稍有难度的问题就会开始出现无中生有的词/乱码/语病/回复过慢/超时无法回复等情况）。\r\n\r\n请在下方输入 0.1～2.0 之间的数值，点[确定]或[好]后生效。输入错误，则会恢复默认值0.7，随时可改。", btnAValue);
+			var popup = window.prompt("设置temperature参数，用于控制GPT生成文本的多样性和创造力：\r\n    [较低]会导致生成的文本更加保守和重复（生成比较简单和常见的文本，形式/格式会变得单一）。\r\n    [较高]会导致生成的文本更加随机和创造性（过高会生成难以理解的文本。比如调1.3或更高，稍有难度的问题就会开始出现无中生有的词/乱码/语病/回复过慢/超时无法回复等情况）。\r\n\r\n请在下方输入 0.0～2.0 之间的数值，点[确定]或[好]后生效。输入错误，则会恢复默认值0.7，随时可改。", btnAValue);
 			if (popup != null) {
 				// 将输入框的内容转换为数值
 				var inputValue = parseFloat(popup);
-				// 如果转换失败或者不在0.1到2.0之间，则使用默认值
-				if (isNaN(inputValue) || inputValue < 0.1 || inputValue > 2.0) {
+				// 如果转换失败或者不在0.0到2.0之间，则使用默认值
+				if (isNaN(inputValue) || inputValue < 0.0 || inputValue > 2.0) {
 					inputValue = 0.7;
 				}
 				btnA.innerHTML = inputValue.toFixed(1);
@@ -701,7 +822,6 @@
 		<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?45a1ecbb10a44dd4e1c1c1907eff38c0";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
 		<script>!function(p){"use strict";!function(t){var s=window,e=document,i=p,c="".concat("https:"===e.location.protocol?"https://":"http://","sdk.51.la/js-sdk-pro.min.js"),n=e.createElement("script"),r=e.getElementsByTagName("script")[0];n.type="text/javascript",n.setAttribute("charset","UTF-8"),n.async=!0,n.src=c,n.id="LA_COLLECT",i.d=n;var o=function(){s.LA.ids.push(i)};s.LA?s.LA.ids&&o():(s.LA=p,s.LA.ids=[],o()),r.parentNode.insertBefore(n,r)}()}({id:"K1dyobSMgn13W0ov",ck:"K1dyobSMgn13W0ov"});</script>
 	<!-- 可修改  请删除掉[上面] 这些内容，这是流量统计代码。多余的代码。 -->
-	
-	
+
 </body>
 </html>
