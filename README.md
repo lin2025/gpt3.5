@@ -1,6 +1,6 @@
 # ChatGPT 3.5 单文件版
 
-![](https://github.com/lin2025/lin2025.github.io/raw/main/img/other-gpt3.5.gif)
+![](https://lin2025.github.io/img/other-gpt3.5.gif)
 
 ## 介绍
  零门槛 10秒就能搞定的GPT3.5 <kbd>模型:gpt-3.5-turbo</kbd> 
