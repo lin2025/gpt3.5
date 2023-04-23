@@ -2,6 +2,11 @@
 
 ![](https://lin2025.github.io/img/other-gpt3.5.gif)
 
+## 最近更新 Updates
+- **4月23日** (**bug fixes**)修复近期多个国家IP无法访问<kbd>BootCDN</kbd>而导致网页报错的情况（无法加载Vue与Axios），已添加<kbd>Unpkg</kbd>CDN线路，<kbd>BootCDN</kbd>挂掉的时候会自动切换到<kbd>Unpkg</kbd>。
+- **4月16日** 修改PC端的快捷键，改为回车<kbd>Enter</kbd>发送，并支持多种换行方式。适配中文输入习惯，中文输入状态下，一次回车**确认但不发送**，二次回车**才会发送**。
+- ...
+
 ## 介绍
  零门槛 10秒就能搞定的GPT3.5 <kbd>模型:gpt-3.5-turbo</kbd> 
 
@@ -9,7 +14,7 @@
 
  **在线体验：** [https://lin2025.gitee.io/gpt3.5/](https://lin2025.gitee.io/gpt3.5/) 或 [https://lin2025.github.io/gpt3.5/](https://lin2025.github.io/gpt3.5/)
 
- **下载方式汇总（含网盘）：** [https://LinTongXue.com/#gpt3.5-code](https://lin2025.gitee.io/#gpt3.5-code)
+ **下载方式汇总（含网盘）：** [https://lin2025.gitee.io/#gpt3.5-code](https://lin2025.gitee.io/#gpt3.5-code)
 
 
 ## 功能
@@ -34,5 +39,6 @@
 ## 欢迎交流
  **B站**@[林同学不姓林](https://space.bilibili.com/3493262545389917) **抖音**@[林同学不姓林](https://www.douyin.com/user/MS4wLjABAAAAVBMwb4AQWZt3xkbgvVS4FYCuQ2xzHCU9LgSX4vJz_n76JK62kQGEfHjYjzrOCHs7)
 
- **提示词导航·分享** [https://LinTongXue.com/#zhiling](https://lin2025.gitee.io/#zhiling)
+ **提示词导航·分享** [https://lin2025.gitee.io/#zhiling](https://lin2025.gitee.io/#zhiling)
 
+ **林同学的小站（域名跳转Gitee）** [LinTongXue.com](http://LinTongXue.com)
