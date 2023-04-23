@@ -1,3 +1,6 @@
+<!--	:::网页显示报错：打开网页/网站后，对话框和部分按钮显示为{{x.msg}}、{{x.msg}}、{{sentext}}... :::	 -->
+<!--		1.检查网络正常且刷新后还是报错，这种情况是因为浏览器版本过低，不支持当前Vue架构的版本，无论你在使用哪款浏览器，请先升级它   -->
+<!--		2.2023年4月23日之前的版本不排除CDN挂掉的可能。代码使用公共CDN提供的 Vue 和 Axios ，加载失败也会报错。4月23日之后的代码版本，同时提供国内+国外两条CDN线路，同时挂掉的几率极低  -->
 <!--	:::如何改代码？:::	 -->
 <!--		小白萌新在编辑代码时搜索“可修改”来查看可以修改的部分，进行个性化定制  -->
 <!--	:::Mac复制网页源码后如何粘贴代码？:::	 -->
@@ -13,11 +16,9 @@
 <!--		使用[记事本]来修改网页的，保存时在[编码]下拉框中选[UTF-8]。扩展名如果是.txt，需要改为.html  另外，编辑代码时，建议在菜单栏的“格式”里关闭掉“自动换行” -->
 <!--	:::关于文件名:::	 -->
 <!--		1.电脑上使用，文件名随意，但扩展名必须是.html  2.如需上传至虚拟主机、服务器、GitHub、Gitee，文件名改为英文，默认主页的文件名为：index.html  -->
-<!--	:::网页显示报错：打开网页/网站后，对话框和部分按钮显示为{{x.msg}}、{{x.msg}}、{{sentext}}... :::	 -->
-<!--		检查网络正常且刷新后还是报错，这种情况是因为浏览器版本过低，不支持当前Vue架构的版本，无论你在使用哪款浏览器，请先升级它   -->
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    -->
-<!--		抖音：@林同学不姓林    最新更新：林同学的小站 https://lin2025.gitee.io    -->
+<!--		抖音：@林同学不姓林     最新更新：林同学的小站 http://lin2025.gitee.io  或 LinTongXue.com  -->
 
 <html>
 <head>
@@ -31,12 +32,16 @@
 <link rel="shortcut icon" href="https://openai.com/favicon.ico">
 <!-- 可修改 手机端添加到主屏幕时的Logo  默认为ChatGPT的Logo，可改  *小白不需要改。需要传网页到Github/Gitee/托管空间/主机/服务器的同学，才需要设置。   简单点快速设置：任意一张正方形图片。  推荐的设置：尺寸180x180 格式优先考虑.png -->
 <link rel="apple-touch-icon" href="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/chatgpt-icon.png">
-<!-- BootCDN是一个前端常用的公共CDN，安全  |  Vue是一款用于构建用户界面的JavaScript框架，网页常用技术 -->
-<!-- 备用：https://unpkg.com/vue@3.2.47/dist/vue.global.js -->
+
+<!-- Vue是一款用于构建用户界面的JavaScript框架，网页常用技术 -->
 <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.47/vue.global.js"></script>
-<!-- BootCDN是一个前端常用的公共CDN，安全  |  Axios是一种常用HTTP 客户端，可工作于浏览器中，网页常用技术 -->
-<!-- 备用：https://unpkg.com/axios@1.3.2/dist/axios.min.js -->
+<script>!window.Vue && document.write(unescape('%3Cscript src="https://unpkg.com/vue@3.2.47/dist/vue.global.js"%3E%3C/script%3E'))</script>
+<!-- Axios是一种常用HTTP 客户端，可工作于浏览器中，网页常用技术 -->
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.2/axios.min.js"></script>
+<script>!window.axios && document.write(unescape('%3Cscript src="https://unpkg.com/axios@1.3.2/dist/axios.min.js"%3E%3C/script%3E'))</script>
+<!-- Vue 与 Axios ，优先使用BootCDN(国内前端常用的公共CDN)的链接，加载速度快，但4月23日起出现多个国家IP可能无法访问的情况，...  -->
+<!--   如果无法加载BootCDN的版本，上述代码会自动启用备选的国际线路 - Unpkg版(国外前端常用公共CDN) 。-->
+<!--   Tips: unescape解码： ESCAPE在线解码小工具 https://tool.chinaz.com/Tools/Escape.aspx  -->
 
 <!-- 网页部分样式  -->
 <style> 
@@ -195,9 +200,9 @@
                 <view v-if="x.my" class="userinfo">
 					<view class="chat-img">
 						<!-- 可修改  自定义自己的头像  简单点快速设置：任意一张图片都可以   推荐的设置：尺寸80x80或以上  支持png/jpg/ico等图片格式   *电脑端改本地头像的教程：https://www.bilibili.com/video/BV1Pa411d7oe/   -->
-						<!-- 默认的临时图：   https://github.lintongxue.com/img/me-bili.jpg       注：github支持外链。当网页放在本地电脑，使用任何网络图片的头像都能正常显示。 如果你把网页上传到托管空间/主机/服务器后，发现头像显示不出来，原因是你用的图片链接是防盗链的。-->
+						<!-- 默认的临时图：   https://lin2025.github.io/img/me-bili.jpg       注：github支持外链。当网页放在本地电脑，使用任何网络图片的头像都能正常显示。 如果你把网页上传到托管空间/主机/服务器后，发现头像显示不出来，原因是你用的图片链接是防盗链的。-->
 						<!--     头像来源：b站@哔哩哔哩游戏中心  https://i1.hdslb.com/bfs/face/f2041c554879836b01531da50f6d3f1884d03205.jpg     注：电脑上可用，上传网站后不能正常显示（不支持外链） -->
-						<image style="height:100%;width:100%;object-fit: cover;border-radius: 6px;" src="https://github.lintongxue.com/img/me-bili.jpg" mode="aspectFit"></image>
+						<image style="height:100%;width:100%;object-fit: cover;border-radius: 6px;" src="https://lin2025.github.io/img/me-bili.jpg" mode="aspectFit"></image>
 					</view>	
                     <view class="flex justify-end" style="width: auto;max-width:70%">
                         <view class="usermsg" style="background-color: #95eb6c;">
