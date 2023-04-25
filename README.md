@@ -3,7 +3,8 @@
 ![](https://lin2025.github.io/img/other-gpt3.5.gif)
 
 ## 最近更新 Updates
-- **4月23日** (**bug fixes**)修复近期多个国家IP无法访问<kbd>BootCDN</kbd>而导致网页报错的情况（无法加载Vue与Axios），已添加<kbd>Unpkg</kbd>CDN线路，<kbd>BootCDN</kbd>挂掉的时候会自动切换到<kbd>Unpkg</kbd>。
+- **4月25日** 给[检测中]和[发送中]两按钮状态添加动态效果；页面上不再显示API-Key明码；修正些小逻辑。
+- **4月23日** **重要更新**(**bug fixes**) 修复近期多个国家IP无法访问<kbd>BootCDN</kbd>而导致网页报错的情况（无法加载Vue与Axios），已添加<kbd>Unpkg</kbd>CDN线路，<kbd>BootCDN</kbd>挂掉的时候会自动切换到<kbd>Unpkg</kbd>。
 - **4月16日** 修改PC端的快捷键，改为回车<kbd>Enter</kbd>发送，并支持多种换行方式。适配中文输入习惯，中文输入状态下，一次回车**确认但不发送**，二次回车**才会发送**。
 - ...
 
