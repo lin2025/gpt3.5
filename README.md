@@ -13,7 +13,7 @@
 ## :globe_with_meridians:
 A ChatGPT webpage is a lightweight single-page chat application that can be deployed statically, with no need for a server.
 
-> Download and open the index.html file, input your OpenAI API key to get started. Functions include: OpenAI account balance query, customize system prompts, context, adjustable temperature settings, undo, re-answer, clear context, tokens statistics, and export chat history. 
+> Download and open the <kbd>index.html</kbd> file, input your OpenAI <kbd>API-Key</kbd> to get started. Functions include: OpenAI account balance query, customize system prompts, context, adjustable temperature settings, undo, re-answer, clear context, tokens statistics, and export chat history. 
 
 
 ## 介绍
