@@ -9,6 +9,13 @@
 - **4月16日** 修改PC端的快捷键，改为回车<kbd>Enter</kbd>发送，并支持多种换行方式。适配中文输入习惯，中文输入状态下，一次回车**确认但不发送**，二次回车**才会发送**。
 - ...
 
+
+## :globe_with_meridians:
+A ChatGPT webpage is a lightweight single-page chat application that can be deployed statically, with no need for a server.
+
+> Download and open the index.html file, input your OpenAI API key to get started. Functions include: OpenAI account balance query, customize system prompts, context, adjustable temperature settings, undo, re-answer, clear context, tokens statistics, and export chat history. 
+
+
 ## 介绍
  零门槛 10秒就能搞定的GPT3.5 <kbd>模型:gpt-3.5-turbo</kbd> 
 
