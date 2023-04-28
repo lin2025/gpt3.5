@@ -2,18 +2,21 @@
 
 ![](https://lin2025.github.io/img/other-gpt3.5.gif)
 
-## 最近更新 Updates
-- **4月27日** **新增功能**-**查询OpenAI账户余额** 点击[说明]-[7]查看方法。使用官方接口查询API-Key对应的账户信息，包括登记姓名、是否绑卡、总额、余额、到期时间等数据。查询代码安全透明，数据无泄漏风险。js代码由ChatGPT基于以下两位大佬的项目进行调整实现：@ClarenceDan 的项目[https://github.com/ClarenceDan/openai-billing](https://github.com/ClarenceDan/openai-billing) 和 @herobrine19 的项目[https://github.com/herobrine19/openai-billing](https://github.com/herobrine19/openai-billing)
+## 更新 Updates
+- **4月28日** **Add English comments.**
+- **4月27日** **新增功能**-**查询OpenAI账号余额** 检测API-Key后，点击[Tokens]查询API账号余额，使用OpenAI官方接口，返回数据包含登记的名字、是否绑卡、总额度、余额、有效期等。代码基于以下两位大佬的项目进行调整实现：@ClarenceDan的[openai-billing](https://github.com/ClarenceDan/openai-billing)、@herobrine19的[openai-billing](https://github.com/herobrine19/openai-billing)，已详细注释，安全透明，数据无泄漏风险。
 - **4月26日** 给“检测中“和“发送中“这两按钮状态添加动态效果；页面上不再显示API-Key明码；修正些小错误。
-- **4月23日** [**bug fixes**]**重要更新** 修复近期多个国家IP无法访问<kbd>BootCDN</kbd>而导致网页报错的情况（无法加载Vue与Axios），已添加<kbd>Unpkg</kbd>CDN线路，<kbd>BootCDN</kbd>挂掉的时候会自动切换到<kbd>Unpkg</kbd>。
+- **4月23日** **重要修复 bug fixes** 修复近期多个国家IP无法访问<kbd>BootCDN</kbd>而导致网页报错的情况（无法加载<kbd>Vue</kbd>与<kbd>Axios</kbd>），已添加<kbd>Unpkg</kbd>CDN线路，<kbd>BootCDN</kbd>挂掉的时候会自动切换到<kbd>Unpkg</kbd>。
 - **4月16日** 修改PC端的快捷键，改为回车<kbd>Enter</kbd>发送，并支持多种换行方式。适配中文输入习惯，中文输入状态下，一次回车**确认但不发送**，二次回车**才会发送**。
 - ...
 
 
 ## :globe_with_meridians:
-A ChatGPT webpage is a lightweight single-page chat application that can be deployed statically, with no need for a server.
+A ChatGPT web page is a lightweight single-page chat application that can be deployed statically, with no need for a server.
 
-> Download and open the <kbd>index.html</kbd> file, input your OpenAI <kbd>API-Key</kbd> to get started. Functions include: OpenAI account balance query, customize system prompts, context, adjustable temperature settings, undo, re-answer, clear context, tokens statistics, and export chat history. 
+Download and open the <kbd>index.html</kbd> file, input your OpenAI <kbd>API-Key</kbd> to get started. Functions include: Check <kbd>OpenAI API</kbd> balances, System prompts, Context, Adjustable temperature settings, Undo, Retry, Clear context, Token count, and Export chat history.
+
+> <kbd>先检测API</kbd>_:Check API first_    <kbd><<检测</kbd>_:Check API-key_    <kbd>发送</kbd>_:Send_    <kbd><<写入指令</kbd>_:Save system prompt_    <kbd>Tokens</kbd>_:Token count_    <kbd>Tokens点击查API余额</kbd>_:(Click)_ _Check OpenAI API balances_    <kbd>清空</kbd>_:Clear context_    <kbd>撤销</kbd>_:Undo_    <kbd>重问</kbd>_:Retry_    <kbd>说明</kbd>_:Help_    <kbd>导出对话</kbd>_:Export chat history_  _..., others are in the code comments._ 
 
 
 ## 介绍
@@ -27,12 +30,12 @@ A ChatGPT webpage is a lightweight single-page chat application that can be depl
 
 
 ## 功能
- 需使用自己的<kbd>API-Key</kbd> / 查询<kbd>OpenAI API</kbd>账户余额 / 上下文记忆 / <kbd>token</kbd>统计 / 撤销问答 / 重新回答 / 清空记忆
+ 需使用自己的<kbd>API-Key</kbd> / 查询<kbd>OpenAI API</kbd>账号余额 / 上下文记忆 / <kbd>token</kbd>统计 / 撤销问答 / 重新回答 / 清空记忆
  / 可调"创造力·温度"<kbd>temperature</kbd> / 可设置"指令·系统提示词"<kbd>system</kbd> / 可导出"聊天记录·操作记录"
  / 对话框自适应高度
- / ~~电脑端支持Ctrl+Enter发送~~ 已改成回车<kbd>Enter</kbd>发送 电脑端支持多种换行方式<kbd>Shift | Ctrl | Cmd</kbd>+<kbd>Enter</kbd>
+ / 电脑端按回车<kbd>Enter</kbd>发送 支持多种换行方式<kbd>Shift | Ctrl | Cmd</kbd>+<kbd>Enter</kbd>
 
-> 回复是一次性返回，非打字机效果的“流”
+> 回复是一次返回，非<kbd>Stream</kbd>流式，不存在中断的情况
 
 
 ## 特点
