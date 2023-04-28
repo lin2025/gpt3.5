@@ -23,12 +23,12 @@
 
 <!-- [Chinese]:English -->
 
-<!--	[发送]:Send		(先检测API):Check API first		(检测中..):Checking		(API-key错误):Error		(重新检测):API Need to recheck	(请重发):Please try sending again	-->
-<!--	[检测]:Check API-key							(API-key粘贴到这里):Input API key here			(验证成功):Success	-->
+<!--	[发送]:Send		(先检测API):Check API first		(检测中..):Checking		(API-key错误):Error		(重新检测):API Need to recheck	(请重发):Please retry	-->
+<!--	[检测]:Check API-key								(API-key粘贴到这里):Input API key here			(验证成功):Success	-->
 <!--	[0.7]:Adjust GPT temperature					[写入指令]:Save system prompt					(留空或输入指令/提示词):System prompt (optional)	-->
 <!--	[清空]:Clear context *Will not clear chat history		[导出对话]:Export chat history *The original output format and style	-->
-<!--	(Tokens):Token count									[Tokens·点击查余额)]:Check OpenAI API balances *Click the "Tokens" button	-->
-<!--	[撤销]:Undo		[重问]:Re-answer *Undo and resend		[说明]:Help	-->
+<!--	(Tokens):Token count									[Tokens·点击查余额]:Check OpenAI API balances *Click the "Tokens" button	-->
+<!--	[撤销]:Undo		[重问]:Retry *Undo and resend			[说明]:Help								(~换行):Line break	-->	
 
 
 <html>
@@ -385,10 +385,10 @@
 					this.inputclearbtn = true  
 				}
 	  		},   
-			//按钮：重问 Re-answer *Undo and resend
+			//按钮：重问 Retry *Undo and resend
 			deleteresend(){
 				if (this.msgContent.length > 1){
-					this.chathistory  += ('\r\n\r\n>>>>>>>>>操作：重问（Re-answer）<<<<<<<<<\r\n')
+					this.chathistory  += ('\r\n\r\n>>>>>>>>>操作：重问（Retry）<<<<<<<<<\r\n')
 					let templastmsg =	this.msgList.pop()
 					this.msgContent.pop()
 					if (!templastmsg['my']){
@@ -465,7 +465,7 @@
 					const btnAdisabled = document.getElementById("btnA");
 					btnAdisabled.disabled = false;
 					
-					//检测是移动端还是电脑  添加小贴士  提示换行的快捷键
+					//检测是移动端还是电脑  添加小贴士  提示换行(Line break)的快捷键
 					const tipsss = document.querySelector('.textareaTips');
 					if (navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)) {
 				    	//移动端
@@ -554,7 +554,7 @@
 		      				});
 					}
 			},
-			//对话框 电脑端支持组合键换行  支持Ctrl+Enter 和 Commond+Enter 和 Win+Enter 换行，另有shift+enter（无需设置）
+			//对话框 电脑端支持组合键换行(Line break)  支持Ctrl+Enter 和 Commond+Enter 和 Win+Enter 换行，另有shift+enter（无需设置）
 			newLine(e) {
 				//解决safari每次都是换两行的bug，其他浏览器正常   e=ee？
 				let ee = window.event || arguments[0];
@@ -727,7 +727,7 @@
 					console.log('error',error);
 					this.stopChangeText();
 					document.querySelector('.inputapikey').readOnly = false; //发送结束，apikey可修改
-					this.sentext = '请重发' // Please try sending again
+					this.sentext = '请重发' // Please retry
 					this.msgLoad = false
 
 					this.inputclearbtn = false  
@@ -735,7 +735,7 @@
 					this.inputhistorybtn = false  
 					
 					if(error.code == 'ERR_NETWORK'){
-						// ERR_NETWORK  After closing the pop-up window, You can choose [重问(undo and resend)] or [撤销(undo)] to continue  
+						// ERR_NETWORK  After closing the pop-up window, You can choose [重问(Retry)] or [撤销(Undo)] to continue  
 						alert("错误提醒\r\n网络错误、网络超时\r\n\r\n关闭弹窗后，您可以选择[重问]、[撤销]来继续之前的对话，注意检查[魔法网络]的状态~  \r\n\r\nError Code:ERR_NETWORK")
 					}
 					else {
@@ -744,7 +744,7 @@
 						//	2、短时间内请求过快，非Plus用户API限制，上限为：每分钟20次请求  每分钟40000个tokens ，如果多人共享API-Key，可能比较容易报错。
 						//  无论是1 还是 2 ，关闭弹窗后，点击[重问]即可继续对话。  推荐使用自己的API-Key，这样可以避免第2种情况的出现。
 						// There are multiple possibilities for errors(Too Fast, Server Error, Network Error/Timeout, Context exceeds limit, Token Exceeded... ). 
-						// You can choose [重问(undo and resend)] or [撤销(undo)] to continue.    or [清空(Clear Context)] *will not clear chat history
+						// You can choose [重问(Retry)] or [撤销(Undo)] to continue.    or [清空(Clear Context)] *will not clear chat history
 						alert("错误提醒\r\n存在多种可能：请求过快、网络错误、请求超时、上下文记忆满了(Tokens达上限)...等\r\n\r\n关闭弹窗后，您可以选择[重问]、[撤销]来尝试继续对话。 如果Tokens消耗不多(记忆未满)，大概率是网络问题，建议先[重问]试试。\r\n也可以直接[清空记忆]，开始全新的对话。\r\n\r\n本次错误代码\r\nError Code:" + error.code + "\r\nError Message:" +error.message )
 					}
 
@@ -896,7 +896,7 @@
 			if (isNaN(btnAValue)) {
 				btnAValue = 0.7;
 			}
-			var popup = window.prompt("设置temperature参数，用于控制GPT生成文本的多样性和创造力：\r\n    [较低]会导致生成的文本更加保守和重复（生成比较简单和常见的文本，形式/格式会变得单一）。\r\n    [较高]会导致生成的文本更加随机和创造性（过高会生成难以理解的文本。比如调1.3或更高，稍有难度的问题就会开始出现无中生有的词/乱码/语病/回复过慢/超时无法回复等情况）。\r\n\r\n请在下方输入 0.0～2.0 之间的数值，点[确定]或[好]后生效。输入错误，则会恢复默认值0.7，随时可改。", btnAValue);
+			var popup = window.prompt("设置temperature参数，用于控制GPT生成文本的多样性和创造力：\r\n    [较低]会导致生成的文本更加保守和重复（生成比较简单和常见的文本，形式/格式会变得单一）。\r\n    [较高]会导致生成的文本更加随机和创造性（过高会生成难以理解的文本。比如调1.1或更高，稍有难度的问题就会开始出现无中生有的词/乱码/语病/回复过慢/超时无法回复等情况）。\r\n\r\n请在下方输入 0.0～2.0 之间的数值，点[确定]或[好]后生效。输入错误，则会恢复默认值0.7，随时可改。", btnAValue);
 			if (popup != null) {
 				// 将输入框的内容转换为数值
 				var inputValue = parseFloat(popup);
@@ -918,7 +918,7 @@
 		//声明变量，记录查询余额状态
       	var isCheckAPIKey = false;
 
-		//连官网接口查询返回API-Key对应的账户信息
+		//连官网接口查询返回API-Key对应的账号信息
       	async function checkBilling(apiKey) {
 	        // 计算起始日期和结束日期
 	        const now = new Date();
@@ -954,7 +954,7 @@
 				const timestamp_now = Math.floor(Date.now() / 1000); //当前时间的时间戳
 				const timestamp_expire = subscriptionData.access_until; //到期时间的时间戳
 				if (timestamp_now > timestamp_expire) {
-					alert("提醒\r\nOpenAI API账户余额已过期, 请登录OpenAI进行查看。\r\n\r\nThe account balance has exceeded the usage period. Please log in to OpenAI for viewing.");
+					alert("提醒\r\nOpenAI API账号余额已过期, 请登录OpenAI进行查看。\r\n\r\nThe account balance has exceeded the usage period. Please log in to OpenAI for viewing.");
 				}
 
 				const totalAmount = subscriptionData.hard_limit_usd; //总额度 美元
@@ -991,14 +991,14 @@
 				//  	来源官方接口1： https://api.openai.com/v1/dashboard/billing/subscription
 				//  	来源官方接口2： https://api.openai.com/v1/dashboard/billing/usage?start_date=查询消耗金额的起始时间&end_date=查询消耗金额的结束时间
 				// 数组序列如下：
-				// 0 subscriptionData.account_name [账户归属/Account_Name]  
+				// 0 subscriptionData.account_name [账号归属/Account_Name]  
 				// 1 is_subsrcibed  即subscriptionData.has_payment_method [是否绑卡/has_payment_method]  ？绑卡和购买Plus应该是两回事，绑卡使用API 不一定有订阅Plus 
-				// 2 totalAmount  即subscriptionData.hard_limit_usd  [账户总额度/Total Amount] 
+				// 2 totalAmount  即subscriptionData.hard_limit_usd  [账号总额度/Total Amount] 
 				// 3 totalUsage  即usageData.total_usage(需要除以100)  [已消耗金额/Total Usage] //绑卡用户为本月用量  非绑卡用户为历史累计用量
 				// 4 remaining (通过计算得出) [可用额度/Remaining]
 				// 5 timestamp_expire  即subscriptionData.access_until  [截止时间/Expiration Date] *时间戳格式
-				// 6 subscriptionData.plan["title"]  plan-title 可能是账户分类?用途?
-				// 7 subscriptionData.plan["id"]   Plan-id 可能是账户类型? 免费
+				// 6 subscriptionData.plan["title"]  plan-title 可能是账号分类?用途?
+				// 7 subscriptionData.plan["id"]   Plan-id 可能是账号类型? 免费
 				// 8 totalUsageCurr 未绑卡用户的本月用量
 				// 以上 数据说明
 				
@@ -1034,26 +1034,26 @@
 		  
 			isCheckAPIKey = true;
 			
-			alert("提醒\r\n将为您查询OpenAI API的账户余额，请先关闭本弹窗，待查询结果出来后会自动弹出 \r\n\r\nAfter closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available."  );
+			alert("提醒\r\n将为您查询OpenAI API的账号余额，请先关闭本弹窗，待查询结果出来后会自动弹出 \r\n\r\nAfter closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available."  );
 		 
 			//因为是在api-key验证成功后才能查询余额，所以此处无需判断api-key的有效性、格式是否正确等情况
 
 
-		  	//连官网接口查询账户信息  传入网页上API-Key后开始查询
+		  	//连官网接口查询账号信息  传入网页上API-Key后开始查询
 			checkBilling(document.querySelector('.inputapikey').value.trim()).then((data) => {
       
 				// 数据说明：共9个参数，均为官方接口返回的信息，不必担心安全问题，无任何泄漏风险，不会以任何方式存储数据
 				//  	来源官方接口1： https://api.openai.com/v1/dashboard/billing/subscription
 				//  	来源官方接口2： https://api.openai.com/v1/dashboard/billing/usage?start_date=查询消耗金额的起始时间&end_date=查询消耗金额的结束时间
 				// 数组序列如下：
-				// 0 subscriptionData.account_name [账户归属/Account_Name]  
+				// 0 subscriptionData.account_name [账号归属/Account_Name]  
 				// 1 is_subsrcibed  即subscriptionData.has_payment_method [是否绑卡/has_payment_method]  
-				// 2 totalAmount  即subscriptionData.hard_limit_usd  [账户总额度/Total Amount] 
+				// 2 totalAmount  即subscriptionData.hard_limit_usd  [账号总额度/Total Amount] 
 				// 3 totalUsage  即usageData.total_usage(需要除以100)  [已消耗金额/Total Usage] //绑卡用户为本月用量  非绑卡用户为历史累计用量
 				// 4 remaining (通过计算得出) [可用额度/Remaining]
 				// 5 timestamp_expire  即subscriptionData.access_until  [截止时间/Expiration Date] *时间戳格式
-				// 6 subscriptionData.plan["title"]  plan-title 可能是账户分类?用途?
-				// 7 subscriptionData.plan["id"]   Plan-id 可能是账户类型? 免费
+				// 6 subscriptionData.plan["title"]  plan-title 可能是账号分类?用途?
+				// 7 subscriptionData.plan["id"]   Plan-id 可能是账号类型? 免费
 				// 8 totalUsageCurr 未绑卡用户的本月用量
 				// 以上 数据说明
 
@@ -1085,7 +1085,7 @@
 					msg8 = '\r\n无';
 				}else{
 					//非绑卡用户：使用免费体验金的用户，历史统计数据
-					msg2 = '\r\n账户总额：  $'; 
+					msg2 = '\r\n账号总额：  $'; 
 					msg3 = '\r\n累计消耗：  $';
 					msg4 = '\r\n剩余额度：  $';
 					msg5 = '\r\n到期时间：  ';
@@ -1093,15 +1093,15 @@
 				}
 
 				//组合需要展示的数据
-				msgTop = 'OpenAI API 账户余额查询结果\r\n\r\n';
-				msg0 = '账户归属：  ' + data[0]; // 注册OpenAI账号时填写的姓名 
+				msgTop = 'OpenAI API 账号余额查询结果\r\n\r\n';
+				msg0 = '账号归属：  ' + data[0]; // 注册OpenAI账号时填写的姓名 
 				msg1 = '\r\n是否绑卡：  ' + (data[1] ? '已绑信用' : '未绑信用卡') ; // 绑卡和购买Plus应该是两回事，绑卡使用API 不一定有订阅Plus 
 				msg2 = msg2 + " ".repeat(alignLength - data[2].toFixed(4).length) + data[2].toFixed(4); //取4位小数点，并向右对齐（计算需要补充的空格数量，在字符串前面添加空格）
 				msg3 = msg3 + " ".repeat(alignLength - data[3].toFixed(4).length) + data[3].toFixed(4); //取4位小数点，并向右对齐 
 				msg4 = msg4 + " ".repeat(alignLength - data[4].toFixed(4).length) + data[4].toFixed(4); //取4位小数点，并向右对齐
 				msg5 = msg5 + data[5];
-				msg6 = '\r\n账户用途：  ' + data[6]; // 应该是注册时选择的注册目的、用途
-				msg7 = '\r\n账户属性：  ' + ( data[7] == 'free' ? '免费' : data[7] );  //id等于free，则显示免费。 其他情况未知，显示原始值
+				msg6 = '\r\n账号用途：  ' + data[6]; // 应该是注册时选择的注册目的、用途
+				msg7 = '\r\n账号属性：  ' + ( data[7] == 'free' ? '免费' : data[7] );  //id等于free，则显示免费。 其他情况未知，显示原始值
 				msg8 = msg8; 
 				msgBottom = '\r\n\r\n余额查询代码版本v4.27  \r\n以上信息均由官方接口返回，无泄漏风险，对当前已验证的API-Key实时查询，不会存储数据，API-Key随时可改。原理见代码，注释详尽，小白也能看懂';
 
