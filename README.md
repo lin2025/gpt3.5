@@ -1,5 +1,7 @@
 # GPT3.5 one-page web
 
+- [ ] 05-17 发现目前版本有个bug，使用中可能会出错，会尽快修补 [Error] SyntaxError: Unexpected token '}'. Expected ')' to end an argument list.  
+- [ ] 05-17 准备学着加入很多功能，包括：压缩上下文、中英文切换、提示词、导出压缩版上下文、导出markdown格式、更多的GPT官方设置参数、按钮三排改两排... 
 
 ## 更新 Updates
 > 0514 - ....学的越多，改的越多，过几天还有大更新，布局会改变，功能会增加...
