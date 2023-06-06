@@ -2,6 +2,10 @@
 
 **v6.07**
 
+**主版本，大版本，迟了三周更新，终于有个样子了，测试非常稳定，没再报错**
+
+> 学的比较慢，碰到每个小问题都要研究好久，细节问题太多
+
 **This is the major version update, which is three weeks late but has been extensively tested and is error-free.**
 
 #### LinGPT - A GPT-3.5 Webpage with Just a Single HTML File
@@ -13,6 +17,8 @@ Update log will be written tomorrow, please try it out first.
  :point_right:  https://lin2025.github.io/gpt3.5/
 
  :point_right: :cn:   https://lin2025.gitee.io/gpt3.5/  
+
+喜欢的话，给个 :star: 吧～ 
 
 
 # GPT3.5 one-page web
