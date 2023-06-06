@@ -1,3 +1,20 @@
+2023-06-07 
+
+**v6.07**
+
+**This is the major version update, which is three weeks late but has been extensively tested and is error-free.**
+
+#### LinGPT - A GPT-3.5 Webpage with Just a Single HTML File
+
+> Supports multiple languages, Change Language: [Settings] > [Language]
+
+Update log will be written tomorrow, please try it out first. 
+
+ :point_right:  https://lin2025.github.io/gpt3.5/
+
+ :point_right: :cn:   https://lin2025.gitee.io/gpt3.5/  
+
+
 # GPT3.5 one-page web
 
 - [ ] 05-17 v5.14版开始，疑似有个bug，找几天都找不到，不排除是调试的原因才会触发。该bug不会影响聊天内容，暂时可忽略。（如果bug出现，会明显卡住无法再发送，导致聊天无法继续）
