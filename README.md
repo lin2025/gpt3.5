@@ -58,7 +58,7 @@ Give a Star 🌟 if you like it.
 
  - 语言支持简体中文和英语、支持更换头像、支持样式设置（字体大小、微信样式的时间、消息时间、区分多轮对话）
 
- - 可导出单轮聊天记录、全部聊天记录和操作记录，Markdown格式，支持`.md` `.txt`
+ - 可导出单轮聊天记录、全部聊天记录和操作记录，Markdown格式，支持导出`.md`和`.txt`
 
 
 ## 特点
@@ -94,7 +94,7 @@ Give a Star 🌟 if you like it.
 
 ###
 
-[![English](https://img.shields.io/badge/English-Readme-success)](https://github.com/lin2025/gpt3.5#lingpt-2)
+[![English](https://img.shields.io/badge/English-Readme-success)](#lingpt-2)
 
 ## LinGPT
  - LinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server.
@@ -120,7 +120,7 @@ Give a Star 🌟 if you like it.
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
  - Undo, Retry, Clear Context, and supporting keyboard shortcuts.
  - Supports English and Chinese-Simplified, custom avatars, custom style (font size, WeChat-style time format, message time, distinguishing multi-turn contexts, etc.).
- - Single-round chat history, all chat history, and operation history can be exported in Markdown format, supporting export as `.md` or `.txt`.
+ - Single-round chat history, all chat history, and operation history can be exported in Markdown format, supporting export as `.md` and `.txt`.
 
 
 ## Updates   
