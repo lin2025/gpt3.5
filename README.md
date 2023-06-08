@@ -18,9 +18,10 @@
   [网盘下载](https://lin2025.github.io/#gpt3.5-code)
 
 Give a Star 🌟 if you like it.
-</div>
 
 [![](https://lin2025.github.io/img/other-0609.gif)](#lingpt)
+
+</div>
 
 :point_right: [![English](https://img.shields.io/badge/English-Readme-success)](#lingpt-2)
 
