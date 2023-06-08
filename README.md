@@ -20,6 +20,7 @@
 Give a Star 🌟 if you like it.
 </div>
 
+[![](https://lin2025.github.io/img/other-0609.gif)](#lingpt)
 
 :point_right: [![English](https://img.shields.io/badge/English-Readme-success)](#lingpt-2)
 
