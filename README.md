@@ -26,12 +26,12 @@ Give a Star 🌟 if you like it.
 ## LinGPT
 
  - 简介：仅有一个`.html`文件的GPT，轻量，便捷，零门槛
- - 在线：不到300K的静态网页，托管在Github/Gitee就非常的流畅
+ - 在线：不到300K的静态网页，托管在 Github / Gitee 非常流畅
  - 下载：下载到电脑，打开html文件即可使用，像打开一张图片一样简单
  - 上传：可上传至托管平台/主机/服务器，支持所有免费的静态网页托管平台
  - 接口：使用Open AI官方API，同时可自定义API。支持免魔法的第三方API
  - 模型：同ChatGPT `gpt-3.5-turbo`。目前仅支持GPT-3.5的两种模型 
- - 密钥：需自备API Key。过几天增加轮询Key的功能
+ - 密钥：需自备 API Key。过几天增加轮询Key的功能
  - 隐私：代码基本都有注释。开源 透明 安全 无风险
 
 
@@ -58,7 +58,7 @@ Give a Star 🌟 if you like it.
 
  - 语言支持简体中文和英语、支持更换头像、支持样式设置（字体大小、微信样式的时间、消息时间、区分多轮对话）
 
- - 可导出单轮聊天记录、全部聊天记录和操作记录，Markdown格式，支持导出`.md`和`.txt`
+ - 可导出单轮聊天记录、全部聊天记录和操作记录，格式为Markdown，支持导出`.md`和`.txt`
 
 
 ## 特点
@@ -73,6 +73,7 @@ Give a Star 🌟 if you like it.
 
 ## 更新   
 
+- **6月9日** 新增OpenAI报错代码；修复些问题：头像使用相对路径引发的问题、加载时气泡框塌缩的问题、部分浏览器不支持12px以下的字体的问题。
 - **6月7日** **v6.07**几乎全新的版本，变化比较大，功能升级，体验升级，适用的场景更多了，也很稳定，不再报错。
 
 <b><details><summary>6月7日之前的更新记录</summary></b>
@@ -125,7 +126,8 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
-- **6月7日** **v6.07** This is an almost brand new version with significant changes, upgraded features and improved user experience. It is applicable to more scenarios and is also very stable. It has been tested for two weeks without any errors.
+- **June 9th** Added explanation for OpenAI error codes; Fixed some issues related to:relative path avatar;  style during loading;  some browsers not supporting fonts below 12px. 
+- **June 7th** **v6.07** This is an almost brand new version with significant changes, upgraded features and improved user experience. It is applicable to more scenarios and is also very stable. It has been tested for two weeks without any errors.
 
 <b><details><summary>Updates before June 7th</summary></b>
 
