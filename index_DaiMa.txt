@@ -1,3 +1,8 @@
+<!--	:::Support Chinese-Simplified and English. Change Language in the web page: "Settings" > "Language"  -->
+<!--	:::You can search for "Editable" in the code to find the most frequently modified code.   -->
+<!--	:::Modifying the default language in the code (change to English): Please search for "Default language" in the code for quick location.   -->
+<!--	:::How to add a new language in the code: Please search for "settingsLanguage" and "settingsLanguageOptions" in the code, and then modify them. (When searching, please skip the CSS style part first.)  -->
+
 <!--	:::网页显示报错：打开网页/网站后，对话框和部分按钮显示为{{x.msg}}、{{x.msg}}、{{sentext}}... :::	 -->
 <!--		1. 4月23日之前的版本不排除CDN挂掉导致无法加载Vue.js的可能，之后的版本备有国内外3条CDN线路（如果Vue加载失败会弹出提醒） -->
 <!--		2. 未提示Vue.js加载失败，说明Vue已成功加载，这种情况还出现错误，说明是因为使用淘汰的浏览器/设备老旧/浏览器多年未更新，不支持当前版本的Vue，请换浏览器或更新浏览器版本。淘汰的浏览器：比如IE11(Internet Explorer 11)。设备老旧：如十年前旧款iPad因无法更新浏览器而导致无法支持新协议、新版Vue  -->
@@ -19,25 +24,22 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v6.07 大更新，大改版，非常稳定，不再报错。 最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
-
-<!--	:::Support Chinese-Simplified and English. Change Language: "Settings" > "Language"  -->
-<!--	:::Modifying the default language in the code : Please search for "settingsLanguage:" or "Default language" in the code for quick location.   -->
+<!--		当前版本 v6.09 - 基于v6.07版，小更新。 最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 可修改 - 默认不屏蔽搜索引擎机器人，想屏蔽的请去除注释。 Default allow search engine robots. -->
+<!-- 可修改 Editable - 默认不屏蔽搜索引擎机器人，想屏蔽的请去除注释。 Default allow search engine robots. -->
 <!-- <meta name="ROBOTS" content="noindex,nofllow"> -->
-<!-- 可修改 - 网页标题 -->
+<!-- 可修改 Editable - 网页标题 -->
 <title>LinGPT - GPT3.5</title>
 <meta name="description" content="LinGPT - A GPT-3.5 Webpage with Just a Single HTML File." />
 <!-- 网页在手机/平板上的显示比例  默认缩放80%（ initial-scale=0.8 ） -->
 <meta name="viewport" content="width=device-width,initial-scale=0.8,minimum-scale=0.5,maximum-scale=2,user-scalable=no,viewport-fit=cover">
 <link rel="shortcut icon" href="https://openai.com/favicon.ico">
-<!-- 可修改 - iPhone/iPad将网页添加到主屏幕后显示的Logo  默认为ChatGPT的Logo  *小白不需要改。需要传网页到Github/Gitee/托管空间/主机/服务器的同学，才需要设置。  简单点快速设置：任意格式的正方形图片。  推荐参考设置：png格式 180x180  -->
+<!-- 可修改 Editable - iPhone/iPad将网页添加到主屏幕后显示的Logo  默认为ChatGPT的Logo  *小白不需要改。需要传网页到Github/Gitee/静态网页托管平台/主机/服务器的同学，才需要设置。  简单点快速设置：任意格式的正方形图片。  推荐参考设置：png格式 180x180  -->
 <link rel="apple-touch-icon" href="https://openai.com/favicon.ico">
 
 <!-- Vue首选CDN(线路1) Vue是一款用于构建用户界面的JavaScript框架，网页常用技术  -->
@@ -98,8 +100,8 @@ input:focus{z-index:2}
 .btn:hover,.btn:focus,.dropdown:hover,.dropdown:focus{background-color:#25c524;border-color:#25c524;color:#FFF}
 .btn:active,.dropdown:active{background-color:#17a316;border-color:#17a316;color:#8bc220}
 .btn:disabled,.dropdown:disabled,.bluebtn:disabled{border:1px solid #DDD !important;background-color:#F5F5F5 !important;color:#1aad19 !important}
-.minibtn{width:11px;height:11px;flex-shrink:0;display:inline-block;vertical-align:middle;line-height:11px;padding:0px;font-size:10px;border-radius:50%;margin-bottom:1px !important}
-.minibtn-default{width:auto;padding:1px 3px;font-size:10px;border-radius:3px;margin-right:5px;height:13px}
+.minibtn{width:14px;height:14px;line-height:12px;padding:1px;font-size:12px;flex-shrink:0;display:inline-block;vertical-align:middle;border-radius:50%;margin-bottom:1px !important;transform:scale(0.85);-ms-transform:scale(0.85);-webkit-transform:scale(0.85);-moz-transform:scale(0.85);-o-transform:scale(0.85)}
+.minibtn-default{width:auto;height:16px;padding:2px 6px;border-radius:4px}
 .bluebtn{background-color:#1ca5c2;border-color:#1ca5c2}
 .bluebtn:hover,.bluebtn:focus{background-color:#22b9d9;border-color:#22b9d9;color:#FFF}
 .bluebtn:active{background-color:#1ca5c2;border-color:#1ca5c2;color:#7ddbf0}
@@ -407,7 +409,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
 					</svg>
 					{{ settingsLanguage == 'cn' ? '&nbsp;设置' : '&nbsp;Settings' }}
-					<span style="margin-left:auto">LinGPT v6.07&nbsp;&nbsp;</span>
+					<span style="margin-left:auto">LinGPT v6.09&nbsp;&nbsp;</span>
 					<button  class="btn" style="margin: 0px; padding: 0 3px;background-color: #fff;height: 20px;width: 20px;" >
 						<a href="https://github.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 16 16"  fill="#1f2328"> 
@@ -495,10 +497,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<!-- 单次最大令牌数量 max_tokens --> 
 						<div class="control-container" style="flex: 1 1 0%;">
 							<div>
-								<span>max_tokens(2~4096): {{apiMaxTokens}}</span>
+								<span>max_tokens(1~4096): {{apiMaxTokens}}</span>
 							</div>
 							<div class="control-bg">
-								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="2" max="4096" step="1" value="2048" >
+								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="1" max="4096" step="1" value="2048" >
 							</div>
 						</div>
 					</div>	
@@ -516,13 +518,13 @@ to{transform:translate(-50%,-18px);opacity:1}
 							</select>
 						</div>
 	
-						<!-- 单次最大令牌数量（精细调节 2～300） max_tokens（Fine 2～300）  --> 
+						<!-- 单次最大令牌数量（精细调节 1～300） max_tokens（Fine 1～300）  --> 
 						<div class="control-container" style="flex: 1 1 0%;">
 							<div>
 								<span>{{ settingsLanguage == 'cn' ? 'max_tokens(微调)' : 'max_tokens(Fine)' }}</span>
 							</div>
 							<div class="control-bg">
-								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="2" max="300" step="1" value="2048" >
+								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="1" max="300" step="1" value="2048" >
 							</div>
 						</div>
 	
@@ -1062,7 +1064,7 @@ to{transform:translate(-50%,-18px);opacity:1}
         data() {
             return {
 			
-                api: '',  //可修改 - 单引号内可以留空，或填入默认的API-Key。  You can leave it blank or enter the default API key.
+                api: '',  //可修改 Editable - 单引号内可以留空，或填入默认的API-Key。  You can leave it blank or enter the default API key.
                 //!!Reminder: If your project is hosted on GitHub, do not enter the plaintext OpenAI API key here! GitHub will trigger OpenAI to automatically invalidate the API key and generate a new one.
 				//api修改提醒：html文件若要上传到GitHub，这里不能填api-key的明文！api-key会自动失效。原因如下：
 				//     虚拟主机/服务器/Gitee等都可以填入api-key明文，只有GitHub不行，猜测原因是：GitHub被微软收购，微软亦是OpenAI的大股东，GitHub一旦检测到代码里有GPT的api-key，会联动OpenAI的后台取消这个key，并生成新key 。
@@ -1097,15 +1099,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 				
 				msgList: [{
-                    msg: " ",   //这里不要填内容！保留一个空格，用来增加高度。在渲染首条消息前，有内容撑开高度，可以盖住气泡框左边的箭头。do not fill in. Keep an empty space to increase the height. Before rendering the first message, the normal height can cover the left arrow.
+                    msg: "",   //这里不填内容！ Do not fill in!
                     my: false,
 					datetime: "2000-01-01 00:00:00"
                 }],
-				apitemperature: 0.7, // 接口参数 temperature 默认0.7 (官方默认1.0) v-model.number
-				apiMaxTokens:2048, // 接口参数 max_tokens 默认2048 v-model.number
-				apiTopP:1, // 接口参数 top_p 官方默认1 （0.0～1.0） v-model.number
-				apiPresencePenalty:0, // 接口参数 presence_penalty 官方默认0 （-2.0～2.0） v-model.number
-				apiFrequencyPenalty:0, // 接口参数 frequency_penalty 官方默认0 （-2.0～2.0） v-model.number
+				apitemperature: 0.7, //（0.0～2.0）接口参数 temperature 默认0.7 (官方默认1.0) v-model.number
+				apiMaxTokens:2048, //（1～4096）接口参数 max_tokens 默认2048 v-model.number
+				apiTopP:1, // （0.0～1.0）接口参数 top_p 官方默认1 v-model.number
+				apiPresencePenalty:0, //（-2.0～2.0）接口参数 presence_penalty 官方默认0 v-model.number
+				apiFrequencyPenalty:0, //（-2.0～2.0）接口参数 frequency_penalty 官方默认0 v-model.number
 				
 				apiGPTModel: 'gpt-3.5-turbo', // 接口参数 model 默认'gpt-3.5-turbo'
 			    gptModelOptions: [
@@ -1150,7 +1152,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 				//**常规设置第一排
 				//语言设置 
-				settingsLanguage: 'cn', //默认语言为中文 Default language is Chinese
+				settingsLanguage: 'cn', //默认语言为中文 Language,  Chinese-Simplified = cn
 			    settingsLanguageOptions: [
 					{ label: '中文', lang: 'cn' },
 					{ label: 'English', lang: 'en' }
@@ -1298,24 +1300,26 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 
 							
-				//可修改 - 网页上的第一条信息/欢迎语，不属于上下文(This message is out of context)。 这条信息只会在网页中显示，不会回传给服务器，不属于聊天记录。 
+				//可修改 Editable - 网页上的第一条信息/欢迎语，不属于上下文。 这条信息只会在网页中显示，不会回传给服务器，不属于聊天记录。 
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
-                // Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-                thefirstmessage: "## **LinGPT** ***v6.07*** 上线了！\r\n#### 全新设计，功能升级，稳定无报错，支持多语言，全新的体验。\r\n快来试试吧，这个版本开始，总算是有点样子了，各位大佬喜欢的话请赏颗`Star`吧 ～\r\nLinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n> Change Language: [Settings] > [Language] \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![png by gpt](https://img.icons8.com/metro/26/000000/star.png)](https://github.com/lin2025/gpt3.5/)   [Github](https://github.com/lin2025/gpt3.5/)   [Gitee](https://gitee.com/lin2025/gpt3.5/)" ,
+				// The First Message, This message is out of context,
+				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
+                thefirstmessage: "## **LinGPT** ***v6.09*** \r\n#### 功能升级，全新体验，稳定无报错\r\n各位大佬喜欢的话请赏颗`Star`吧 ～\r\nLinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n> Change Language: [Settings] > [Language] \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 
 				
-				//可修改 - 不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }。	
-				//System Prompt: Will be displayed in the "System prompt input box". (optional)
-				//下方这行设置gptSystemPrompt 是设置[默认的指令/提示词/人设]的第一种方法，指令写在单引号内。 如果默认指令写在这里，这个指令会显示在聊天界面的指令输入框中。 如果还设置有第二种隐形指令的话，以隐形指令为准，第一种会被忽略。
-				//需要保存到上下文数组msgContent中，才能生效
+				//可修改 Editable - 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，验证key时会自动保存。
+				// 下方这行设置gptSystemPrompt 是设置[默认的指令/提示词/人设]的第一种方法，指令写在单引号内。 如果默认指令写在这里，这个指令会显示在聊天界面的指令输入框中。 如果还设置有第二种隐形指令的话，以隐形指令为准，第一种会被忽略。
+				// 保存到上下文数组msgContent中才能生效，不保存则不生效。
+				// System Prompt(optional): Will be displayed in the "Prompt Editor".  If you fill in here, when checking the AIP-key, it will be automatically saved.
                 gptSystemPrompt: '',
 				
 				
-				//可修改 - (一般不改，很少会用到隐形指令) 不填的话，单引号内留空，即： gptSystemPrompt_hidden: '',  
-				//Hidden System Prompt, with the highest priority. Once set, the System Prompt will be based on the Hidden System Prompt, and the Prompt in the System Prompt input box will be invalid. 
-				//下方这行设置gptSystemPrompt_hidden 是设置[默认的指令/提示词/人设]的第二种方法，指令写在单引号内。 第二种方法是[隐形指令/隐藏指令/隐形提示词/隐藏提示词]的写法。如果默认指令写在这里，这个指令不会显示在聊天界面的指令输入框中，指令是隐形的。 在本代码中搜索“隐形指令”可查看[添加 disabled 来禁止聊天界面上输入新指令]的方法。
-				//如果用第二种方法设置了[隐形指令]，那么GPT指令将以这里的[隐形指令]为准，会自动忽略聊天界面上的其他指令（包括空白的指令），不会叠加。
-				//设置隐形提示词后，提示词弹窗将被禁用。写在mounted()里
+				//可修改 Editable - (一般不改，很少会用到隐形指令) 不填的话，单引号内留空，即： gptSystemPrompt_hidden: '',  
+				// 下方这行设置gptSystemPrompt_hidden 是设置[默认的指令/提示词/人设]的第二种方法，指令写在单引号内。 第二种方法是[隐形指令/隐藏指令/隐形提示词/隐藏提示词]的写法。如果默认指令写在这里，这个指令不会显示在聊天界面的指令输入框中，指令是隐形的。 在本代码中搜索“隐形指令”可查看[添加 disabled 来禁止聊天界面上输入新指令]的方法。
+				// 如果用第二种方法设置了[隐形指令]，那么GPT指令将以这里的[隐形指令]为准，会自动忽略聊天界面上的其他指令（包括空白的指令），不会叠加。
+				// 设置隐形提示词后，提示词弹窗将被禁用，代码写在mounted()里
+				// Hidden System Prompt, with the highest priority. Once set, the System Prompt will be based on the Hidden System Prompt, and the Prompt in the System Prompt input box will be invalid. 
+				// If "gptSystemPrompt_hidden" is set, the Prompt Generator will be disabled. The judgment code is written in the mounted() method.
 				gptSystemPrompt_hidden: '',
 				
 				
@@ -1597,19 +1601,19 @@ importData_JSON(event) {
 				  	title = '';
 				    break;
 				  case 'A-APISettings':
-				  	notifcn = 'temperature：默认0.7，官方默认1.0。"温度"，用于控制GPT生成结果的随机性/多样性/创造力。[过低]会导致生成的文本更加保守和重复。[过高]会导致生成的文本更加随机和具有创造性（约1.2开始，就有几率出现无中生有的词/乱码）。\r\n\r\nmax_tokens: 生成结果时的最大token数。单轮对话上下文“已消耗的token数量”加上“max_tokens数量”不能超过模型的上下文长度（gpt3.5支持最高4096 tokens）。\r\n可随时调节，举例：单轮记忆已消耗2000，那max_tokens就不能高于2096，实际上还得降低一点。若已消耗3500，此时需要降到到比如400或以下才能发送成功。\r\n\r\nmodel: 模型，暂时仅支持gpt3.5模型。\r\n\r\n更多：点击设置更多API参数。 ';
+				  	notifcn = 'temperature：默认0.7，官方默认1.0。"温度"，用于控制GPT生成结果的随机性/多样性/创造力。[过低]会导致生成的文本更加保守和重复。[过高]会导致生成的文本更加随机和具有创造性（约1.2开始，就有几率出现无中生有的词/乱码）。\r\n\r\nmax_tokens: 生成结果时的最大token数，可随时调节。单轮对话上下文“已消耗的token数量”加上“max_tokens数量”不能超过模型的上下文长度（gpt3.5支持最高4096 tokens）。\r\n\r\nmodel: 模型，暂时仅支持gpt3.5模型。\r\n\r\n更多：点击设置更多API参数。 ';
 					//含单引号
-					notifen = "temperature: The 'temperature' setting controls how creative and diverse the text generated by GPT is. Lower values result in more repetitive and simpler text, while higher values result in more random and creative text. \r\n\r\nmax_tokens: The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length (gpt3.5 support 4096).\r\n\r\nmodel: Only supports GPT3.5 for now。\r\n\r\nMore：Click to display more API parameter settings.\r\n\r\nAPI reference: \r\nhttps://platform.openai.com/docs/api-reference/chat/create ";
+					notifen = "temperature: The 'temperature' setting controls how creative and diverse the text generated by GPT is. Lower values result in more repetitive and simpler text, while higher values result in more random and creative text. \r\n\r\nmax_tokens: The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length (gpt3.5 support 4096).\r\n\r\nmodel: Only supports GPT3.5 for now.\r\n\r\nMore：Click to display more API parameter settings.\r\n\r\nAPI reference: \r\nhttps://platform.openai.com/docs/api-reference/chat/create ";
 				  	title = '';
 				    break;
 				  case 'A-ProfessionalAPISettings':
-				  	notifcn = '接口网址: 本代码仅支持GPT-3.5或更新版本的GPT模型，对应的接口网址应以“/v1/chat/completions”结尾，如OpenAI官方接口网址“ https://api.openai.com/v1/chat/completions ”，但也不排除第三方接口的网址结构有所改动。\r\n官方API接口需要魔法才能连接。第三方API有的需要魔法，有的不需要。\r\n有魔法的情况下，推荐使用官方接口，实际体验更好。免费gpt账号目前都有每分钟3次的调用限制(单key每分钟最多3次)，但官方接口使用起来明显更流畅，报错几率会低点。\r\n!! 第三方接口无法保证隐私安全，请自辨。\r\n!! "魔法"是一种可以让您的手机或电脑出趟国的技术。\r\n\r\n以下3个参数的说明见官网：\r\ntop_p: https://platform.openai.com/docs/api-reference/chat/create \r\npresence_penalty: https://platform.openai.com/docs/api-reference/chat/create \r\nfrequency_penalty: https://platform.openai.com/docs/api-reference/chat/create ';
+				  	notifcn = '接口网址: 本代码仅支持GPT-3.5或更新版本的GPT模型，对应的接口网址应以“/v1/chat/completions”结尾，如OpenAI官方接口网址“ https://api.openai.com/v1/chat/completions ”，但也不排除第三方接口的网址结构有所改动。\r\n官方API接口需要魔法才能连接。第三方API有的需要魔法，有的不需要。\r\n有魔法的情况下，推荐使用官方接口，实际体验更好(连发3条不会报错)。免费gpt账号目前都有每分钟3次的调用限制(单key每分钟最多3次)，但官方接口使用起来明显更流畅，报错几率会低点。\r\n!! 第三方接口无法保证隐私安全，请自辨。\r\n!! "魔法"是一种可以让您的手机或电脑出趟国的技术。\r\n\r\n以下3个参数的说明见官网：\r\ntop_p: https://platform.openai.com/docs/api-reference/chat/create \r\npresence_penalty: https://platform.openai.com/docs/api-reference/chat/create \r\nfrequency_penalty: https://platform.openai.com/docs/api-reference/chat/create ';
 					notifen = 'API URL: API Endpoint. The code only supports GPT-3.5 or newer versions of the model, and the API ENDPOINT URL should end in "/v1/chat/completions", like the official one "https://api.openai.com/v1/chat/completions" \r\n\r\ntop_p: https://platform.openai.com/docs/api-reference/chat/create \r\n\r\npresence_penalty: https://platform.openai.com/docs/api-reference/chat/create \r\n\r\nfrequency_penalty: https://platform.openai.com/docs/api-reference/chat/create ';
 				  	title = '';
 				    break;
 				  case 'A-GeneralSettings':
-				  	notifcn = '更多功能在开发中\r\n\r\n电脑端支持使用快捷键\r\n\r\n关于头像设置：支持网络图片和本地图片。\r\n\r\n电脑端如何使用本地图片用作头像？\r\n需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片（填入相对路径或绝对路径）。\r\n以下是本地图片路径的示范：\r\nMac/Windows相对路径：123.jpg （头像需要与html文件放在同一文件夹中）\r\nMac绝对路径：/Users/LinTongXue/Downloads/123.jpg \r\nwindows绝对路径：D:\\LinTongXue\\123.jpg \r\n\r\n国内下载： https://gitee.com/lin2025/gpt3.5 \r\n国外下载： https://github.com/lin2025/gpt3.5 \r\nv6.07 暂无本地缓存，所有设置和聊天记录一样，刷新网页后会被清空。 \r\n...过几天尝试增加本地存储设置的功能';
-					notifen = 'More features are being developed.\r\n\r\nMac and PC support the use of keyboard shortcuts.\r\n\r\nRegarding avatar settings：both network and local images are supported.\r\n\r\nHow to use a local image as your avatar on Mac/PC?\r\nYou need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\nHere are some examples of local image paths:\r\nMac/Windows relative path: 123.jpg (the avatar needs to be placed in the same folder as the HTML file)\r\nMac absolute path: /Users/LinTongXue/Downloads/123.jpg\r\nWindows absolute path: D:\\LinTongXue\\123.jpg\r\n\r\nDownload： https://github.com/lin2025/gpt3.5 \r\n\r\nv6.07 currently does not support local caching. All settings and chat records will be cleared after refreshing the webpage. Local storage settings will be added in a few days.';
+				  	notifcn = '更多功能在开发中\r\n\r\n电脑端支持使用快捷键\r\n\r\n关于头像设置：支持网络图片和本地图片。\r\n\r\n电脑端如何使用本地图片用作头像？\r\n需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片（填入相对路径或绝对路径）。\r\n以下是本地图片路径的示范：\r\nMac/Windows相对路径：123.jpg （头像需要与html文件放在同一文件夹中）\r\nMac绝对路径：/Users/LinTongXue/Downloads/123.jpg \r\nwindows绝对路径：D:\\LinTongXue\\123.jpg \r\n\r\n国内下载： https://gitee.com/lin2025/gpt3.5 \r\n国外下载： https://github.com/lin2025/gpt3.5 \r\nv6.09 暂无本地缓存，所有设置和聊天记录一样，刷新网页后会被清空。 \r\n...过几天尝试增加本地存储设置的功能';
+					notifen = 'More features are being developed.\r\n\r\nMac and PC support the use of keyboard shortcuts.\r\n\r\nRegarding avatar settings：both network and local images are supported.\r\n\r\nHow to use a local image as your avatar on Mac/PC?\r\nYou need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\nHere are some examples of local image paths:\r\nMac/Windows relative path: 123.jpg (the avatar needs to be placed in the same folder as the HTML file)\r\nMac absolute path: /Users/LinTongXue/Downloads/123.jpg\r\nWindows absolute path: D:\\LinTongXue\\123.jpg\r\n\r\nDownload： https://github.com/lin2025/gpt3.5 \r\n\r\nv6.09 currently does not support local caching. All settings and chat records will be cleared after refreshing the webpage. Local storage settings will be added in a few days.';
 				  	title = '';
 				    break;
 				  case 'A-ExportChatHistory':
@@ -1699,7 +1703,7 @@ changeMaxTokens(){
 					this.selectedApiURL = 'https://api.openai.com/v1/chat/completions'; //1 下拉框显示为“官方”/“GPT”
 					btnsave.disabled = true; //2 保存按钮变为不可用
 					this.inputapichange(true); // 3 重新验证api-key时 改变按钮等状态
-					notif = this.settingsLanguage == 'cn' ? '已重置为OpenAI官方接口' : 'The API ENDPOINT URL has been restored to the official OpenAI link.' ;
+					notif = this.settingsLanguage == 'cn' ? '已重置为OpenAI官方接口' : 'The API ENDPOINT URL has been restored to the OpenAI link.' ;
 					this.showNotification(notif, 'bottom','',2500);
 				}else{
 
@@ -1777,13 +1781,15 @@ changeMaxTokens(){
 				let imageurl = this.selectedImageUrl;
 				this.selectedImageUrl = ''; //复原
  
-			 	if (!imageurl.trim().startsWith('http://') && !imageurl.trim().startsWith('https://') && !imageurl.trim().startsWith('file://')) {
-					//当选择的是GPT的绿色SVG图像时
-					if( imageurl == 'Change-GPT-Green-SVG' ){
-						if(role == 'ai'){ 
-							this.inputGPTImageUrl = this.settingsLanguage == 'cn' ? this.GPTGreenSVG_UrlText_cn : this.GPTGreenSVG_UrlText_en;
-						}
+ 				//if (!imageurl.trim().startsWith('http://') && !imageurl.trim().startsWith('https://') && !imageurl.trim().startsWith('file://')) 
+				//发现以上代码没有排除相对路径，当存在相对路径头像时，会产生无法切换头像的小bug。 目前SVG头像只有一种，也没必要判断。
+				
+				//当选择的是GPT的绿色SVG图像时
+				if( imageurl == 'Change-GPT-Green-SVG' ){
+					if(role == 'ai'){ 
+						this.inputGPTImageUrl = this.settingsLanguage == 'cn' ? this.GPTGreenSVG_UrlText_cn : this.GPTGreenSVG_UrlText_en;
 					}
+					
 				}else{
 				 	if(role == 'user'){
 				    	this.inputUserImageUrl = imageurl;
@@ -2342,10 +2348,10 @@ openFileDialog(role) {
 			//按钮：说明 Help
 			openDialog_Help(){
 				let notif =  '';
-				let title = this.settingsLanguage == 'cn' ? 'LinGPT v6.07 - 帮助' : 'LinGPT v6.07 - Help' ;
-				const notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\nChange Language: [Settings] > [Language]\r\n\r\n#介绍\r\nLinGPT，只有一个html文件的GPT-3.5聊天网页，可下载到电脑，打开即用。可上传至任一免费的托管空间、主机、服务器。 ①关于接口：本代码使用OpenAI官方API(接口)，同时支持第三方API，可实现免魔法使用GPT。 ②关于模型：由于无法测试GPT-4模型，目前仅支持GPT-3.5模型（ChatGPT）。 ③关于密钥：需自备API Key。免费Key目前官方限制每分钟最多调用3次，不要聊太快，一般够用。轮询Key的功能待开发中。 ④关于隐私：截止v6.07版，尚未增加本地缓存功能，刷新页面后将重新开始。本代码未加密，开源透明，安全无风险，只要使用官方接口就不会存在任何隐私被截的可能。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入API Key并验证，通过后即可开始聊天。\r\n\r\n#聊天\r\n①可使用Markdown语法。同官网，当GPT的回复未使用Markdown格式时，可要求其使用Markdown格式回复（MD格式主要应用于代码、表格、文章排版、显示网络图片等，GPT多数情况下会主动使用MD语法）。 ②手机端换行：发现有部分输入法无法换行，如遇到请更换输入法重试，或可以借用 [提示词窗口] 编辑换行内容，然后再复制到聊天框发送。 ③电脑端换行：支持 Shift + Enter 、Ctrl + Enter 换行，Mac还支持 Command(⌘) + Enter 换行。 ④斜杆调用提示词的功能，需要点击斜杆按钮。\r\n\r\n#提示词窗口\r\n截止v6.07版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、API设置、查询API余额和有效期、API专业设置（点蓝色 [PRO] 按钮）、修改头像、导出聊天记录等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、智能调整max_tokens、压缩上下文(可导出)、多种上下文模式、本地缓存及加密、导出JSON、导入JSON还原对话、轮询Key、免费Key试用...等';
+				let title = this.settingsLanguage == 'cn' ? 'LinGPT v6.09 - 帮助' : 'LinGPT v6.09 - Help' ;
+				const notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\nChange Language: [Settings] > [Language]\r\n\r\n#介绍\r\nLinGPT，只有一个html文件的GPT-3.5聊天网页，可下载到电脑，打开即用。可上传至任一免费的静态网页托管平台、主机、服务器。 ①关于接口：本代码使用OpenAI官方API(接口)，同时支持第三方API，可实现免魔法使用GPT。 ②关于模型：由于无法测试GPT-4模型，目前仅支持GPT-3.5模型（ChatGPT）。 ③关于密钥：需自备API Key。免费Key目前官方限制每分钟最多调用3次，不要聊太快，一般够用。轮询Key的功能待开发中。 ④关于隐私：截止v6.09版，尚未增加本地缓存功能，刷新页面后将重新开始。本代码未加密，开源透明，安全无风险，只要使用官方接口就不会存在任何隐私被截的可能。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入API Key并验证，通过后即可开始聊天。\r\n\r\n#聊天\r\n①可使用Markdown语法。方法与官网版ChatGPT(chat.openai.com)相同，当GPT的回复未使用Markdown格式时，可要求其使用Markdown格式回复（MD格式主要应用于代码、表格、文章排版、显示网络图片等，GPT多数情况下会主动使用MD语法）。 ②手机端换行：发现有部分输入法无法换行，如遇到请更换输入法重试，或可以借用 [提示词窗口] 编辑换行内容，然后再复制到聊天框发送。 ③电脑端换行：支持 Shift + Enter 、Ctrl + Enter 换行，Mac还支持 Command(⌘) + Enter 换行。 ④斜杆调用提示词的功能，需要点击斜杆按钮。\r\n\r\n#提示词窗口\r\n截止v6.09版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、API设置、查询API余额和有效期、API专业设置（点蓝色 [PRO] 按钮）、修改头像、导出聊天记录等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、智能调整max_tokens、压缩上下文(可导出)、多种上下文模式、本地缓存及加密、导出JSON、导入JSON还原对话、轮询Key、免费Key试用...等';
 				//有单引号
-				const notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\n#Introduction \r\nLinGPT is a GPT-3.5 webpage  with just a single HTML file. ①API: This code uses the official OpenAI API and supports third-party APIs. ②Model: Currently, only the GPT-3.5 model (ChatGPT) is supported as the GPT-4 model cannot be tested. ③API Key: An API key is required. ④Privacy: v6.07, there is no local caching function, and the data will be cleared after refreshing the page. \r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter the API Key and check it, and you can start chatting after passing. \r\n\r\n#Chatting \r\n①Like the official website, Markdown syntax can be used. Similarly, when GPT's reply does not use Markdown format, it can be asked to reply in Markdown format (GPT usually automatically uses MD syntax). ②Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. \r\n\r\n#Prompt Generator \r\nv6.07, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nGeneral settings, API settings, checking API balance and validity period, API professional settings (click the blue [PRO] button), changing avatars, exporting chat history, etc., can be learned more about by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: integrated prompt words, shared prompt words, intelligent adjustment of max_tokens, compressed context (exportable), multiple context modes, local caching and encryption, exporting JSON, importing JSON to restore dialogue, key rotation, etc.";
+				const notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\n#Introduction \r\nLinGPT is a GPT-3.5 webpage  with just a single HTML file. ①API: This code uses the OpenAI API and supports third-party APIs. ②Model: Currently, only the GPT-3.5 model (ChatGPT) is supported as the GPT-4 model cannot be tested. ③API Key: An OpenAI API key is required. ④Privacy: v6.09, there is no local caching function, and the data will be cleared after refreshing the page. \r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter the API Key and check it, and you can start chatting after passing. \r\n\r\n#Chatting \r\n①Like the official ChatGPT (chat.openai.com), Markdown syntax can be used. Similarly, when GPT's reply does not use Markdown format, it can be asked to reply in Markdown format (GPT usually automatically uses MD syntax). ②Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. \r\n\r\n#Prompt Generator \r\nv6.09, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nGeneral settings, API settings, checking API balance and validity period, API professional settings (click the blue [PRO] button), changing avatars, exporting chat history, etc., can be learned more about by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: integrated prompt words, shared prompt words, intelligent adjustment of max_tokens, compressed context (exportable), multiple context modes, local caching and encryption, exporting JSON, importing JSON to restore dialogue, key rotation, etc.";
 				
 				notif = this.settingsLanguage == 'cn' ? notifcn : notifen ;
 				this.showNotification(notif, 'center', title);		
@@ -2730,7 +2736,7 @@ openFileDialog(role) {
 					notif_en = 'API-Key is invalid. All the OpenAI keys begin with sk- as the first three characters. It is recommended to copy and paste the API-Key to avoid input errors. If the error persists, it indicates an invalid API key or that the API key has been deactivated or deleted, please log in to OpenAI to check the API-Key.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - 401 无效的API-Key' : 'Error - 401 API-Key is invalid';
 				}else if( error.message &&  error.message.includes('429')){
-				// OpenAI 429 x 3
+				// OpenAI 429 x 4
 					if ( responseMessage.includes('Rate limit') && responseType == 'requests' ){
 					// 429-1 请求过快 Rate limit 
 						notif_cn = '请求过于频繁，API速率限制已达上限，短时间内提交了过多的请求或令牌（tokens），超出允许的请求数量。';
@@ -2749,6 +2755,11 @@ openFileDialog(role) {
 						notif_cn = '服务器正在面临着高流量访问，或正在维护更新，当前繁忙，无法处理请求。请稍等片刻后重试。';
 						notif_en = 'Servers are experiencing high traffic and are unable to process your request at the moment. Please retry your requests after a brief wait.';
 						title = this.settingsLanguage == 'cn' ?  '错误 - 429 服务器过载' : 'Error - 429 Servers overloaded';
+					} else if ( responseMessage.includes('That model is currently overloaded with other requests') ){
+					// 429-4 模型超载  Model overloaded  tips: responseType = server_error
+						notif_cn = '该模型当前已经超载，请稍等片刻后重试。';
+						notif_en = 'That model is currently overloaded with other requests. Please retry your requests after a brief wait.';
+						title = this.settingsLanguage == 'cn' ?  '错误 - 429 模型超载' : 'Error - 429 Model overloaded';
 					} else {
 					// 429-other 其他未知 
 						notif_cn = 'HTTP请求 - 错误代码:  ' + error.code + '\r\nHTTP请求 - 错误信息:  ' + error.message;
@@ -2768,12 +2779,12 @@ openFileDialog(role) {
 				}else if ( error.message && error.message == 'timeout exceeded' ){
 				// 网络超时 Timeout exceeded
 					notif_cn = '连接超时，请先检查您的网络状态。如果网络正常，需要确认您的IP所在地（国家或地区）是否属于OpenAI的服务范围内。如果您在国内使用OpenAI官方接口，必须使用"魔法"才能建立连接。如果您使用第三方接口，需要明确该接口是否支持免"魔法"，以及该接口当前是否为可用状态（第三方稳定性不如官方）。\r\n\r\nOpenAI支持的国家或地区:(需魔法) https://platform.openai.com/docs/supported-countries \r\n什么是"魔法"？一种可以让您的手机或电脑出趟国的技术，优质的魔法会让OpenAI认为您的设备是真的在国外。';
-					notif_en = "Connection timed out. Please check your network and confirm whether your IP location is within OpenAI's service scope to decide whether '.V_ .P_ .N' is required. If using third-party interfaces, ensure their validity. \r\n\r\nSupported countries and territories:  https://platform.openai.com/docs/supported-countries ";
+					notif_en = "Connection timed out. Please check your network and confirm whether your IP location is within OpenAI's service scope to decide whether V P N is required. If using third-party interfaces, ensure their validity. \r\n\r\nSupported countries and territories:  https://platform.openai.com/docs/supported-countries ";
 					title = this.settingsLanguage == 'cn' ?  '错误 - 网络连接超时' : 'Error - Timeout exceeded';
 				}else if ( error.message && error.message == 'Network Error' ){
 				// 网络故障 Network Error *第三方接口每分钟超3次也会导致这个错误
-					notif_cn = '网络错误。存在多种可能，请自行排查：\r\n  • 无法与接口网址（API url）建立连接，该服务器不存在或遇故障当前无法访问；\r\n  • 本机当前无网络，网络已断开或网络不稳定，请检查网络状态后重试；\r\n  • 若使用第三方接口，发送请求太快可能也会出现网络错误的代码（Network Error），请尝试减缓发送频率；\r\n  • 其他原因，请以实际情况为准。';
-					notif_en = 'Network error. Possible reasons:\r\n  • Unable to connect to the API Endpoint (API url). The server does not exist or is not accessible due to a malfunction.\r\n  • Your device is currently not connected to the network. The network may be disconnected or unstable. Please check the network status and try again.\r\n  • When using third-party interfaces, sending requests too quickly may also result in "Network Error". Please avoid sending requests too fast.\r\n  • For any other reasons, please refer to the actual situation.';
+					notif_cn = '网络错误，可能只是暂时的，建议先重试一次。\r\n网络错误存在多种可能，请自行排查：\r\n  • 无法与接口网址（API url）建立连接，该服务器不存在或遇故障当前无法访问；\r\n  • 本机当前无网络，网络已断开或网络不稳定，请检查网络状态后重试；\r\n  • IP限制，该IP或其所在地被限制访问。可尝试使用"魔法"，如果正在使用，请检查"魔法"是否不稳定或已经断开；\r\n  • 若使用第三方接口，发送请求太快可能也会出现网络错误的代码（Network Error），请尝试减缓发送频率；\r\n  • 其他原因，请以实际情况为准。';
+					notif_en = 'Network error. The error may be temporary, so it is recommended to try again first. \r\nPossible reasons:\r\n  • Unable to connect to the API Endpoint (API url). The server does not exist or is not accessible due to a malfunction.\r\n  • Your device is currently not connected to the network. The network may be disconnected or unstable. Please check the network status and try again.\r\n  • Due to limitations on this IP or its location, access may be restricted. You could try using a V P N. If you are already using a V P N, please check if it is unstable or has been disconnected.\r\n  • When using third-party interfaces, sending requests too quickly may also result in "Network Error". Please avoid sending requests too fast.\r\n  • For any other reasons, please refer to the actual situation.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - 网络故障' : 'Error - Network error';
 				}else if ( error.message && error.message.includes('400') && responseMessage.includes('Please reduce the length of the messages' )){
 				// OpenAI 400 
@@ -2844,7 +2855,8 @@ openFileDialog(role) {
 						
 						tips_en += '\r\n\r\n' ;
 						tips_en += '"messages" :  The current length of the context (including the last message sent).\r\n' ;
-						tips_en += '"completion" :  The API parameter "max_tokens" (adjustable in the API settings).' ;
+						tips_en += '"completion" :  The API parameter "max_tokens" (adjustable in the API settings).\r\n' ;
+						tips_en += "Tips: Here's an example, if you don't want to modify the content being sent: Currently " + maxLength + ' - ' + b_messagesLength + ' = ' + diffC + ', so you need to adjust the "max_tokens" in [API Settings] to be less than ' + diffC + ' (maximum value is ' + (diffC - 1) + '), then click [Retry] to resend the request.' ;
 						notif_en = "Sending failed. The length of the context is about to exceed the limit. After closing the notification, you can choose to retry after modifying the max_tokens, undo, or modify the content to continue.";
 						notif_en = notif_en + tips_en ;
 						
@@ -3688,9 +3700,11 @@ openFileDialog(role) {
 			
         },
 		mounted() {
-
+			//先渲染一个带有<p>标签的空格，有内容，有行高。“保留一个空格，用来增加高度。在渲染首条消息前，有内容撑开高度，可以盖住气泡框左边的箭头。 Keep an empty space to increase the height. Before rendering the first message, the normal height can cover the left arrow.”
+			const first_msg_div = document.querySelectorAll('div.aimsg')[0];
+			first_msg_div.innerHTML = '<p> </p>';
 						
-			//打开网页时的临时遮罩，避免加载慢可能导致的闪屏/弹窗闪现/显示vue源代码等问题
+			//隐藏遮罩。网页Loading加载阶段，遮罩可以避免加载慢导致闪屏/弹窗闪现/显示vue源代码等问题
 			const loadingmask = document.getElementById("loading-mask");
 			if(loadingmask!=null){
 				loadingmask.classList.add('dialog-wrapper-hide');
@@ -3811,9 +3825,17 @@ openFileDialog(role) {
 				this.gptSystemPromptReadOnly = "hidden system prompt";
 			} 
 
-			//以上 非数据类初始化
+			//以上 非数据类初始化。 Above, unrelated to data.
 			
-			//以下 读取缓存前的一些默认设置。
+			
+			
+			
+			//以下 读取缓存前的一些默认设置。Below are some default settings that are set before reading local cache. (Local caching feature is not yet developed.)
+			//执行顺序： 先执行data() 后执行mounted()。 Execution order: data() is executed first, followed by mounted().
+			
+			
+			// 可修改 Editable. 默认语言 简体中文cn 英文en。 Default language. Chinese-Simplified = cn  English = en
+			this.settingsLanguage = 'cn'; // Default language. 
 			
 			//更新原生全局变量 window.currentlang  当前语言 Current Language
 			window.currentlang = this.settingsLanguage;
@@ -3825,16 +3847,43 @@ openFileDialog(role) {
 			this.sentext = this.settingsLanguage == 'cn' ?  '先验证API' : 'Check API First' ;
             this.apibtntext = this.settingsLanguage == 'cn' ?  '<< 验证' : '<< Check' ;
 			
-			this.userAvatarURL =  'https://lin2025.github.io/img/me-bili.jpg'; // 当前user头像
-			this.inputUserImageUrl = 'https://lin2025.github.io/img/me-bili.jpg'; // user头像 input
 			
-			this.isgptAvatarUrlShow = false; //隐藏img
-			this.isgptGreenSvgShow = true; //显示svg
-			this.gptAvatarURL =  '';  // 当前GPT头像
-			this.inputGPTImageUrl = this.settingsLanguage == 'cn' ? this.GPTGreenSVG_UrlText_cn : this.GPTGreenSVG_UrlText_en; // GPT头像 input
+			// 可修改 Editable. Default 
+			// 以下为经常修改的变量，如果变量没有出现在这里的，请在data()中修改，或者复制到这里修改
+			// 如果修改了默认值，还有后面三个地方也要同步修改：restoreDefault_APISettings()  &  restoreDefault_ProfessionalAPISettings()  &  restoreDefault_GeneralSettings()
+			// The following are frequently modified variables. If a variable is not listed here, please modify it in the data() function or copy it here to modify.
+			// If you modify the default data, then the data in the other three places also needs to be synchronized:  restoreDefault_APISettings()  &  restoreDefault_ProfessionalAPISettings()  &  restoreDefault_GeneralSettings()
+			this.apitemperature = 0.7 ;  //api - temperature: 0.0～2.0 *int 数值型 不加引号
+			this.apiMaxTokens = 2048 ;  //api - max_tokens: 1~4096  *int 数值型 不加引号
+			this.settingsFontSize = 14 ; //聊天气泡框的字体大小 Font size of messages: 9～29 *int.数值型
+			this.settingsTime_WechatStyle = true ; // 显示仿微信时间，居中的，间隔5分钟以上会自动添加。 Show WeChat-style time, centered, with automatic addition of intervals of more than 5 minutes.
+			this.settingsTime_Message = 1 ; // 1 2 3 int.数值型。 显示收发信息的时间 Show Time of Messages. 1:不显示 hide ; 2:显示 show height:0 ; 3:显示并拉大10px的间距 show height:+10px
+			this.settingsDividerLine = true ; // 用于区分不同上下文内容的分割线  Use divider lines to distinguish different context content.
+			this.settingsShortcut_CheckApiKey = true ; // 验证key 快捷键 *如果你的设备有键盘  Check api-key shortcut *if your device has a keyboard.
+			this.settingsShortcut_Clear = false ; // 清空 快捷键 *如果你的设备有键盘 *if your device has a keyboard.
+			this.settingsShortcut_Undo = false ; // 撤销 快捷键 *如果你的设备有键盘 *if your device has a keyboard.
+			this.settingsShortcut_Retry = true ; // 重问 快捷键 *如果你的设备有键盘 *if your device has a keyboard.
+			
+			// 可修改 Editable. 默认的用户头像  Default User Avatar. 
+			this.userAvatarURL =  'https://lin2025.github.io/img/me-bili.jpg'; // 当前用户头像  User Avatar.
+			this.inputUserImageUrl = 'https://lin2025.github.io/img/me-bili.jpg'; // 当前用户头像的地址，和上面的保持一致。这个是用来显示的，出现在编辑框。 Will display in the input. Two URLs are consistent.
+			
+			// 可修改 Editable. 默认的GPT头像-方案A（写在代码里的绿色SVG头像）二选一 Default GPT Avatar. Plan-A (GPT Green SVG). You can only choose either Plan A or Plan B.
+			this.isgptAvatarUrlShow = false; //隐藏<img>。 hide <img>
+			this.isgptGreenSvgShow = true; //显示<svg>。 display <svg>
+			this.gptAvatarURL =  '';  // 当前GPT头像的图片地址。GPT Avatar URL. <img> url =‘’ (<img> is hide)
+			this.inputGPTImageUrl = this.settingsLanguage == 'cn' ? this.GPTGreenSVG_UrlText_cn : this.GPTGreenSVG_UrlText_en; // 显示在输入框的GPT头像的地址 input text
+			
+			// 可修改 Editable. 默认的GPT头像-方案B（任意一张图片地址） 二选一  Default GPT Avatar. Plan-B (Any image URL.).  You can only choose either Plan A or Plan B.
+	//		this.isgptAvatarUrlShow = true; //显示<img>。 display <img>
+	//		this.isgptGreenSvgShow = false; //隐藏<svg>。 hide <svg>
+	//		this.gptAvatarURL =  'https://openai.com/favicon.ico';  // 当前GPT头像的图片地址。GPT Avatar URL. <img> url = Any image URL
+	//		this.inputGPTImageUrl = this.gptAvatarURL; // 显示在输入框的GPT头像的地址 input text
 			
 			
-			// 111111 读取本地缓存之后 需要设置的
+			
+			
+			// 未开发 待开发 111111 以下 读取本地缓存之后 需要设置的 Below are the settings, restoration of settings, and restoration of data after reading local cache. (Local caching feature is not yet developed.)
 			//this.changeLanguage(); // 读缓存 必须要
 			//this.changeStyle_Time_WechatStyle(); //必须要
 			//this.changeStyle_Time(); //必须要
@@ -3843,6 +3892,9 @@ openFileDialog(role) {
 			// 是否简约 this.isSimpleMode  
 			//决定头像显示
 			// chathistory  语言
+			
+			
+			
 			
 			//快捷键 事件 监听
 			document.addEventListener('keydown', this.handleShortcut); 
