@@ -1,6 +1,6 @@
 <div align="center">
 
-[![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)](#)
+[![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)]()
 
 <h1 align="center">LinGPT</h1>
 
@@ -13,7 +13,7 @@
   <a href="https://gitee.com/lin2025/gpt3.5/"><img height="22" src="https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white" alt="Gitee"></a>
 </p>
 
-[Demo](https://lin2025.github.io/lin2025/gpt3.5/) • 
+[Demo](https://lin2025.github.io/gpt3.5/) • 
   [Download](https://github.com/lin2025/gpt3.5/archive/refs/heads/main.zip) • 
   [网盘下载](https://lin2025.github.io/#gpt3.5-code)
 
