@@ -21,7 +21,7 @@ Give a Star 🌟 if you like it.
 </div>
 
 
-:point_right: [![English](https://img.shields.io/badge/English-Readme-success)](https://github.com/lin2025/gpt3.5#lingpt-2)
+:point_right: [![English](https://img.shields.io/badge/English-Readme-success)](#lingpt-2)
 
 ## LinGPT
 
