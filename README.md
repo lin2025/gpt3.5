@@ -1,6 +1,6 @@
 <div align="center">
 
-[![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)]()
+[![ChatGPT](https://img.shields.io/badge/chatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white)](#lingpt)
 
 <h1 align="center">LinGPT</h1>
 
