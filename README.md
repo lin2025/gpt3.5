@@ -35,7 +35,7 @@ Give a Star 🌟 if you like it.
  - 隐私：代码基本都有注释。开源 透明 安全 无风险
 
 
-# 在线体验
+## 在线体验
 
  :globe_with_meridians:线路 Github: [https://lin2025.github.io/gpt3.5/](https://lin2025.github.io/gpt3.5/)
 
@@ -106,7 +106,7 @@ Give a Star 🌟 if you like it.
  - As of v6.08, there is no local caching function, and the data will be cleared after refreshing the page. 
 
 
-# Demo
+## Demo
 
 [https://lin2025.github.io/gpt3.5/](https://lin2025.github.io/gpt3.5/)
 
