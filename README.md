@@ -50,6 +50,8 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
+ - Smart max_tokens（全自动调节max_tokens）
+ 
  - API Key、API余额/有效期查询、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
 
  - 支持Markdown（代码块、高亮代码、显示网络图片、显示表格、文章排版)
@@ -75,6 +77,7 @@ Give a Star 🌟 if you like it.
 
 ## 更新   
 
+- **6月12日** 新增**Smart max_tokens**功能，全自动调节`max_tokens`。 修复问题：提示词允许保存空白（之前不小心给限制了）。
 - **6月9日** 新增OpenAI报错代码；修复些问题：头像使用相对路径引发的问题、加载时气泡框塌缩的问题、部分浏览器不支持12px以下的字体的问题。
 - **6月7日** **v6.07**几乎全新的版本，变化比较大，功能升级，体验升级，适用的场景更多了，也很稳定，不再报错。
 
@@ -117,7 +120,8 @@ Give a Star 🌟 if you like it.
 ## Features
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
-> 
+
+ - Smart max_tokens (Automatically adjusts the max_tokens)
  - API key, OpenAI API balance inquiry, custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
  - Markdown support (code block, syntax highlighting, displaying images, displaying tables, article formatting, etc.).
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
@@ -128,20 +132,8 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
+- **June 12th** The new **Smart max_tokens** feature was added, which automatically adjusts the max_tokens parameter. Bug fix: Fix the issue that the prompt allows saving blank space.
 - **June 9th** Added explanation for OpenAI error codes; Fixed some issues related to:relative path avatar;  style during loading;  some browsers not supporting fonts below 12px. 
 - **June 7th** **v6.07** This is an almost brand new version with significant changes, upgraded features and improved user experience. It is applicable to more scenarios and is also very stable. It has been tested for two weeks without any errors.
 
-<b><details><summary>Updates before June 7th</summary></b>
-
-- **5月17日** 变化不大，小更新：添加`<!DOCTYPE html>`，调整不规范的样式；修补Markdown插件`Marked.js`会过滤掉一些聊天内容的BUG；给气泡框添加小箭头。
-- **5月14日** 更新内容：优化加载速度&稳定性；修复频闪；优化布局&体验&增加空间；聊天框失去焦点时可缩小；修改撤销&重问的逻辑；修正发送失败的消息会写入上下文的bug；撤销&重问可实时更新Tokens；按钮使用SVG图标；使用随机问候语验证API-key；代码优化&修正命名&增加可读性...
-- **5月09日** **一键复制** **clipboard** 更新内容：支持一键复制、使用SVG替换已经失效的Logo、优化代码、修复小bug。
-- **5月06日** **Markdown** **Highlight** 重要更新，支持 Markdown + Highlight 代码高亮。调试了很久，效果还不错。近期会尝试增加些实用功能，应用场景可以从轻度上升到中度。
-- **4月28日** **Add English comments.**
-- **4月27日** **新增功能**-**查询OpenAI账号余额** 检测API-Key后，点击[Tokens]查询API账号余额，使用OpenAI官方接口，返回数据包含登记的名字、是否绑卡、总额度、余额、有效期等。代码基于以下两位大佬的项目进行调整实现：@ClarenceDan的[openai-billing](https://github.com/ClarenceDan/openai-billing)、@herobrine19的[openai-billing](https://github.com/herobrine19/openai-billing)，已详细注释，安全透明，数据无泄漏风险。
-- **4月26日** 给“检测中“和“发送中“这两按钮状态添加动态效果；页面上不再显示API-Key明码；修正些小错误。
-- **4月23日** **重要修复 bug fixes** 修复近期多个国家IP无法访问BootCDN而导致网页报错的情况（无法加载Vue与Axios），已添加Unpkg CDN线路，BootCDN挂掉的时候会自动切换到Unpkg。
-- **4月16日** 修改PC端的快捷键，改为回车<kbd>Enter</kbd>发送，并支持多种换行方式。适配中文输入习惯，中文输入状态下，一次回车**确认但不发送**，二次回车**才会发送**。
-- ...
-
-</details>
+[Updates before June 7th](https://github.com/lin2025/gpt3.5#更新)
