@@ -24,7 +24,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v6.09 - 基于v6.07版，小更新。 最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v6.12 - 基于v6.07版，增加“智能max_tokens”功能，全自动调节，无需手动。 最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -94,6 +94,7 @@ body{margin-bottom:0px;margin-top:8px;overflow-y:scroll;background-color:#ededed
 input[type=text],input[type=password],textarea{outline:none}
 input[type=text]:focus,input[type=password]:focus,textarea:focus{border:1px solid #17a316 !important;box-shadow:inset 0 1px 2px rgba(0,0,0,.075),0 0 5px rgba(81,167,232,.5)}
 input:focus{z-index:2}
+.dropdown{-webkit-appearance:none;-moz-appearance:none;appearance:none;flex-shrink:0;width:auto;height:25px;align-items:center;justify-content:center;margin:0;padding:0 10px;border-radius:6px;border:none;font-weight:400;font-size:12px;overflow:hidden;outline:none;cursor:pointer;color:#FFF;background:#1aad19;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 .btn{display:flex;flex-shrink:0;width:auto;height:25px;align-items:center;justify-content:center;padding:0 10px;margin-right:7px;background-color:#1aad19;border-color:#1aad19;color:#FFF;border-radius:6px;border:none;font-weight:400;font-size:12px;text-decoration:none;text-align:center;line-height:25px;cursor:pointer;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-transition-property:all;transition-property:all;-webkit-transition-duration:.3s;transition-duration:.3s}
 .btn *,.copybtn *{align-items:center;justify-content:center;display:flex}
 .btn:visited,.dropdown:visited{color:#FFF}
@@ -101,7 +102,7 @@ input:focus{z-index:2}
 .btn:active,.dropdown:active{background-color:#17a316;border-color:#17a316;color:#8bc220}
 .btn:disabled,.dropdown:disabled,.bluebtn:disabled{border:1px solid #DDD !important;background-color:#F5F5F5 !important;color:#1aad19 !important}
 .minibtn{width:14px;height:14px;line-height:12px;padding:1px;font-size:12px;flex-shrink:0;display:inline-block;vertical-align:middle;border-radius:50%;margin-bottom:1px !important;transform:scale(0.85);-ms-transform:scale(0.85);-webkit-transform:scale(0.85);-moz-transform:scale(0.85);-o-transform:scale(0.85)}
-.minibtn-default{width:auto;height:16px;padding:2px 6px;border-radius:4px}
+.minibtn-default{width:auto;height:16px;padding:2px 7px;border-radius:4px}
 .bluebtn{background-color:#1ca5c2;border-color:#1ca5c2}
 .bluebtn:hover,.bluebtn:focus{background-color:#22b9d9;border-color:#22b9d9;color:#FFF}
 .bluebtn:active{background-color:#1ca5c2;border-color:#1ca5c2;color:#7ddbf0}
@@ -226,7 +227,11 @@ input:focus{z-index:2}
 @media only screen and (max-width:768px){.slider::-webkit-slider-thumb{width:25px;height:18px}
 .slider::-moz-range-thumb{width:25px;height:18px}
 .slider::-ms-thumb{width:25px;height:18px}
-}.dropdown{-webkit-appearance:none;-moz-appearance:none;appearance:none;flex-shrink:0;width:auto;height:25px;align-items:center;justify-content:center;margin:0;padding:0 10px;border-radius:6px;border:none;font-weight:400;font-size:12px;overflow:hidden;outline:none;cursor:pointer;color:#FFF;background:#1aad19;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+}
+.slider:disabled::-webkit-slider-thumb{background:#c3e0c2;cursor:not-allowed}
+.slider:disabled::-moz-range-thumb{background:#c3e0c2;cursor:not-allowed}
+.slider:disabled::-ms-thumb{background:#c3e0c2;cursor:not-allowed}
+.slider:disabled{background:#c3e0c2;cursor:not-allowed}
 #dialog-settings .dh-input,#dialog-promptgenerator .dh-input{font-size:12px;color:#333333;background-color:#fcfcfc}
 #dialog-promptgenerator .dh-input{font-size:13px}
 #loading-mask button{margin:30px;display:inline-block;padding:8px 16px;font-size:14px;text-align:center;color:#333;background-color:#fdffb4;border:3px solid #555;border-radius:10px;cursor:pointer}
@@ -409,7 +414,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
 					</svg>
 					{{ settingsLanguage == 'cn' ? '&nbsp;设置' : '&nbsp;Settings' }}
-					<span style="margin-left:auto">LinGPT v6.09&nbsp;&nbsp;</span>
+					<span style="margin-left:auto">LinGPT v6.12&nbsp;&nbsp;</span>
 					<button  class="btn" style="margin: 0px; padding: 0 3px;background-color: #fff;height: 20px;width: 20px;" >
 						<a href="https://github.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 16 16"  fill="#1f2328"> 
@@ -481,6 +486,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 					<div class="panelgroup-head">
 					    <span>{{ settingsLanguage == 'cn' ? 'API设置' : 'API Settings' }}</span>
 						<button  @click="showMiniHelp('A-APISettings')"  class="btn minibtn bluebtn"  style="margin-right: auto;">?</button>
+						<button  @click="showMiniHelp('A-SmartMaxTokens')"  class="btn minibtn redbtn" style="margin-right: -7px; width: 12px; height: 12px;" :style="{ display: openSmartMaxTokens  ? 'block' : 'none'}">?</button>
+						<select class="dropdown minibtn minibtn-default" v-model="openSmartMaxTokens" style="margin-right: -9px; ">
+								<option v-if="settingsLanguage == 'cn'" v-for="option in smartMaxTokensOptions_cn" :value="option.state">{{ option.label }}</option>
+								<option v-else v-for="option in smartMaxTokensOptions_en" :value="option.state">{{ option.label }}</option>
+						</select>
 						<button  @click="restoreDefault_APISettings"  class="btn minibtn minibtn-default bluebtn">{{ settingsLanguage == 'cn' ? '恢复默认' : 'Restore Default' }}</button>
 					</div>
 
@@ -494,13 +504,13 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<input @change="changeTemperature" type="range" class="slider" v-model.number="apitemperature"  min="0.0" max="2.0" step="0.1" value="0.7" >
 							</div>
 						</div>
-						<!-- 单次最大令牌数量 max_tokens --> 
+						<!-- 单次 最大令牌数量 max_tokens --> 
 						<div class="control-container" style="flex: 1 1 0%;">
 							<div>
 								<span>max_tokens(1~4096): {{apiMaxTokens}}</span>
 							</div>
 							<div class="control-bg">
-								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="1" max="4096" step="1" value="2048" >
+								<input @change="changeMaxTokens" type="range" :disabled="openSmartMaxTokens" class="slider" v-model.number="apiMaxTokens"  min="1" max="4096" step="1" value="2048" >
 							</div>
 						</div>
 					</div>	
@@ -524,7 +534,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<span>{{ settingsLanguage == 'cn' ? 'max_tokens(微调)' : 'max_tokens(Fine)' }}</span>
 							</div>
 							<div class="control-bg">
-								<input @change="changeMaxTokens" type="range" class="slider" v-model.number="apiMaxTokens"  min="1" max="300" step="1" value="2048" >
+								<input @change="changeMaxTokens" type="range" :disabled="openSmartMaxTokens" class="slider" v-model.number="apiMaxTokens"  min="1" max="300" step="1" value="2048" >
 							</div>
 						</div>
 	
@@ -1109,6 +1119,17 @@ to{transform:translate(-50%,-18px);opacity:1}
 				apiPresencePenalty:0, //（-2.0～2.0）接口参数 presence_penalty 官方默认0 v-model.number
 				apiFrequencyPenalty:0, //（-2.0～2.0）接口参数 frequency_penalty 官方默认0 v-model.number
 				
+				openSmartMaxTokens:true, // 智能max_tokens，通过估算调节。 Smart max_tokens
+				selectedSmartMaxTokens: '',  //selected值
+				smartMaxTokensOptions_cn: [
+			      { label: '已启用 智能max_tokens', state: true },
+			      { label: '已关闭 智能max_tokens', state: false }
+			    ],
+				smartMaxTokensOptions_en: [
+			      { label: 'Smart max_tokens Enabled', state: true },
+			      { label: 'Smart max_tokens Disabled', state: false }
+			    ],
+				
 				apiGPTModel: 'gpt-3.5-turbo', // 接口参数 model 默认'gpt-3.5-turbo'
 			    gptModelOptions: [
 			      { label: 'ChatGPT', model: 'gpt-3.5-turbo' },
@@ -1295,7 +1316,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 			    isNotificationHasMask: false, //是否显示遮罩 Mask 
 				isNotificationBottomShowCloseBtn: false,//bottom底部通知时，是否显示关闭按钮
 			    setNotificationPosition: 'center', //通知样式 center中心 or bottom底部
-				setNotificationTitle: '信息', //标题文字  Title 通知 信息 警告 提醒 错误 ...
+				setNotificationTitle: '', //标题文字  Title 通知 信息 警告 提醒 错误 ...
 				notificationTimeoutId: 0, // 上一个通知的定时器id
 				
 
@@ -1304,7 +1325,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
 				// The First Message, This message is out of context,
 				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-                thefirstmessage: "## **LinGPT** ***v6.09*** \r\n#### 功能升级，全新体验，稳定无报错\r\n各位大佬喜欢的话请赏颗`Star`吧 ～\r\nLinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n> Change Language: [Settings] > [Language] \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
+                thefirstmessage: "## **LinGPT** ***v6.12*** \r\n#### v6.12增加全自动智能调节max_tokens功能\r\n#### 功能升级，全新体验，稳定无报错\r\n各位大佬喜欢的话请赏颗`Star`吧 ～\r\nLinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n> Change Language: [Settings] > [Language] \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 
 				
 				//可修改 Editable - 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，验证key时会自动保存。
@@ -1606,14 +1627,19 @@ importData_JSON(event) {
 					notifen = "temperature: The 'temperature' setting controls how creative and diverse the text generated by GPT is. Lower values result in more repetitive and simpler text, while higher values result in more random and creative text. \r\n\r\nmax_tokens: The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length (gpt3.5 support 4096).\r\n\r\nmodel: Only supports GPT3.5 for now.\r\n\r\nMore：Click to display more API parameter settings.\r\n\r\nAPI reference: \r\nhttps://platform.openai.com/docs/api-reference/chat/create ";
 				  	title = '';
 				    break;
+				  case 'A-SmartMaxTokens':
+				  	notifcn = '开启“智能max_tokens”后，会全自动调节 max_tokens，无需手动调节。\r\n如果关闭“智能max_tokens”，需要手动调节 max_tokens，且可能需要多次调节，上下文（记忆）才能达到接近 4096 tokens 的高使用率。\r\n\r\n* 默认开启“智能max_tokens”\r\n* 这是我自己想的一个计算策略，非精准调节。如果是长对话，那么95%它可以做到“智能”，5%遇到错误它会自动关闭，并提示您手动调节。\r\n* 如何做到精准调节？GPT-3.5 (ChatGPT) 与 GPT-4 模型均采用 cl100k_base 编码器，cl100k_base 可以精准计算 tokens 。我不会，如果您懂技术，可以自己修改代码以达到完美的效果。\r\n* 以下现象与OpenAI官方有关：发送的第一条消息，额外有增加 13 tokens，之后发送的消息，每条增加 10 tokens。';
+					notifen = 'When smart max_tokens is enabled, max_tokens will be automatically adjusted without manual intervention. \r\nIf smart max_tokens is disabled, you will need to manually adjust max_tokens, which may require multiple adjustments to get the context tokens close to the upper limit of 4096. \r\n\r\n* Smart max_tokens is enabled by default.\r\n* This is my own calculation strategy, which is not very precise, but for longer chat conversations, it is smart about 95% of the time. If errors are encountered, it will automatically disable and prompt you to manually adjust max_tokens.\r\n* How to achieve precise adjustments?  Both GPT-3.5 (ChatGPT) and GPT-4 models use the cl100k_base encoder, which can accurately calculate tokens. I am not proficient in this technology, so if you are, you can modify the code to achieve perfect results.\r\n* The following phenomenon is related to OpenAI: the first message sent will have an additional 13 tokens, and each subsequent message will have an additional 10 tokens added.';
+				  	title = '';
+				    break;
 				  case 'A-ProfessionalAPISettings':
 				  	notifcn = '接口网址: 本代码仅支持GPT-3.5或更新版本的GPT模型，对应的接口网址应以“/v1/chat/completions”结尾，如OpenAI官方接口网址“ https://api.openai.com/v1/chat/completions ”，但也不排除第三方接口的网址结构有所改动。\r\n官方API接口需要魔法才能连接。第三方API有的需要魔法，有的不需要。\r\n有魔法的情况下，推荐使用官方接口，实际体验更好(连发3条不会报错)。免费gpt账号目前都有每分钟3次的调用限制(单key每分钟最多3次)，但官方接口使用起来明显更流畅，报错几率会低点。\r\n!! 第三方接口无法保证隐私安全，请自辨。\r\n!! "魔法"是一种可以让您的手机或电脑出趟国的技术。\r\n\r\n以下3个参数的说明见官网：\r\ntop_p: https://platform.openai.com/docs/api-reference/chat/create \r\npresence_penalty: https://platform.openai.com/docs/api-reference/chat/create \r\nfrequency_penalty: https://platform.openai.com/docs/api-reference/chat/create ';
 					notifen = 'API URL: API Endpoint. The code only supports GPT-3.5 or newer versions of the model, and the API ENDPOINT URL should end in "/v1/chat/completions", like the official one "https://api.openai.com/v1/chat/completions" \r\n\r\ntop_p: https://platform.openai.com/docs/api-reference/chat/create \r\n\r\npresence_penalty: https://platform.openai.com/docs/api-reference/chat/create \r\n\r\nfrequency_penalty: https://platform.openai.com/docs/api-reference/chat/create ';
 				  	title = '';
 				    break;
 				  case 'A-GeneralSettings':
-				  	notifcn = '更多功能在开发中\r\n\r\n电脑端支持使用快捷键\r\n\r\n关于头像设置：支持网络图片和本地图片。\r\n\r\n电脑端如何使用本地图片用作头像？\r\n需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片（填入相对路径或绝对路径）。\r\n以下是本地图片路径的示范：\r\nMac/Windows相对路径：123.jpg （头像需要与html文件放在同一文件夹中）\r\nMac绝对路径：/Users/LinTongXue/Downloads/123.jpg \r\nwindows绝对路径：D:\\LinTongXue\\123.jpg \r\n\r\n国内下载： https://gitee.com/lin2025/gpt3.5 \r\n国外下载： https://github.com/lin2025/gpt3.5 \r\nv6.09 暂无本地缓存，所有设置和聊天记录一样，刷新网页后会被清空。 \r\n...过几天尝试增加本地存储设置的功能';
-					notifen = 'More features are being developed.\r\n\r\nMac and PC support the use of keyboard shortcuts.\r\n\r\nRegarding avatar settings：both network and local images are supported.\r\n\r\nHow to use a local image as your avatar on Mac/PC?\r\nYou need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\nHere are some examples of local image paths:\r\nMac/Windows relative path: 123.jpg (the avatar needs to be placed in the same folder as the HTML file)\r\nMac absolute path: /Users/LinTongXue/Downloads/123.jpg\r\nWindows absolute path: D:\\LinTongXue\\123.jpg\r\n\r\nDownload： https://github.com/lin2025/gpt3.5 \r\n\r\nv6.09 currently does not support local caching. All settings and chat records will be cleared after refreshing the webpage. Local storage settings will be added in a few days.';
+				  	notifcn = '更多功能在开发中\r\n\r\n电脑端支持使用快捷键\r\n\r\n关于头像设置：支持网络图片和本地图片。\r\n\r\n电脑端如何使用本地图片用作头像？\r\n需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片（填入相对路径或绝对路径）。\r\n以下是本地图片路径的示范：\r\nMac/Windows相对路径：123.jpg （头像需要与html文件放在同一文件夹中）\r\nMac绝对路径：/Users/LinTongXue/Downloads/123.jpg \r\nwindows绝对路径：D:\\LinTongXue\\123.jpg \r\n\r\n国内下载： https://gitee.com/lin2025/gpt3.5 \r\n国外下载： https://github.com/lin2025/gpt3.5 \r\nv6.12 暂无本地缓存，所有设置和聊天记录一样，刷新网页后会被清空。 \r\n...过几天尝试增加本地存储设置的功能';
+					notifen = 'More features are being developed.\r\n\r\nMac and PC support the use of keyboard shortcuts.\r\n\r\nRegarding avatar settings：both network and local images are supported.\r\n\r\nHow to use a local image as your avatar on Mac/PC?\r\nYou need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\nHere are some examples of local image paths:\r\nMac/Windows relative path: 123.jpg (the avatar needs to be placed in the same folder as the HTML file)\r\nMac absolute path: /Users/LinTongXue/Downloads/123.jpg\r\nWindows absolute path: D:\\LinTongXue\\123.jpg\r\n\r\nDownload： https://github.com/lin2025/gpt3.5 \r\n\r\nv6.12 currently does not support local caching. All settings and chat records will be cleared after refreshing the webpage. Local storage settings will be added in a few days.';
 				  	title = '';
 				    break;
 				  case 'A-ExportChatHistory':
@@ -1682,6 +1708,165 @@ changeTemperature(){
 changeMaxTokens(){
 			
 },
+
+			//粗略的估算tokens。仅适合 GPT-3.5 & GPT4， 不适合GPT-3 ，tokens计算方式完全不同。有技术的可以直接实现100%精准计算，不需要估算。参考官网，或者：https://gpt-tokenizer.dev
+			linTokenizer(message) {
+				const regex = /[\s,.!?;:\n\r@#$%^&*()_+=[\]{}|\\/'"<>`~～·！？；：。，、；：‘’“”〝〞＂＇【】「」『』《》〈〉（）()＜＞｛｝〔〕〖〗［］<>＜＞﹏＿＋－＝÷×％○●◎◇◆□■△▲▼▽—…——-]+/;
+				// 将字符串按常用符号分割成数组
+				const words = message.split(regex); 
+				// 提取符号 单个或连续多个
+				const delimiters = message.match(/[\s,.!?;:\n\r@#$%^&*()_+=[\]{}|\\/'"<>`~～·！？；：。，、；：‘’“”〝〞＂＇【】「」『』《》〈〉（）()＜＞｛｝〔〕〖〗［］<>＜＞﹏＿＋－＝÷×％○●◎◇◆□■△▲▼▽—…——-]+/g );
+				const specialChar = []; //单符号 数组
+				// 将中文词语拆分为单个字并单独存放
+				const splitWords = []; //英文等 数组
+				const chineseWords = []; //中文等 数组
+				const numbers = []; // 存放连续数字的数组
+	
+				//拆分符号，存到单符号数组
+				if ( delimiters ){
+					for (let i = 0; i < delimiters.length; i++) {
+						if (delimiters[i].trim() !== "") {
+							const delimiterChars = delimiters[i].split("");
+							for (let j = 0; j < delimiterChars.length; j++) {
+								specialChar.push(delimiterChars[j]);
+							}
+						}
+					}
+ 				}
+
+				//words
+				for (let i = 0; i < words.length; i++) {
+					// 如果是“纯中文”词语，将其拆分为单个字，并存放到中文单词数组中。 * [\u2E80-\u9FFF] 包括日韩等文字  Includes Japanese and Korean characters.
+					if (/^[\u2E80-\u9FFF]+$/.test(words[i])) {
+						for (let j = 0; j < words[i].length; j++) {
+							chineseWords.push(words[i][j]);
+						}
+					}else if (/^\d+$/g.test(words[i])) { 
+					//如果是数字
+						numbers.push(words[i]);
+					}else if (/^[\u2E80-\u9FFFa-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/.test(words[i])) { 
+					// 如果是“中英文连续”的词语，将其拆分为单个字进行判断 
+					//	const tempArr = words[i].match(/[\u2E80-\u9FFF]|[a-zA-Z]+/g);
+					//	const tempArr = words[i].match(/[\u2E80-\u9FFF]+|[a-zA-Z]+|[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/g);
+						const tempArr = words[i].match(/[\u2E80-\u9FFF]+|[a-zA-Z]+|[0-9]+|[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?[\s,.!?;:\n\r@#$%^&*()_+=[\]{}|\\/'"<>`~～·！？；：。，、；：‘’“”〝〞＂＇【】「」『』《》〈〉（）()＜＞｛｝〔〕〖〗［］<>＜＞﹏＿＋－＝÷×％○●◎◇◆□■△▲▼▽—…——-]+/g);
+						for (let j = 0; j < tempArr.length; j++) {
+							if (/^[\u2E80-\u9FFF]+$/.test(tempArr[j])) { 
+							// 如果是中文等字符，拆分成单字存放到中文单词数组中
+								for (let k = 0; k < tempArr[j].length; k++) {
+									chineseWords.push(tempArr[j][k]);
+								}
+							} else { 
+							// 如果是英文等字符，存放到拆分后的单词数组中
+								splitWords.push(tempArr[j]);
+							}
+						}
+					} else {
+						// 如果不是中文词语，直接加入拆分后的单词数组中
+						splitWords.push(words[i]);
+					}
+				}
+  
+				// 测试工具 tool tips： https://gpt-tokenizer.dev   https://www.qqxiuzi.cn/zh/wenbenguolv/  
+					
+				// 预估"英文单词 等"的tokens  *测试准确度时，对比的条件：无标点符号 无换行 单词间用空格
+				const tokens_words = splitWords.length / 0.75 ;
+				// 预估"中文等"的tokens   *比例可以偏小，估的tokens将偏大，计算的max_tokens将偏小，max_tokens偏小不容易因“估算偏差大”而报错。
+				const tokens_chinesewords = chineseWords.length / 0.83 ;
+				// 预估“数字”的tokens
+				const tokens_numbers = numbers.length / 1;
+				// 预估“符号”的tokens
+				const tokens_specialchar = specialChar.length / 1.45;
+  
+				// other
+				//const otherlength = message.length - splitWords.join("").length - specialChar.length - chineseWords.length;
+  
+				const msgtokens = tokens_words + tokens_chinesewords + tokens_numbers + tokens_specialchar ;
+				return Math.ceil(msgtokens); //int. 返回预估的tokens ，向上取整数。
+			},
+			// 智能max_tokens / Smart max_tokens / 自动调节max_tokens。  预估最后一条信息的tokens，智能调节参数。是我自己想的一个预估策略，不准的。如果想要精准，请看下面的方法： （应该是要后台什么的，我不会，不学了）
+			// Not precise. If you want to calculate tokens accurately, please refer to: 1)（GPT-3.5）：https://gpt-tokenizer.dev   2) OpenAI (GPT-3, not GPT-3.5）https://platform.openai.com/tokenizer
+			// 算法中的数字除了特别说明的，其他都是我自己设定的值。 There are a lot of numbers in the algorithm, which do not have any special meaning, they are all values that I set up myself for the purpose of strategy.
+			autoAdjustMaxTokens(sendMsg) {
+			
+				if (!this.openSmartMaxTokens){ 
+					return;
+				}
+				
+				//重问时(成功过的/得到过回复后的重问)
+				if( this.userMsgTokensForRetry != 0 ){
+					this.apiMaxTokens = 4096 - this.totaltokens; // 此时this.totaltokens为精准的total tokens（如果提示词没有变动/变化不大的话）。 this.totaltokens = 上下文 + 本次重问的信息 
+					//这里其实没必要减去一个值，tokens足够的情况下，减低点预防“因修改提示词而导致超额”的情况
+					if ( this.apiMaxTokens > 3500 ){
+						this.apiMaxTokens = this.apiMaxTokens - 400 ;
+					}else if ( this.apiMaxTokens > 2600 ){
+						this.apiMaxTokens = this.apiMaxTokens - 300 ;
+					}else if ( this.apiMaxTokens > 1500 ){
+						this.apiMaxTokens = this.apiMaxTokens - 200 ;
+					}else if ( this.apiMaxTokens > 600 ){
+						this.apiMaxTokens = this.apiMaxTokens - 100 ;
+					}
+					// 其余情况：不处理，发生错误则根据提示信息手动调整。
+					return;
+				}
+				
+				//以下：非重问时 & 失败后的重问
+				//:?: 单条发送问题的token数会比实际的高，疑似官方会添加隐藏的提示词。经过测试，1、当this.msgContent包含系统提示词这一项时（[0]，即使为空），首条会额外占用 13 token ； 2、之后每条发送的讯息额外占用 10 token 。
+				//:?: The tokens for sending message are higher than the actual count, which is probably because OpenAI adds hidden prompt words. After testing, 1) when the "system prompt"  is included in the context of this.msgContent in the code (this.msgContent[0]), even if the system prompt is empty, the first message will have an extra 13 tokens; 2) each subsequent message will take up an additional 10 tokens.
+				//截止2023-06-10，OpenAI规律没有变化。As of June 10th, 2023, there have been no changes in the policies of OpenAI.
+				const firstsendmsg_openai = 13;  // tips：this.msgTokens[1]记录的是（提示词+首条）的tokens，且后续修改提示词并不会更新这里的tokens数量
+				const sendmsg_openai = 10;
+				
+				
+				// 预估当前消息的tokens数量
+				let estimatedTokens = this.linTokenizer(sendMsg);
+				
+				if ( this.msgContent.length < 2 ){ //如果是首条信息
+					estimatedTokens = estimatedTokens + firstsendmsg_openai ;
+					let sysprompt = this.msgContent[0]["content"] ;
+					if ( sysprompt != '') { //如果存在系统提示词
+						const syspromptTokens = this.linTokenizer(sysprompt); //预估系统提示词的tokens
+  						//console.log("首条 系统提示词 预估 : " + syspromptTokens);
+						estimatedTokens = estimatedTokens + syspromptTokens;
+					}
+				}else { //非首条，不需要计算系统提示词，因为它的精准tokens数量会被包含在this.totaltokens当中
+					estimatedTokens = estimatedTokens + sendmsg_openai ;
+				}
+				
+    			//console.log("当前预估 : " + estimatedTokens);
+	
+				
+				// 如果升级为GPT4 GPT-4模型，这里的4096需要修改  If upgraded to the GPT-4 model, the value of 4096 here needs to be modified.
+				// 计算需要设置的max_tokens
+				let remainingTokens = 4096 - this.totaltokens - estimatedTokens;  //tokens上限 - 已用tokens - 估算当前发送信息的tokens
+				// remainingTokens = Math.ceil(remainingTokens); //向上取整数
+				if ( remainingTokens > 3500 ){
+					remainingTokens = remainingTokens - 400 ;
+				}else if ( remainingTokens > 2500 ){
+					remainingTokens = remainingTokens - 350 ;
+				}else if ( remainingTokens > 1500 ){
+					remainingTokens = remainingTokens - 300 ;
+				}else if ( remainingTokens > 1000 ){
+					remainingTokens = remainingTokens - 250 ;
+				}else if ( remainingTokens > 600 ){
+					remainingTokens = remainingTokens - 200 ;
+				}else if ( remainingTokens > 500 ){
+					remainingTokens = remainingTokens - 100 ;
+				}else if ( remainingTokens > 300 ){
+					remainingTokens = remainingTokens - 80 ;
+				}else if ( remainingTokens > 100 ){
+					remainingTokens = remainingTokens - 35 ;
+				}else if ( remainingTokens > 25 ){
+					remainingTokens = remainingTokens - 10;
+				}else if ( remainingTokens > 0 ){
+					remainingTokens = (remainingTokens - 3) > 0 ? (remainingTokens - 3) : remainingTokens ;
+				}else {
+					const notif = this.settingsLanguage == 'cn' ? '出现个小问题，请关闭"智能max_tokens"功能，改为手动调节max_tokens' : 'An issue occurred, please turn off the "Smartt max_tokens" feature and manually adjust the max_tokens setting.' ;
+					this.showNotification(notif, 'bottom','',12000);
+					remainingTokens = remainingTokens < 0 ? 2 : remainingTokens ;
+				}
+				//console.log("max_tokens已调节为 : " + remainingTokens);
+				this.apiMaxTokens = remainingTokens;
+			},
 			
 			// 设置窗口 - 保存接口网址 API URL
 			saveApiURL() {
@@ -1878,42 +2063,71 @@ changeMaxTokens(){
 			},
   
 //选择本地头像（本地地址）   不启用这个功能，可考虑删除
-openFileDialog(role) {
+openFileDialog_Avatar(role) {
 
-/*
-
- <div class="button-container">
-    <button @click="openFileDialog('user')" class="file-button">选择头像(PC)</button>
-  </div>
-   <div class="button-container">
-    <button @click="openFileDialog('ai')" class="file-button">选择头像(PC)</button>
-  </div>
- 
-
-*/ 
-	  if (window.location.protocol !== 'file:') {
-    alert('仅在电脑上支持显示本地图片（头像）');
-    return;
+  const input = document.createElement('input'); 
+  const isExit = document.getElementById('inputFileAvatar')
+  
+  if(isExit){
+  
+  
   }
-  const input = document.createElement('input');
+  
   input.type = 'file';
   input.accept = 'image/*';
+  input.style.display = 'none';
+  input.id = 'inputFileAvatar'
+   
+  document.body.appendChild(input);//11111111
+  
+   
   input.onchange = (event) => {
+  
+    if ( !event.target || !event.target.files || event.target.files.length == 0) {
+        return;
+      }
+  
     const file = event.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      // 将文件地址赋值给imageUrl，并执行updateAvatar方法
+     
+    const filesize = file.size / 1024 ;
+    
+    
+    if (filesize > 350) {
+         //警告刷新
+    }else {
+     //缓存 保存
+     
+	 // 文件符合要求，将图片保存到LocalStorage
+	//		const reader = new FileReader();
+	//		reader.readAsDataURL(file);
+	//		reader.onload = () => {
+	//		const base64Image = reader.result;
+	//			localStorage.setItem(key, base64Image);
+	//		};
+  
+  
+  
+    }
+    
+    const url = URL.createObjectURL(file);
+    
+      	// 将文件地址赋值给imageUrl，并执行updateAvatar方法
 	  
-	  	if(role == 'user'){
-    	this.inputUserImageUrl = url;
+	if(role == 'user'){
+    		this.inputUserImageUrl = url;
 	}else {
 		this.inputGPTImageUrl = url;
 	}
-      this.updateAvatar(role);
-    }
+      	this.updateAvatar(role);
+      
+      
+   document.body.removeChild(input) 
   };
+  
   input.click();
+  
 },
+
 	
 			// 设置窗口 - 更换语言 中英文切换
 			changeLanguage() {
@@ -2143,6 +2357,7 @@ openFileDialog(role) {
 				// 待开发1111111  
 				// 如果存在本地缓存 
 		 
+		 		this.openSmartMaxTokens = true;
 				this.apitemperature = 0.7;
 				this.apiMaxTokens = 2048;
 				this.apiGPTModel = 'gpt-3.5-turbo';
@@ -2300,12 +2515,7 @@ openFileDialog(role) {
 					return;
 				}
 								
-				//v6.03 增加判断是否为空，应该是需要判断的，之前忘了
-				if(this.gptSystemPrompt.trim() == ''){
-					notif = this.settingsLanguage == 'cn' ? '保存失败，提示词为空' : 'Save failed, system prompt is empty.' ;
-					this.showNotification(notif, 'bottom');
-					return;
-				}
+				// v6.12 允许保存空的提示词
 				
 			    //为false，表示新窗口从未写入过指令[是否设置了默认system]
 				if(!this.hasSystemPromptBeenSaved){
@@ -2348,10 +2558,10 @@ openFileDialog(role) {
 			//按钮：说明 Help
 			openDialog_Help(){
 				let notif =  '';
-				let title = this.settingsLanguage == 'cn' ? 'LinGPT v6.09 - 帮助' : 'LinGPT v6.09 - Help' ;
-				const notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\nChange Language: [Settings] > [Language]\r\n\r\n#介绍\r\nLinGPT，只有一个html文件的GPT-3.5聊天网页，可下载到电脑，打开即用。可上传至任一免费的静态网页托管平台、主机、服务器。 ①关于接口：本代码使用OpenAI官方API(接口)，同时支持第三方API，可实现免魔法使用GPT。 ②关于模型：由于无法测试GPT-4模型，目前仅支持GPT-3.5模型（ChatGPT）。 ③关于密钥：需自备API Key。免费Key目前官方限制每分钟最多调用3次，不要聊太快，一般够用。轮询Key的功能待开发中。 ④关于隐私：截止v6.09版，尚未增加本地缓存功能，刷新页面后将重新开始。本代码未加密，开源透明，安全无风险，只要使用官方接口就不会存在任何隐私被截的可能。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入API Key并验证，通过后即可开始聊天。\r\n\r\n#聊天\r\n①可使用Markdown语法。方法与官网版ChatGPT(chat.openai.com)相同，当GPT的回复未使用Markdown格式时，可要求其使用Markdown格式回复（MD格式主要应用于代码、表格、文章排版、显示网络图片等，GPT多数情况下会主动使用MD语法）。 ②手机端换行：发现有部分输入法无法换行，如遇到请更换输入法重试，或可以借用 [提示词窗口] 编辑换行内容，然后再复制到聊天框发送。 ③电脑端换行：支持 Shift + Enter 、Ctrl + Enter 换行，Mac还支持 Command(⌘) + Enter 换行。 ④斜杆调用提示词的功能，需要点击斜杆按钮。\r\n\r\n#提示词窗口\r\n截止v6.09版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、API设置、查询API余额和有效期、API专业设置（点蓝色 [PRO] 按钮）、修改头像、导出聊天记录等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、智能调整max_tokens、压缩上下文(可导出)、多种上下文模式、本地缓存及加密、导出JSON、导入JSON还原对话、轮询Key、免费Key试用...等';
+				let title = this.settingsLanguage == 'cn' ? 'LinGPT v6.12 - 帮助' : 'LinGPT v6.12 - Help' ;
+				const notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\nChange Language: [Settings] > [Language]\r\n\r\n#介绍\r\nLinGPT，只有一个html文件的GPT-3.5聊天网页，可下载到电脑，打开即用。可上传至任一免费的静态网页托管平台、主机、服务器。 ①关于接口：本代码使用OpenAI官方API(接口)，同时支持第三方API，可实现免魔法使用GPT。 ②关于模型：由于无法测试GPT-4模型，目前仅支持GPT-3.5模型（ChatGPT）。 ③关于密钥：需自备API Key。免费Key目前官方限制每分钟最多调用3次，不要聊太快，一般够用。轮询Key的功能待开发中。 ④关于隐私：截止v6.12版，尚未增加本地缓存功能，刷新页面后将重新开始。本代码未加密，开源透明，安全无风险，只要使用官方接口就不会存在任何隐私被截的可能。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入API Key并验证，通过后即可开始聊天。\r\n\r\n#聊天\r\n①可使用Markdown语法。方法与官网版ChatGPT(chat.openai.com)相同，当GPT的回复未使用Markdown格式时，可要求其使用Markdown格式回复（MD格式主要应用于代码、表格、文章排版、显示网络图片等，GPT多数情况下会主动使用MD语法）。 ②手机端换行：发现有部分输入法无法换行，如遇到请更换输入法重试，或可以借用 [提示词窗口] 编辑换行内容，然后再复制到聊天框发送。 ③电脑端换行：支持 Shift + Enter 、Ctrl + Enter 换行，Mac还支持 Command(⌘) + Enter 换行。 ④斜杆调用提示词的功能，需要点击斜杆按钮。\r\n\r\n#提示词窗口\r\n截止v6.12版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、API设置、查询API余额和有效期、API专业设置（点蓝色 [PRO] 按钮）、修改头像、导出聊天记录等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、智能调整max_tokens、压缩上下文(可导出)、多种上下文模式、本地缓存及加密、导出JSON、导入JSON还原对话、轮询Key、免费Key试用...等';
 				//有单引号
-				const notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\n#Introduction \r\nLinGPT is a GPT-3.5 webpage  with just a single HTML file. ①API: This code uses the OpenAI API and supports third-party APIs. ②Model: Currently, only the GPT-3.5 model (ChatGPT) is supported as the GPT-4 model cannot be tested. ③API Key: An OpenAI API key is required. ④Privacy: v6.09, there is no local caching function, and the data will be cleared after refreshing the page. \r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter the API Key and check it, and you can start chatting after passing. \r\n\r\n#Chatting \r\n①Like the official ChatGPT (chat.openai.com), Markdown syntax can be used. Similarly, when GPT's reply does not use Markdown format, it can be asked to reply in Markdown format (GPT usually automatically uses MD syntax). ②Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. \r\n\r\n#Prompt Generator \r\nv6.09, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nGeneral settings, API settings, checking API balance and validity period, API professional settings (click the blue [PRO] button), changing avatars, exporting chat history, etc., can be learned more about by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: integrated prompt words, shared prompt words, intelligent adjustment of max_tokens, compressed context (exportable), multiple context modes, local caching and encryption, exporting JSON, importing JSON to restore dialogue, key rotation, etc.";
+				const notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\n#Introduction \r\nLinGPT is a GPT-3.5 webpage  with just a single HTML file. 1) API: This code uses the OpenAI API and supports third-party APIs. 2) Model: Currently, only the GPT-3.5 model (ChatGPT) is supported as the GPT-4 model cannot be tested. 3) API Key: An OpenAI API key is required. 4) Privacy: v6.12, there is no local caching function, and the data will be cleared after refreshing the page. \r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter the API Key and check it, and you can start chatting after passing. \r\n\r\n#Chatting \r\n1) Like the official ChatGPT (chat.openai.com), Markdown syntax can be used. Similarly, when GPT's reply does not use Markdown format, it can be asked to reply in Markdown format (GPT usually automatically uses MD syntax). 2) Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. \r\n\r\n#Prompt Generator \r\nv6.12, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nGeneral settings, API settings, checking API balance and validity period, API professional settings (click the blue [PRO] button), changing avatars, exporting chat history, etc., can be learned more about by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: integrated prompt words, shared prompt words, intelligent adjustment of max_tokens, compressed context (exportable), multiple context modes, local caching and encryption, exporting JSON, importing JSON to restore dialogue, key rotation, etc.";
 				
 				notif = this.settingsLanguage == 'cn' ? notifcn : notifen ;
 				this.showNotification(notif, 'center', title);		
@@ -2605,6 +2815,10 @@ openFileDialog(role) {
 					randomString = 'hi' ;
 				}
 				
+				// 设置axios的超时时间，默认是0（永不超时，实际上60秒就会报超时）。验证API时，请求的问题很简单，超时时间可以短点，设为35秒。
+				// To set a timeout for axios, the default is 0 . For simple request issues when checking the API, the timeout can be set to 35 seconds or less.
+				// *Default is 0 (Never timeout,In actuality, it will report a timeout error in around 60 seconds.)
+				axios.defaults.timeout = 35000; //35000毫秒=35秒。  35000ms = 35s  
 				
 				// Check API-key, not chat
 				//下面这行是验证API-Key时的参数，不是聊天的参数，一般不需要改动
@@ -2714,6 +2928,7 @@ openFileDialog(role) {
 				let responseObject; //responseText
 				let responseMessage = ''; //OpenAI Error Message
 				let responseType = ''; //OpenAI Error Type
+				const timeoutRegExp = /timeout of \d+ms exceeded/; // “timeout of 30000ms exceeded” , “timeout of 60000ms exceeded”
 					
 				// OpenAI官网关于错误代码的解释： OpenAI - API Error Codes Explained:
 				// https://help.openai.com/en/collections/3808446-api-error-codes-explained
@@ -2730,6 +2945,27 @@ openFileDialog(role) {
 					notif_cn = 'API-Key含有非法符号。OpenAI的所有密钥均以 sk- 开头，不含有汉字、全角符号或其他非法符号。建议复制粘贴API-Key，避免意外输入全角符号或其他非法符号。';
 					notif_en = 'All the OpenAI keys begin with sk- as the first three characters, and do not contain any full-width symbols, or other illegal symbols.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - API-Key格式非法' : 'Error - API-Key Has Invalid Format';
+				}else if ( error.message &&  ( error.message == 'timeout exceeded' || timeoutRegExp.test(error.message) )){
+				// 网络超时 Timeout exceeded
+				// if判断需要先于"OpenAI错误代码"，因为超时时间中可能会包含有400、500等数字。
+				// The if statement needs to come before "OpenAI's error code" because the error codes for timeout may include numbers such as 400 or 500.
+					notif_cn = '连接超时，请先检查您的网络状态。如果网络正常，需要确认您的IP所在地（国家或地区）是否属于OpenAI的服务范围内。如果您在国内使用OpenAI官方接口，必须使用"魔法"才能建立连接。如果您使用第三方接口，需要明确该接口是否支持免"魔法"，以及该接口当前是否为可用状态（第三方稳定性不如官方）。\r\n\r\nOpenAI支持的国家或地区:(需魔法) https://platform.openai.com/docs/supported-countries \r\n什么是"魔法"？一种可以让您的手机或电脑出趟国的技术，优质的魔法会让OpenAI认为您的设备是真的在国外。';
+					notif_en = "Connection timed out. Please check your network and confirm whether your IP location is within OpenAI's service scope to decide whether V P N is required. If using third-party interfaces, ensure their validity. \r\n\r\nSupported countries and territories:  https://platform.openai.com/docs/supported-countries ";
+					if(timeoutRegExp.test(error.message)){
+						const timeRegExp = /timeout of (\d+)ms exceeded/;
+						const matchResult = error.message.match(timeRegExp);
+						if (matchResult) {
+							const timeoutSec = matchResult[1] / 1000;
+							notif_cn += "\r\n当前代码中设置的超时时间为：" + timeoutSec + " 秒";
+							notif_en += "\r\nThe timeout set in the code is: " + timeoutSec + " seconds";
+						}
+					}
+					title = this.settingsLanguage == 'cn' ?  '错误 - 网络连接超时' : 'Error - Timeout exceeded';
+				}else if ( error.message && error.message == 'Network Error' ){
+				// 网络故障 Network Error *第三方接口每分钟超3次也会导致这个错误
+					notif_cn = '网络错误，可能只是暂时的，建议先重试一次。\r\n网络错误存在多种可能，请自行排查：\r\n  • 无法与接口网址（API url）建立连接，该服务器不存在或遇故障当前无法访问；\r\n  • 本机当前无网络，网络已断开或网络不稳定，请检查网络状态后重试；\r\n  • IP限制，该IP或其所在地被限制访问。可尝试使用"魔法"，如果正在使用，请检查"魔法"是否不稳定或已经断开；\r\n  • 若使用第三方接口，发送请求太快可能也会出现网络错误的代码（Network Error），请尝试减缓发送频率；\r\n  • 其他原因，请以实际情况为准。';
+					notif_en = 'Network error. The error may be temporary, so it is recommended to try again first. \r\nPossible reasons:\r\n  • Unable to connect to the API Endpoint (API url). The server does not exist or is not accessible due to a malfunction.\r\n  • Your device is currently not connected to the network. The network may be disconnected or unstable. Please check the network status and try again.\r\n  • Due to limitations on this IP or its location, access may be restricted. You could try using a V P N. If you are already using a V P N, please check if it is unstable or has been disconnected.\r\n  • When using third-party interfaces, sending requests too quickly may also result in "Network Error". Please avoid sending requests too fast.\r\n  • For any other reasons, please refer to the actual situation.';
+					title = this.settingsLanguage == 'cn' ?  '错误 - 网络故障' : 'Error - Network error';
 				}else if( error.message &&  error.message.includes('401')){
 				// OpenAI 401-1 & 401-2 密钥无效 API-key Error 
 					notif_cn = 'API-Key无效。OpenAI的所有密钥均以 sk- 开头，建议复制粘贴API-Key，避免输错。如果仍然出错，说明是无效密钥，或密钥已被停用、删除，建议登录OpenAI官网查看API-Key是否出现变动。';
@@ -2776,16 +3012,6 @@ openFileDialog(role) {
 					notif_cn = '服务器在处理您的请求时出现错误，是服务器的问题，请稍等片刻后重试。';
 					notif_en = 'The server had an error while processing your request. Issue on OpenAI servers, please retry your requests after a brief wait.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - 500 服务器在处理请求时出错' : 'Error - 500 Server error while processing request';
-				}else if ( error.message && error.message == 'timeout exceeded' ){
-				// 网络超时 Timeout exceeded
-					notif_cn = '连接超时，请先检查您的网络状态。如果网络正常，需要确认您的IP所在地（国家或地区）是否属于OpenAI的服务范围内。如果您在国内使用OpenAI官方接口，必须使用"魔法"才能建立连接。如果您使用第三方接口，需要明确该接口是否支持免"魔法"，以及该接口当前是否为可用状态（第三方稳定性不如官方）。\r\n\r\nOpenAI支持的国家或地区:(需魔法) https://platform.openai.com/docs/supported-countries \r\n什么是"魔法"？一种可以让您的手机或电脑出趟国的技术，优质的魔法会让OpenAI认为您的设备是真的在国外。';
-					notif_en = "Connection timed out. Please check your network and confirm whether your IP location is within OpenAI's service scope to decide whether V P N is required. If using third-party interfaces, ensure their validity. \r\n\r\nSupported countries and territories:  https://platform.openai.com/docs/supported-countries ";
-					title = this.settingsLanguage == 'cn' ?  '错误 - 网络连接超时' : 'Error - Timeout exceeded';
-				}else if ( error.message && error.message == 'Network Error' ){
-				// 网络故障 Network Error *第三方接口每分钟超3次也会导致这个错误
-					notif_cn = '网络错误，可能只是暂时的，建议先重试一次。\r\n网络错误存在多种可能，请自行排查：\r\n  • 无法与接口网址（API url）建立连接，该服务器不存在或遇故障当前无法访问；\r\n  • 本机当前无网络，网络已断开或网络不稳定，请检查网络状态后重试；\r\n  • IP限制，该IP或其所在地被限制访问。可尝试使用"魔法"，如果正在使用，请检查"魔法"是否不稳定或已经断开；\r\n  • 若使用第三方接口，发送请求太快可能也会出现网络错误的代码（Network Error），请尝试减缓发送频率；\r\n  • 其他原因，请以实际情况为准。';
-					notif_en = 'Network error. The error may be temporary, so it is recommended to try again first. \r\nPossible reasons:\r\n  • Unable to connect to the API Endpoint (API url). The server does not exist or is not accessible due to a malfunction.\r\n  • Your device is currently not connected to the network. The network may be disconnected or unstable. Please check the network status and try again.\r\n  • Due to limitations on this IP or its location, access may be restricted. You could try using a V P N. If you are already using a V P N, please check if it is unstable or has been disconnected.\r\n  • When using third-party interfaces, sending requests too quickly may also result in "Network Error". Please avoid sending requests too fast.\r\n  • For any other reasons, please refer to the actual situation.';
-					title = this.settingsLanguage == 'cn' ?  '错误 - 网络故障' : 'Error - Network error';
 				}else if ( error.message && error.message.includes('400') && responseMessage.includes('Please reduce the length of the messages' )){
 				// OpenAI 400 
 					//20230606 适配GPT3.5免费计划，其他类似账号的情况未知。 Adapted for the free plan account of GPT3.5, based on the GPT3.5 free plan.
@@ -2820,19 +3046,24 @@ openFileDialog(role) {
 						tips_cn += '#B = 您当前发送的上下文长度：' + a_messagesLength + ' tokens (GPT的记忆，包含本次发送内容)\r\n' ;
 						tips_cn += '#C = GPT尚未回复的单条内容长度：未知 \r\n' ;
 						tips_cn += '规则： B + C  < A ( ' + maxLength + ' )\r\n' ;
-						tips_cn += '当前：仅 B 就已经超过 ' + maxLength ;
+						tips_cn += '当前：仅 B 就已经超过 ' + maxLength + ' （超出了 ' + ( a_messagesLength - maxLength ) + ' ）' ;
 						if ( !this.isSimpleMode ){
 							tips_cn += '\r\n *  token：单位，即"令牌"\r\n' ;
 							tips_cn += ' *  接口版ChatGPT(GPT3.5)最高只支持 4096/4097 tokens' ;
 						}
 						notif_cn = '发送失败，GPT记忆（上下文长度）超过上限。关闭通知后，您可以选择：修改发送内容长度、撤销聊天记录等操作来继续之前的对话。';
+						const autoMaxTokens_cn = '\r\n\r\n** 已为您关闭"智能max_tokens"功能，本次请根据提示手动调节[API设置]中的[max_tokens]，下次可尝试重新打开该功能。'
+						notif_cn = this.openSmartMaxTokens ? notif_cn + autoMaxTokens_cn : notif_cn;
 						notif_cn = notif_cn + tips_cn ;
 						
 						tips_en += '\r\n\r\n' ;
 						tips_en += '"messages" :  The current length of the context (including the last message sent).' ;
 						notif_en = "Sending failed. The length of the context exceeds the limit. After closing the notification, you can choose to modify the content, or undo to continue.";
+						const autoMaxTokens_en = '\r\n\r\n** The "Smart max_tokens" feature has been turned off for you. Please manually adjust [API Settings] > [max_tokens] for this request. You can re-enable this feature for the next request.'
+						notif_en = this.openSmartMaxTokens ? notif_en + autoMaxTokens_en : notif_en;
 						notif_en = notif_en + tips_en ;
 						
+						this.openSmartMaxTokens = false;
 						title = this.settingsLanguage == 'cn' ?  '错误 - 400 记忆达到上限' : 'Error - 400 Context length exceeds the limit';
 					}else if ( maxLength != null && b_requestedLength != null  && b_messagesLength != null  && b_completionLength != null ) {
 					//发送出的上下文  + max_tokens > 超限制
@@ -2851,6 +3082,8 @@ openFileDialog(role) {
 							tips_cn += ' *  接口版ChatGPT(GPT3.5)最高只支持 4096/4097 tokens' ;
 						}
 						notif_cn = '发送失败，GPT记忆（上下文长度）即将超限。关闭通知后，您可以选择：调整max_tokens后点击重问、撤销聊天记录、修改发送内容长度等操作来继续之前的对话。';
+						const autoMaxTokens_cn = '\r\n\r\n** 已为您关闭"智能max_tokens"功能，本次请根据提示手动调节[API设置]中的[max_tokens]，下次可尝试重新打开该功能。'
+						notif_cn = this.openSmartMaxTokens ? notif_cn + autoMaxTokens_cn : notif_cn;
 						notif_cn = notif_cn + tips_cn ;
 						
 						tips_en += '\r\n\r\n' ;
@@ -2858,8 +3091,11 @@ openFileDialog(role) {
 						tips_en += '"completion" :  The API parameter "max_tokens" (adjustable in the API settings).\r\n' ;
 						tips_en += "Tips: Here's an example, if you don't want to modify the content being sent: Currently " + maxLength + ' - ' + b_messagesLength + ' = ' + diffC + ', so you need to adjust the "max_tokens" in [API Settings] to be less than ' + diffC + ' (maximum value is ' + (diffC - 1) + '), then click [Retry] to resend the request.' ;
 						notif_en = "Sending failed. The length of the context is about to exceed the limit. After closing the notification, you can choose to retry after modifying the max_tokens, undo, or modify the content to continue.";
+						const autoMaxTokens_en = '\r\n\r\n** The "Smart max_tokens" feature has been turned off for you. Please manually adjust [API Settings] > [max_tokens] for this request. You can re-enable this feature for the next request.'
+						notif_en = this.openSmartMaxTokens ? notif_en + autoMaxTokens_en : notif_en;
 						notif_en = notif_en + tips_en ;
 						
+						this.openSmartMaxTokens = false;
 						title = this.settingsLanguage == 'cn' ?  '错误 - 400 记忆即将达到上限' : 'Error - 400 Context length is about to exceed the limit';
 					}else{
 						notif_cn = '发送失败，GPT记忆（上下文长度）达上限。';
@@ -3013,10 +3249,12 @@ openFileDialog(role) {
 				
 				let isRetry = false; //**是否重问，默认false - 正常发问
 				let sendMessage = ''; //**需要发送的问题，初始值为空
-				if(this.isRetry_RetryMessage != "")
-				{
+				if(this.isRetry_RetryMessage != ""){
 					isRetry = true; //当前是重问状态
 					sendMessage = this.isRetry_RetryMessage; //数据转移 
+					
+					//重问时，自动调节max_tokens 
+					this.autoAdjustMaxTokens(sendMessage);
 				}
 				this.isRetry_RetryMessage = ''; //**重置，不再使用isRetry_RetryMessage，减少出错风险。 Reset, stop using isRetry_RetryMessage to reduce the risk of errors.
 				
@@ -3048,6 +3286,9 @@ openFileDialog(role) {
 				//**正常发问- sendMessage需要替换为this.msg
 				if ( !isRetry ){
 					sendMessage = this.msg ;
+					
+					//非重问时，自动调节max_tokens 
+					this.autoAdjustMaxTokens(sendMessage); 
 				}
 				
 				// v5.16 BUG A
@@ -3126,7 +3367,8 @@ openFileDialog(role) {
                 }				
 							
 				this.msgContent.push({"role": "user", "content": sendMessage });
-				//completion_tokens(本次提问内容的token数)需要等下次对话结束才能计算得出（提问的token数会比实际的高，疑似官方会添加隐藏的提示词。意义大不，仅做参考）
+				//completion_tokens(本次提问内容的token数)需要等下次对话结束才能计算得出（提问的token数会比实际的高，疑似官方会添加隐藏的提示词。意义大不，仅做参考）经过测试，1、当this.msgContent包含系统提示词这一项时（[0]，即使为空），首条会额外占用 13 token ； 2、之后每条发送的信息额外占用 10 token 。
+				// The tokens for sending messages are higher than the actual count, which is probably because OpenAI adds hidden prompt words. After testing, 1) when the "system prompt"  is included in the context of this.msgContent in the code (this.msgContent[0]), even if the system prompt is empty, the first message will have an extra 13 tokens; 2) each subsequent message will take up an additional 10 tokens.
 				//截止本次提问的total_tokens(回复前，含提问内容)需要等AI回复后才能得到数据
 				//系统提示词随时可改，这会使记录的user数据变得不准确。
 				this.msgTokens.push({"role": "user", "completion_tokens": 0 , "total_tokens": 0 }); // 先写入0 int
@@ -3149,8 +3391,13 @@ openFileDialog(role) {
 					textarea_Chat.style.borderRadius = '0px 6px 6px 0px'; //border-radius: 0px 6px 6px 0px;
 					textarea_Chat.style.zIndex = "900000"; //z-index:900000 输入框获得焦点后会发光，需要设置按钮与输入框的层级关系
 				}
-					
 				
+				
+				// 设置axios的超时时间，默认是0（代表永不超时，实际上60秒就会报超时）。
+				// 遇到高峰期(全球范围)，加上问题的复杂度，以及受API参数设置的影响，20秒以上的回复等待时间是很常见的，上下文内容多，或要求写论文时，耗时55秒也是有的。 同样的，流式响应也是需要很长的时间才能接收完成。
+				// To set a timeout for axios, the default is 0 (Never timeout,In actuality, it will report a timeout error in around 60 seconds.)
+				// When OpenAI encounters high traffic requests on a global scale, along with the complexity of the issues sent and the impact of API parameter settings, response wait times may exceed 20 seconds. In cases where the context is rich, such as when writing a paper, response times of up to 55 seconds may be necessary. The same applies to streaming responses, which may take a long time to receive a complete reply.
+				axios.defaults.timeout = 61000; //61000毫秒=61秒。  61000ms = 61s 
 				
                 //没有GPT4 API，无法测试GPT4。暂时只支持gpt3.5。
 				// 关于top_p、presence_penalty、frequency_penalty，搜索引擎中随机挑选4篇介绍文章：
@@ -3871,7 +4118,7 @@ openFileDialog(role) {
 			// 可修改 Editable. 默认的GPT头像-方案A（写在代码里的绿色SVG头像）二选一 Default GPT Avatar. Plan-A (GPT Green SVG). You can only choose either Plan A or Plan B.
 			this.isgptAvatarUrlShow = false; //隐藏<img>。 hide <img>
 			this.isgptGreenSvgShow = true; //显示<svg>。 display <svg>
-			this.gptAvatarURL =  '';  // 当前GPT头像的图片地址。GPT Avatar URL. <img> url =‘’ (<img> is hide)
+			this.gptAvatarURL =  '';  // 当前GPT头像的图片地址。GPT Avatar URL. <img> url ='' (<img> is hide)
 			this.inputGPTImageUrl = this.settingsLanguage == 'cn' ? this.GPTGreenSVG_UrlText_cn : this.GPTGreenSVG_UrlText_en; // 显示在输入框的GPT头像的地址 input text
 			
 			// 可修改 Editable. 默认的GPT头像-方案B（任意一张图片地址） 二选一  Default GPT Avatar. Plan-B (Any image URL.).  You can only choose either Plan A or Plan B.
