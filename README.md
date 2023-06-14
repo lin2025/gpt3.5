@@ -50,7 +50,7 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
- - Smart max_tokens（全自动调节max_tokens）
+ - **新功能**: Smart max_tokens（全自动调节max_tokens）; 上传头像 ...
  
  - API Key、API余额/有效期查询、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
 
@@ -60,7 +60,7 @@ Give a Star 🌟 if you like it.
 
  - 清空、撤销、重问，并支持快捷键
 
- - 语言支持简体中文和英语、支持更换头像、支持样式设置（字体大小、微信样式的时间、消息时间、区分多轮对话）
+ - 语言支持简体中文和英语、支持多种方式设置头像（可上传头像）、支持样式设置（字体大小、微信样式的时间、消息时间、区分多轮对话）
 
  - 可导出单轮聊天记录、全部聊天记录和操作记录，格式为Markdown，支持导出`.md`和`.txt`
 
@@ -77,6 +77,7 @@ Give a Star 🌟 if you like it.
 
 ## 更新   
 
+- **6月15日** 新增**上传头像**功能。**Smart max_tokens**升级全新算法，并加入计算错误后**自动重发**的功能。调整css兼容性。
 - **6月12日** 新增**Smart max_tokens**功能，全自动调节`max_tokens`。 修复问题：提示词允许保存空白（之前不小心给限制了）。
 - **6月9日** 新增OpenAI报错代码；修复些问题：头像使用相对路径引发的问题、加载时气泡框塌缩的问题、部分浏览器不支持12px以下的字体的问题。
 - **6月7日** **v6.07**几乎全新的版本，变化比较大，功能升级，体验升级，适用的场景更多了，也很稳定，不再报错。
@@ -121,17 +122,18 @@ Give a Star 🌟 if you like it.
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
 
- - Smart max_tokens (Automatically adjusts the max_tokens)
+ - **New Features**: Smart max_tokens (Automatically adjusts the max_tokens), Upload avatar ...
  - API key, OpenAI API balance inquiry, custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
  - Markdown support (code block, syntax highlighting, displaying images, displaying tables, article formatting, etc.).
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
  - Undo, Retry, Clear Context, and supporting keyboard shortcuts.
- - Supports English and Chinese-Simplified, custom avatars, custom style (font size, WeChat-style time format, message time, distinguishing multi-turn contexts, etc.).
+ - Supports English and Chinese-Simplified, custom avatars (supports Upload Avatar), custom style (font size, WeChat-style time format, message time, distinguishing multi-turn contexts, etc.).
  - Single-round chat history, all chat history, and operation history can be exported in Markdown format, supporting export as `.md` and `.txt`.
 
 
 ## Updates   
 
+- **June 15th** New Feature: **Upload Avatar**, Upgraded the **Smart max_tokens** algorithm with the feature to automatically resend requests in case of errors. Adjusted CSS compatibility.
 - **June 12th** The new **Smart max_tokens** feature was added, which automatically adjusts the max_tokens parameter. Bug fix: Fix the issue that the prompt allows saving blank space.
 - **June 9th** Added explanation for OpenAI error codes; Fixed some issues related to:relative path avatar;  style during loading;  some browsers not supporting fonts below 12px. 
 - **June 7th** **v6.07** This is an almost brand new version with significant changes, upgraded features and improved user experience. It is applicable to more scenarios and is also very stable. It has been tested for two weeks without any errors.
