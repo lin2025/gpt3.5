@@ -19,7 +19,7 @@
 
 Give a Star 🌟 if you like it.
 
-[![](https://lin2025.github.io/img/other-0609.gif)](#lingpt)
+[![](https://lin2025.github.io/img/other-0705.gif)](#lingpt)
 
 </div>
 
@@ -28,13 +28,13 @@ Give a Star 🌟 if you like it.
 ## LinGPT
 
  - 简介：仅有一个`.html`文件的GPT，轻量，便捷，零门槛
- - 在线：不到300K的静态网页，托管在 Github / Gitee 非常流畅
+ - 在线：不到500K的静态网页，托管在 Github / Gitee 非常流畅
  - 下载：下载到电脑，打开html文件即可使用，像打开一张图片一样简单
  - 上传：可上传至托管平台/主机/服务器，支持所有免费的静态网页托管平台
  - 接口：使用Open AI官方API，同时可自定义API。支持免魔法的第三方API
  - 模型：同ChatGPT `gpt-3.5-turbo`。目前仅支持GPT-3.5的两种模型 
  - 密钥：需自备 API Key。过几天增加轮询Key的功能
- - 隐私：代码基本都有注释。开源 透明 安全 无风险
+ - 数据：仅存储于浏览器本地缓存，支持导出、导入和删除
 
 
 ## 在线体验
@@ -50,7 +50,11 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
- - **新功能**: Smart max_tokens（全自动调节max_tokens）; 上传头像 ...
+ - **新功能**: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)
+ 
+ - **新功能**: 支持浏览器本地存储，支持数据同步、导入、导出、删除、统计等操作
+ 
+ - Smart max_tokens（全自动调节max_tokens）
  
  - API Key、API余额/有效期查询、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
 
@@ -76,7 +80,7 @@ Give a Star 🌟 if you like it.
 
 
 ## 更新   
-
+- **7月05日** **v7.05** 1) **新增**本地存储及数据管理功能; 2) **新增**多对话、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3) **修复**Windows系统的兼容性问题(滚动条、下拉菜单样式错误)；4) 优化UI。
 - **6月15日** 新增**上传头像**功能。**Smart max_tokens**升级全新算法，并加入计算错误后**自动重发**的功能。调整css兼容性。
 - **6月12日** 新增**Smart max_tokens**功能，全自动调节`max_tokens`。 修复问题：提示词允许保存空白（之前不小心给限制了）。
 - **6月9日** 新增OpenAI报错代码；修复些问题：头像使用相对路径引发的问题、加载时气泡框塌缩的问题、部分浏览器不支持12px以下的字体的问题。
@@ -110,7 +114,7 @@ Give a Star 🌟 if you like it.
  - This code uses the OpenAI API and supports third-party APIs. 
  - Currently, only the GPT-3.5 model (ChatGPT `gpt-3.5-turbo`) is supported as the GPT-4 model cannot be tested. 
  - An OpenAI API key is required. 
- - As of v6.08, there is no local caching function, and the data will be cleared after refreshing the page. 
+ - User data is stored only in the browser's local cache, supporting export, import, and deletion. 
 
 
 ## Demo
@@ -122,7 +126,9 @@ Give a Star 🌟 if you like it.
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
 
- - **New Features**: Smart max_tokens (Automatically adjusts the max_tokens), Upload avatar ...
+ - **New Features**: Multiple chats management, automatic saving, copy creation, data synchronization, export (for backup / sharing), import (restore chat data).
+ - **New Features**: Support for browser local storage, with operations including data synchronization, import, export, deletion, and statistics.
+ - Smart max_tokens (Automatically adjusts the max_tokens)
  - API key, OpenAI API balance inquiry, custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
  - Markdown support (code block, syntax highlighting, displaying images, displaying tables, article formatting, etc.).
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
@@ -133,6 +139,7 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
+- **July 5th** **v7.05** 1) Added local storage and data management. 2) Added: multiple chats, automatic saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3) Bug fixes for Windows compatibility  (scrollbar, dropdown menu styling errors). 4) Optimized UI.
 - **June 15th** New Feature: **Upload Avatar**, Upgraded the **Smart max_tokens** algorithm with the feature to automatically resend requests in case of errors. Adjusted CSS compatibility.
 - **June 12th** The new **Smart max_tokens** feature was added, which automatically adjusts the max_tokens parameter. Bug fix: Fix the issue that the prompt allows saving blank space.
 - **June 9th** Added explanation for OpenAI error codes; Fixed some issues related to:relative path avatar;  style during loading;  some browsers not supporting fonts below 12px. 
