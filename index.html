@@ -68,7 +68,7 @@ body::-webkit-scrollbar-track:hover{background-color:#ededed}
 body::-webkit-scrollbar-corner{background-color:#ededed}
 .dialog-wrapper .dialog-scroll::-webkit-scrollbar-thumb{background-color:#d2d2d2;border-radius:10px}
 .dialog-wrapper .dialog-scroll::-webkit-scrollbar-thumb:hover{background-color:#c3c3c3}
-.dialog-wrapper .dialog-scroll::-webkit-scrollbar-track{background-color:#ededed}
+.dialog-wrapper .dialog-scroll::-webkit-scrollbar-track{background-color:#ededed;border-radius:10px}
 .dialog-wrapper .dialog-scroll::-webkit-scrollbar-track:hover{background-color:#ededed}
 .dialog-wrapper .dialog-scroll::-webkit-scrollbar-corner{background-color:#ededed}
 .notification-wrapper .dialog-scroll::-webkit-scrollbar-thumb{background-color:#e8eb95;border-radius:10px}
@@ -1037,14 +1037,24 @@ to{transform:translate(-50%,-18px);opacity:1}
 	<!-- dialog-wrapper C: 对话列表 Chat List -->  
 	<div id="dialog-ChatList" class="dialog-wrapper" v-show="isShowDialog_ChatList">
 		<!-- C: dialog -->  
-		<div class="dialog">
+		<div class="dialog" style="max-width: 430px;background-color: rgb(237, 237, 237);">
 			<!-- C: 标题 header -->  
 			<div class="dialog-header">
-				<div class="dialog-title" >
+				<div class="dialog-title" style="width: calc(95% - 35px);">
 					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
 					</svg>
 					{{ settingsLanguage == 'cn' ? '&nbsp;对话列表&nbsp;' : '&nbsp;Chat List&nbsp;' }}
-					<button @click="showMiniHelp('C-ChatList')"  class="btn minibtn bluebtn btnzoom-b">?</button>	
+					<button @click="showMiniHelp('C-ChatList')"  class="btn minibtn bluebtn btnzoom-b" style="margin-right: 8px;">?</button>	
+					<button @click="changeChatListLayout"  class="btn bluebtn" style="margin-right: 8px;width: 23px; padding: 0px 1px; height: 20px;" >
+						<div>
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+						</div>
+					</button>
+					<button @click="changeChatListTransparent"  class="btn bluebtn" style="margin-right: auto;width: 23px; padding: 0px 1px; height: 20px;" >
+						<div>
+							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+						</div>
+					</button>
 					<button @click="chatList_addNewChatData(false)" class="btn" style="width: auto; padding: 0px 8px; height: 20px; line-height: 20px; border-radius: 5px; font-size: 13px; margin-left: 8px;">
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3zM12 8v8m-4-4h8"/>
@@ -1631,7 +1641,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
 				// The First Message, This message is out of context,
 				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-				thefirstmessage: "### **LinGPT** ***v7.05*** \r\n##### **v7.05** 1.新增本地存储及数据管理功能; 2.新增多对话(点击头像)、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；2.修复Windows系统兼容性问题。\r\n###### 1.Added: local storage and data management. 2.Added: multiple chats (click avatar), auto-saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3.Bug fixes for Windows compatibility.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
+				thefirstmessage: "### **LinGPT** ***v7.05*** \r\n##### **v7.05** 1.新增本地存储及数据管理功能; 2.新增多对话(点击头像)、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3.修复Windows系统兼容性问题。\r\n###### 1.Added: local storage and data management. 2.Added: multiple chats (click avatar), auto-saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3.Bug fixes for Windows compatibility.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 				
 				// v7.05 开始提示词不建议写在代码中。Starting from v7.05, it is advised not to write system prompts in the code. 
 				// 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，不会自动生效，需要手动保存后才会生效。
@@ -2053,9 +2063,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 					break;
 				  case 'A-DataPrivacyAndManagement':
 					notifcn = '  • 所有数据仅存储于浏览器本地存储（localStorage）中，不会通过任何方式对外传输。\r\n';
-					notifcn += '  • [删除数据] 可清空所有数据，或者通过浏览器的历史记录清除功能来清空数据 (清除缓存)。\r\n\r\n';
+					notifcn += '  • [删除数据] 可清空所有数据，或者通过浏览器的历史记录清除功能来清空数据 (清除缓存)。';
+					if(!this.isSimpleMode){
+						notifcn += '\r\n  • localStorage是浏览器提供的功能，用于在用户的本地设备上存储数据。 1) localStorage与域名相关联，同一个域名下的页面可以共享同一个localStorage。 2) 对于本地运行的HTML文件，localStorage根据文件地址和文件名进行绑定。不同路径或文件名的HTML文件有各自独立的localStorage。 3) 不同浏览器数据不互通。 4) 在浏览器隐私模式下，通常每个标签页都有独立的localStorage。';
+					}
 					
-					notifcn += '  • LinGPT数据:  全自动保存\r\n';
+					notifcn += '\r\n\r\n  • LinGPT数据:  全自动保存\r\n';
 					notifcn += '    数据分为4个部分，支持一键删除或导出，也可以单独删除或导出，同时支持分享和导入，导入时会自动分析包含的数据类型。\r\n\r\n';
 
 					notifcn += '  • 1) Chat Data List:  对话数据，包含所有对话的数据。可导出单个对话或全部对话。\r\n';
@@ -2077,9 +2090,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notifcn += '     - 刷新、关闭、切换标签页等操作都会触发自动保存，所以最新的 [设置] 通常以最后一个操作的网页为准。\r\n\r\n';
 					}
 					notifen = "  • All data is stored only in the browser's local storage (localStorage) and is not transmitted externally.\r\n";
-					notifen += "  • [Delete Data] can clear all data or use the browser's history clearing function to empty the data (clear cache).\r\n\r\n";
+					notifen += "  • [Delete Data] can clear all data or use the browser's history clearing function to empty the data (clear cache).";
+					if(!this.isSimpleMode){
+						notifen += "\r\n  • localStorage is a browser-provided feature that allows storing data on the user's local device. 1) localStorage is associated with a specific domain, enabling sharing of the same localStorage among pages within the same domain.  2) For locally-run HTML files, localStorage is bound to the file's address and name. Different paths or file names result in separate and independent localStorage.  3) localStorage is not shared across different browsers.  4) In privacy mode, typically each tab has its own isolated localStorage.";
+					}
 
-					notifen += '  • LinGPT Data: Fully automated saving\r\n';
+					notifen += '\r\n\r\n  • LinGPT Data: Fully automated saving\r\n';
 					notifen += '    The data is divided into four parts, supporting one-click deletion or export. It also allows individual deletion or export, and supports sharing and importing. When importing, it automatically analyzes the included data types.\r\n\r\n';
 
 					notifen += '  • 1) Chat Data List: Including data from all chats. Can export single or all chats.\r\n';
@@ -5138,6 +5154,46 @@ to{transform:translate(-50%,-18px);opacity:1}
 		}, 100);		
 			},
 			
+			// 对话列表窗口 - 改变最大宽度 *移动端可能会需要
+			changeChatListLayout() {
+				let chatListDiv = document.querySelector("#dialog-ChatList .dialog");
+				let	notif = this.settingsLanguage == 'cn' ? '最大宽度已恢复' : 'Max-Width restored' ;
+
+				if (chatListDiv == null) { return; }
+	  
+				let maxWidth = chatListDiv.style.maxWidth;
+				if (maxWidth == '430px') {
+					chatListDiv.style.maxWidth = '800px';
+					notif = this.settingsLanguage == 'cn' ? '最大宽度已调至最大' : 'Max-Width adjusted to maximum' ;
+				}else if (maxWidth == '800px'){
+					chatListDiv.style.maxWidth = '430px';
+				}else {
+					chatListDiv.style.maxWidth = '430px'; 
+				}
+
+				this.showNotification(notif, 'bottom');
+			},
+			
+			// 对话列表窗口 - 改变透明度 
+			changeChatListTransparent() {
+				let chatListDiv = document.querySelector("#dialog-ChatList .dialog");
+				let	notif = this.settingsLanguage == 'cn' ? '已恢复为不透明' : 'Restored to opacity' ;
+
+				if (chatListDiv == null) { return; }
+	  
+				let color = chatListDiv.style.backgroundColor;
+				if (color == 'rgb(237, 237, 237)') {
+					chatListDiv.style.backgroundColor = 'rgba(237, 237, 237, 0.08)';
+					notif = this.settingsLanguage == 'cn' ? '已变更为透明' : 'Changed to transparency' ;
+				}else if (color == 'rgba(237, 237, 237, 0.08)'){
+					chatListDiv.style.backgroundColor = 'rgb(237, 237, 237)';
+				}else {
+					chatListDiv.style.backgroundColor = 'rgb(237, 237, 237)'; 
+				}
+
+				this.showNotification(notif, 'bottom');
+			},
+
 
 			// 提示词窗口 - 复制系统提示词到编辑区
 			copySystemPromptToEditor(){
@@ -5748,6 +5804,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notif_cn = '服务器在处理您的请求时出现错误，是服务器的问题，请稍等片刻后重试。';
 					notif_en = 'The server had an error while processing your request. Issue on OpenAI servers, please retry your requests after a brief wait.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - 500 服务器在处理请求时出错' : 'Error - 500 Server error while processing request';
+				}else if( error.message &&  error.message.includes('503') && responseMessage.includes('That model is currently overloaded with other requests')){
+				// OpenAI 503 服务器问题
+					notif_cn = '该模型当前已经超载，您可以重新尝试下请求。';
+					notif_en = 'That model is currently overloaded with other requests. You can retry your request.';
+					title = this.settingsLanguage == 'cn' ?  '错误 - 503 模型超载' : 'Error - 503 Model overloaded';
 				}else if ( error.message && error.message.includes('400') && responseMessage.includes('Please reduce the length of the messages' )){
 				// OpenAI 400 
 					//20230606 适配GPT3.5免费计划，其他类似账号的情况未知。 Adapted for the free plan account of GPT3.5, based on the GPT3.5 free plan.
@@ -5892,8 +5953,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 					
 				if ( responseMessage != '' || responseType != '' ) {
-					notif_cn = notif_cn + '\r\n\r\nOpenAI - API错误信息:\r\n' + responseMessage + '\r\nOpenAI - API错误类型:\r\n' + responseType ;
-					notif_en = notif_en + '\r\n\r\nOpenAI - API Error Message:\r\n' + responseMessage + '\r\nOpenAI - API Error Type:\r\n' + responseType ;
+					notif_cn = notif_cn + '\r\n\r\nOpenAI - API错误信息:\r\n' + responseMessage + '\r\nOpenAI - API错误类型:\r\n' + responseType + '\r\nOpenAI - 服务器状态:\r\nhttps://status.openai.com/' ;
+					notif_en = notif_en + '\r\n\r\nOpenAI - API Error Message:\r\n' + responseMessage + '\r\nOpenAI - API Error Type:\r\n' + responseType + '\r\nOpenAI - OpenAI Status:\r\nhttps://status.openai.com/' ;
 				}
 				notif =  this.settingsLanguage == 'cn' ?  notif_cn : notif_en;
 					
