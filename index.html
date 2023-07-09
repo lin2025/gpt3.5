@@ -24,7 +24,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v7.05 - 大更新，新增重要功能。 Major update, introducing significant new features.  最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v7.09 - 增加移动端页面缩放功能。  （ v7.05 - 大更新，新增重要功能。 Major update, introducing significant new features.)  最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -37,7 +37,7 @@
 <title>LinGPT - GPT3.5</title>
 <meta name="description" content="LinGPT - A GPT-3.5 Webpage with Just a Single HTML File." />
 <!-- 网页在手机/平板上的显示比例  默认缩放80%（ initial-scale=0.8 ） -->
-<meta name="viewport" content="width=device-width,initial-scale=0.8,minimum-scale=0.5,maximum-scale=2,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=0.8,minimum-scale=0.5,maximum-scale=2,user-scalable=yes,viewport-fit=cover">
 <link rel="shortcut icon" href="https://openai.com/favicon.ico">
 <!-- 可修改 Editable - iPhone/iPad将网页添加到主屏幕后显示的Logo  默认为ChatGPT的Logo  *小白不需要改。需要传网页到Github/Gitee/静态网页托管平台/主机/服务器的同学，才需要设置。  简单点快速设置：任意格式的正方形图片。  推荐参考设置：png格式 180x180  -->
 <link rel="apple-touch-icon" href="https://openai.com/favicon.ico">
@@ -231,7 +231,7 @@ input:focus{z-index:2}
 .dialog-header{position:relative;height:40px;line-height:40px;padding:0 20px;background-color:#f5f5f5;border-top-left-radius:10px;border-top-right-radius:10px}
 .dialog-bottom{position:relative;height:15px;line-height:15px;border-bottom-left-radius:10px;border-bottom-right-radius:10px}
 .dialog-close{line-height:20px;color:#333333;position:absolute;top:10px;right:10px;width:20px;height:20px;cursor:pointer}
-.dialog-title{font-size:14px;line-height:20px;color:#333333;position:absolute;top:10px;align-items:center;justify-content:center;display:flex}
+.dialog-title{font-size:14px;line-height:20px;color:#333333;position:absolute;top:10px;align-items:center;justify-content:center;display:flex;-webkit-text-size-adjust:100%;}
 .dialog-scroll{position: relative; width: 100%; height: calc(100% - 54.5px); overflow: auto;scrollbar-width:thin;}
 .dialog-content{padding:20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center}
 .dialog-content .btn,.dialog-content .dh-input{margin:0 2px}
@@ -241,7 +241,7 @@ input:focus{z-index:2}
 .dialog-content .panelgroup-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;padding-bottom:1px;border-bottom:1px solid rgb(220,220,220,0.5)}
 .dialog-content .panelgroup-head > span{color:#666666;font-size:12px}
 .dialog-content .panelgroup-shadow{box-shadow: 1px 1.5px 7.5px 2.5px rgba(201, 201, 201, 0.66);}
-.dialog-content span{font-size:12px;color:#333333;margin-left:4px;line-height:18px}
+.dialog-content span{font-size:12px;color:#333333;margin-left:4px;line-height:18px;-webkit-text-size-adjust:100%;}
 .dialog-mask{position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.5);z-index:-1}
 .panelgroup-chatdata-selected{box-shadow: 0 0 0.5px 1px rgba(26, 168, 50, 0.8 ) !important;background: linear-gradient(rgba(26, 168, 50, 0.015), rgba(26, 168, 50, 0.15));}
 .control-container{width:auto;margin-right:6px}
@@ -271,7 +271,7 @@ input:focus{z-index:2}
 /* 以下 消息通知 tooltips */
 .notification{position:relative;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;z-index:900900}
 .notification-wrapper{max-width:600px;overflow:hidden;position:fixed;transform:translate(calc(-50% + 0.5px), calc(-50% + 0.5px));background-color:#fdffb4;box-shadow:0 0 8px rgba(191,169,16,0.3);border:1px solid rgba(166,152,27,0.45);z-index:900902}
-.notification-content{color:#664909;font-size:13px;line-height:1.6}
+.notification-content{color:#664909;font-size:13px;line-height:1.6;-webkit-text-size-adjust:100%;}
 .notification-content-center{display:block;text-align:start;padding-left:6px;margin:5px 10px 0px 10px;word-break:break-word}
 .notification-content-bottom{display:flex;text-align:center;padding-left:0;margin:5px 11px 5px 11px;word-break:break-word}
 .notification-center{width:82%;min-width:160px;bottom:auto;left:50%;top:50%;right:auto;border-radius:10px}
@@ -438,7 +438,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 	<!-- dialog-wrapper A: 设置 Settings -->  
 	<div id="dialog-settings" class="dialog-wrapper" v-show="isShowDialog_Settings">
 		<!-- A: dialog -->  
-		<div class="dialog">
+		<div class="dialog" style="max-height: 800px;">
 	
 			<!-- A: 标题 header -->  
 			<div class="dialog-header">
@@ -451,15 +451,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<option v-if="settingsLanguage == 'cn'" v-for="option in simpleModeOptions_cn" :value="option.state">{{ option.label }}</option>
 						<option v-else v-for="option in simpleModeOptions_en" :value="option.state">{{ option.label }}</option>
 					</select>
-					<span style="margin-left:auto">LinGPT v7.05&nbsp;&nbsp;</span>
-					<button  class="btn btnzoom-a" style="margin: 0px; padding: 0 3px;background: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" >
+					<span style="margin-left:auto">v7.09&nbsp;&nbsp;</span>
+					<button  class="btn btnzoom-a" style="margin: 0px; padding: 0 3px;background: linear-gradient(to bottom, #fff, #fff);background-color: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" >
 						<a href="https://github.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 16 16"  fill="#1f2328"> 
 								<path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
 							</svg>
 						</a>
 					</button>
-					<button  class="btn btnzoom-a" style="margin-left: 5px; padding: 0 3px;background: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" >
+					<button  class="btn btnzoom-a" style="margin-left: 5px; padding: 0 3px;background: linear-gradient(to bottom, #fff, #fff);background-color: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" >
 						<a href="https://gitee.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 24 24" fill="#c61d22">
 								<path d="m11.984,0a12,12 0 0 0 -11.984,12a12,12 0 0 0 12,12a12,12 0 0 0 12,-12a12,12 0 0 0 -12,-12a12,12 0 0 0 -0.016,0zm6.09,5.333c0.328,0 0.593,0.266 0.592,0.593l0,1.482a0.594,0.594 0 0 1 -0.593,0.592l-8.296,0c-0.982,0 -1.778,0.796 -1.778,1.778l0,5.63c0,0.327 0.266,0.592 0.593,0.592l5.63,0c0.982,0 1.778,-0.796 1.778,-1.778l0,-0.296a0.593,0.593 0 0 0 -0.592,-0.593l-4.15,0a0.592,0.592 0 0 1 -0.592,-0.592l0,-1.482a0.593,0.593 0 0 1 0.593,-0.592l6.815,0c0.327,0 0.593,0.265 0.593,0.592l0,3.408a4,4 0 0 1 -4,4l-8.741,0a0.593,0.593 0 0 1 -0.593,-0.593l0,-8.296a4.444,4.444 0 0 1 4.445,-4.444l8.296,0l0,-0.001z"/>
@@ -623,7 +623,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<span style="font-size: 11px;">top_p: {{apiTopP}}</span>
 							</div>
 							<div class="control-bg" >
-								<input type="range" class="slider" v-model.number="apiTopP"  min="0.0" max="1" step="0.1" value="1" >
+								<input @change="changeTopP" type="range" class="slider" v-model.number="apiTopP"  min="0.0" max="1" step="0.1" value="1" >
 							</div>
 						</div>
 	
@@ -633,7 +633,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<span style="font-size: 11px;">presence_penalty: {{apiPresencePenalty}}</span>
 							</div>
 							<div class="control-bg" >
-								<input type="range" class="slider" v-model.number="apiPresencePenalty"  min="-2.0" max="2.0" step="0.1" value="0" >
+								<input @change="changePresencePenalty" type="range" class="slider" v-model.number="apiPresencePenalty"  min="-2.0" max="2.0" step="0.1" value="0" >
 							</div>
 						</div>
 	
@@ -643,7 +643,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<span style="font-size: 11px;">frequency_penalty: {{apiFrequencyPenalty}}</span>
 							</div>
 							<div class="control-bg" >
-								<input type="range" class="slider" v-model.number="apiFrequencyPenalty"  min="-2.0" max="2.0" step="0.1" value="0" >
+								<input @change="changeFrequencyPenalty" type="range" class="slider" v-model.number="apiFrequencyPenalty"  min="-2.0" max="2.0" step="0.1" value="0" >
 							</div>
 						</div>
 					</div>
@@ -654,6 +654,18 @@ to{transform:translate(-50%,-18px);opacity:1}
 					<div class="panelgroup-head">
 						<span>{{ settingsLanguage == 'cn' ? '常规设置' : 'General Settings' }}</span>
 						<button  @click="showMiniHelp('A-GeneralSettings')"  class="btn minibtn bluebtn btnzoom-b" style="margin-right: auto;">?</button>
+						<div style="margin-right: -7px;">
+							<svg width="22" height="22"  :fill="(pageScaling === '0.8' || pageScaling === '0.80') ? '#25ad24' : '#f44400'" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:se="http://svg-edit.googlecode.com">
+								<path d="m22,29l-12,0a3,3 0 0 1 -3,-3l0,-20a3,3 0 0 1 3,-3l12,0a3,3 0 0 1 3,3l0,20a3,3 0 0 1 -3,3zm-12,-24a1,1 0 0 0 -1,1l0,20a1,1 0 0 0 1,1l12,0a1,1 0 0 0 1,-1l0,-20a1,1 0 0 0 -1,-1l-12,0z" id="svg_1"/>
+								<path d="m18,7l-4,0a2,2 0 0 1 -2,-2l0,-1a1,1 0 0 1 1,-1l6,0a1,1 0 0 1 1,1l0,1a2,2 0 0 1 -2,2zm-4,-2l0,0z" />
+							</svg>
+						</div>
+						<select @change="changePageScaling(true)" class="dropdown minibtn minibtn-default btnzoom-b" v-model="selectedPageScaling" :class="{ 'orangereddropdown': !(pageScaling === '0.8' || pageScaling === '0.80') }" :style="{ marginRight: settingsLanguage == 'cn' ? '-4px' : '-7px', width: settingsLanguage == 'cn' ? '64px' : '90px' }">
+							<option disabled value="">{{ settingsLanguage == 'cn' ? '页面缩放' : 'Page Scaling' }}</option>
+							<option disabled value="help1">{{ settingsLanguage == 'cn' ? ' - 当前缩放为 ' + (parseFloat(this.pageScaling) * 100).toFixed(0) + '%，默认的缩放设置是 80%' : ' - Current scaling is ' + (parseFloat(this.pageScaling) * 100).toFixed(0) + '%, and default scaling is 80%'  }}</option>
+							<option disabled value="help2">{{ settingsLanguage == 'cn' ? ' - 仅支持移动设备，电脑端不会进行缩放' : ' - Only mobile devices are supported, and there will be no scaling on desktop' }}</option>
+							<option v-for="option in selectedPageScalingOptions" :value="option">{{ option }}</option>
+						</select>
 						<button  @click="restoreDefault_GeneralSettings"  class="btn minibtn minibtn-default bluebtn btnzoom-b" :style="{ marginRight: settingsLanguage == 'cn' ? '-2px' : '-4px'}">{{ settingsLanguage == 'cn' ? '恢复默认' : 'Restore Default' }}</button>
 					</div>
 				
@@ -864,6 +876,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							<option v-if="settingsLanguage == 'cn'" v-for="option in selectedExportLocalStorageDataOptions_cn" :value="option.type">{{ option.label }}</option>
 							<option v-else v-for="option in selectedExportLocalStorageDataOptions_en" :value="option.type">{{ option.label }}</option>
 							<option v-if="!isSimpleMode" disabled value="help3">{{ settingsLanguage == 'cn' ? ' - 如果只想导出单个对话，请在[对话列表]窗口中点击[•••]' : ' - To export a single chat data: Click [•••] in the [Chat List] window' }}</option>
+							<option v-if="!isSimpleMode" disabled value="help4">{{ settingsLanguage == 'cn' ? ' - 若没反应或下载失败，可能是浏览器或设备兼容性问题' : ' - No response or download failure may be due to browser or device compatibility issues' }}</option>
 						</select>
 						<button @click="importLocalStorageData" :disabled="!isLocalStorageSupported" class="btn" style="justify-content: start;width: auto;height: 24px; flex: 1 1 0%; margin: 4px 3px 1px 3px;" :style="{ minWidth: settingsLanguage == 'cn' ? '88px' : '102px' }">
 							{{ settingsLanguage == 'cn' ? '导入 (.json)' : 'Import (.json)' }}
@@ -900,7 +913,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 	<!-- dialog-wrapper B: 提示词 Prompt Generator -->  
 	<div id="dialog-promptgenerator" class="dialog-wrapper" v-show="isShowDialog_PromptGenerator">
 		<!-- B: dialog -->  
-		<div class="dialog" style="max-width: 95%;">
+		<div class="dialog" style="width: 95%;max-width: 800px; max-height: 680px;">
 			<!-- B: 标题 header -->  
 			<div class="dialog-header">
 				<div class="dialog-title" >
@@ -909,11 +922,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<path d="M10.4,19.2H7.3c-0.3,0-0.5-0.2-0.5-0.5V5.3c0-0.3,0.2-0.5,0.5-0.5h9.3c0.3,0,0.5,0.2,0.5,0.5v8.5c0,0.3-0.2,0.5-0.5,0.5    h-5.7v4.4C10.9,19,10.7,19.2,10.4,19.2z M7.8,18.2h2.1v-4.4c0-0.3,0.2-0.5,0.5-0.5h5.7V5.8H7.8V18.2z M13.6,11.2h-3.2    c-0.3,0-0.5-0.2-0.5-0.5V8.4c0-0.3,0.2-0.5,0.5-0.5h3.2c0.3,0,0.5,0.2,0.5,0.5v2.3C14.1,11,13.9,11.2,13.6,11.2z M10.9,10.2h2.2    V8.9h-2.2V10.2z"/>
 					</svg>
 					{{ settingsLanguage == 'cn' ? '&nbsp;提示词&nbsp;' : '&nbsp;Prompt Generator&nbsp;' }}
-					<button @click="changePromptGeneratorLayout"  class="btn bluebtn" style="width: 23px; padding: 0px 1px; height: 20px;" >
+					<button @click="changePromptGeneratorMaxWidth"  class="btn bluebtn" style="margin-right: 7px;width: 22px; padding: 0px 1px; height: 20px;" >
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
 						</div>
 					</button>	
+					<button @click="changePromptGeneratorLayout"  class="btn bluebtn" style="margin-right: auto;margin-left: 1px;width: 22px; padding: 0px 1px; height: 20px;" >
+						<div>
+							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+						</div>
+					</button>		
 				</div>
 				<div class="dialog-close" @click="isShowDialog_PromptGenerator = false">
 					<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
@@ -1037,7 +1055,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 	<!-- dialog-wrapper C: 对话列表 Chat List -->  
 	<div id="dialog-ChatList" class="dialog-wrapper" v-show="isShowDialog_ChatList">
 		<!-- C: dialog -->  
-		<div class="dialog" style="max-width: 430px;background-color: rgb(237, 237, 237);">
+		<div class="dialog" style="max-width: 430px;width: 95%;max-height: 720px;background-color: rgb(237, 237, 237);">
 			<!-- C: 标题 header -->  
 			<div class="dialog-header">
 				<div class="dialog-title" style="width: calc(95% - 35px);">
@@ -1045,12 +1063,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 					</svg>
 					{{ settingsLanguage == 'cn' ? '&nbsp;对话列表&nbsp;' : '&nbsp;Chat List&nbsp;' }}
 					<button @click="showMiniHelp('C-ChatList')"  class="btn minibtn bluebtn btnzoom-b" style="margin-right: 8px;">?</button>	
-					<button @click="changeChatListLayout"  class="btn bluebtn" style="margin-right: 8px;width: 23px; padding: 0px 1px; height: 20px;" >
+					<button @click="changeChatListMaxWidth"  class="btn bluebtn" style="margin-right: 8px;width: 22px; padding: 0px 1px; height: 20px;" >
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
 						</div>
 					</button>
-					<button @click="changeChatListTransparent"  class="btn bluebtn" style="margin-right: auto;width: 23px; padding: 0px 1px; height: 20px;" >
+					<button @click="changeChatListTransparent"  class="btn bluebtn" style="margin-right: auto;width: 22px; padding: 0px 1px; height: 20px;" >
 						<div>
 							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 						</div>
@@ -1419,6 +1437,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 				],
 				
 				//**常规设置第一排
+				//移动设备页面比例  For mobile devices
+				pageScaling: '0.8', //字符型，用于存储设置
+				selectedPageScaling: '', //下拉框选项，选后后清空
+				selectedPageScalingOptions: [], //0.5～1  超过100%，动态设置似乎没有效果
+
 				//语言设置 
 				settingsLanguage: 'cn', //简体中文cn 英文en。 Chinese-Simplified = cn  English = en
 				settingsLanguageOptions: [
@@ -1641,7 +1664,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
 				// The First Message, This message is out of context,
 				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-				thefirstmessage: "### **LinGPT** ***v7.05*** \r\n##### **v7.05** 1.新增本地存储及数据管理功能; 2.新增多对话(点击头像)、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3.修复Windows系统兼容性问题。\r\n###### 1.Added: local storage and data management. 2.Added: multiple chats (click avatar), auto-saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3.Bug fixes for Windows compatibility.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
+				thefirstmessage: "### **LinGPT** ***v7.09*** \r\n##### **v7.09** [设置] > 新增 [页面缩放] **v7.05** 1.新增本地存储及数据管理功能; 2.新增多对话(点击头像)、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3.修复Windows系统兼容性问题。\r\n###### v7.09 [Settings] > Added [Page Scaling].  v7.05 1.Added: local storage and data management. 2.Added: multiple chats (click avatar), auto-saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3.Bug fixes for Windows compatibility.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 				
 				// v7.05 开始提示词不建议写在代码中。Starting from v7.05, it is advised not to write system prompts in the code. 
 				// 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，不会自动生效，需要手动保存后才会生效。
@@ -1684,7 +1707,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 
 				
-				//v1.7.05  User用户 Settings - 变量名单/变量列表/变量白名单/默认值。  Related to User - Variable list, variable whitelist, default value.
+				//v1.7.09  User用户 Settings - 变量名单/变量列表/变量白名单/默认值。  Related to User - Variable list, variable whitelist, default value.
 				//* 可修改 Editable.  默认的设置，默认参数，默认值。 Default settings, default parameters, default values.
 				//* 一般不用修改，因为支持浏览器本地存储(localStorage)，直接在网页中修改即可，下次再打开时会加载上次的变量设置。
 				//* Usually there is no need to modify it, as it supports browser local storage (localStorage), which can be directly modified in the [Settings] of the webpage.
@@ -1712,6 +1735,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					chatHistoryPromptOnlyUseBackticks: false , //导出的聊天记录中，系统提示词的markdown语法处理方式。 true:仅用"代码块"包裹  false:自动判断使用"引用"或者"代码块"包裹
 					isShowProConfig:true, // 显示/隐藏 API专业设置 Show/Hide Professional API Settings
 					isSimpleMode: false,  //true=简约模式（默认模式），false=新用户模式。区别在于简约模式显示的"提示信息"会少些。 true=Simple Mode (Normal Mode), false=User Onboarding. The difference is that there will be more "help information" in User Onboarding.
+					pageScaling: '0.8', //*新增变量日期：7.09 。 移动设备页面比例
 				},
 				
 				//v1.7.05  聊天相关 Chat Variables - 变量名单/变量列表/变量白名单/默认值。  Related to Chat Variables  - Variable list, variable whitelist, default value.
@@ -1776,11 +1800,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 创建下载链接并自动下载
 				const downloadLink = document.createElement('a');
 				downloadLink.href = url;
+				downloadLink.style.display="none";
 				const now = new Date();
 				filename = filename + ' ' +  this.formatDateYYYYMMDDHHmmss(now,'.').slice(5) ; // like “10-14 10.23.45”
 				filename = filetype == 'markdown' ? filename + '.md' : filename + '.txt';
 				downloadLink.download = filename;
-				downloadLink.click();
+				document.body.appendChild(downloadLink);
+				downloadLink.click(); 
+				document.body.removeChild(downloadLink);
   			}, 
 			//按钮：导出最后一轮  showtime是否导出时间  exportprompt是否导出提示词  onlyusebackticks提示词是否只使用反引号包裹  filetype:'markdown'(.md) or 'plain'(.txt)
 			ExportData_SingleRound(showtime, exportprompt, onlyusebackticks, filetype){
@@ -1873,21 +1900,49 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 创建下载链接并自动下载
 				const downloadLink = document.createElement('a');
 				downloadLink.href = url;
+				downloadLink.style.display="none";
 				const now = new Date();
 				filename = filename + ' ' +  this.formatDateYYYYMMDDHHmmss(now,'.').slice(5) + '.json' ; // like “10-14 10.23.45”
 				downloadLink.download = filename; 
+				document.body.appendChild(downloadLink);
 				downloadLink.click(); 
+				document.body.removeChild(downloadLink);
 			},
 
   			
 			//格式化时间  date时间 delimiter分隔符  分隔符为":"输出：2021-10-14 10:23:45  分隔符为"."输出：2021-10-14 10.23.45
 			formatDateYYYYMMDDHHmmss(date,delimiter) {
 				const year = date.getFullYear();
-				const month = (date.getMonth() + 1).toString().padStart(2, '0');
-				const day = date.getDate().toString().padStart(2, '0');
-				const hour = date.getHours().toString().padStart(2, '0');
-				const minute = date.getMinutes().toString().padStart(2, '0');
-				const second = date.getSeconds().toString().padStart(2, '0');
+				let month, day, hour, minute, second;
+				if (String.prototype.padStart) {
+					month = (date.getMonth() + 1).toString().padStart(2, '0');
+					day = date.getDate().toString().padStart(2, '0');
+					hour = date.getHours().toString().padStart(2, '0');
+					minute = date.getMinutes().toString().padStart(2, '0');
+					second = date.getSeconds().toString().padStart(2, '0');
+				} else {
+					month = (date.getMonth() + 1).toString();
+					day = date.getDate().toString();
+					hour = date.getHours().toString();
+					minute = date.getMinutes().toString();
+					second = date.getSeconds().toString();
+					// 在月份、日期、小时、分钟和秒数前补零
+					if (month.length === 1) {
+						month = '0' + month;
+					}
+					if (day.length === 1) {
+						day = '0' + day;
+					}
+					if (hour.length === 1) {
+						hour = '0' + hour;
+					}
+					if (minute.length === 1) {
+						minute = '0' + minute;
+					}
+					if (second.length === 1) {
+						second = '0' + second;
+					}
+				}
 				//ES6的写法：  return `${year}-${month}-${day} ${hour}${delimiter}${minute}${delimiter}${second}`;
 				return year + '-' + month + '-' + day + ' ' + hour + delimiter + minute + delimiter + second; //兼容性更好。 Support more browsers.
 			}, 
@@ -2028,8 +2083,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				  	title = '';
 					break;
 				  case 'A-ExportChatHistory':
-				  	notifcn = '  • 将当前对话的聊天记录导出为纯文本格式，可直接阅读。\r\n\r\n  • 导出聊天记录 · 单轮记忆：导出单轮聊天记录，即针对当前的上下文记忆进行导出，包含最新修改的系统提示词，不含发送失败的、撤回的、重问的记录。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 导出聊天记录 · 全部：将网页上的所有聊天记录（包含发送失败的、撤回的、重问的记录）和所有操作记录（包含系统提示词修改记录）导出并下载。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 附 两个Markdown在线编辑器网站：\r\n    https://stackedit.cn/app# \r\n    http://tool.pfan.cn/markdown ';
-					notifen = '  • Export the chat history of the current chat as plain text format for easy reading.\r\n\r\n  • Export Chat History for a Single Round, which includes the current context and the most recent system prompt, but excluding failed messages, undo messages, and retry messages. Exported file format: Markdown. File type: .md | .txt\r\n\r\n  • Export All Chat History, export and download all chat history (including failed messages, undo messages, retry messages) and all operation records (including system prompt modification records) on the webpage. Exported file format: Markdown. File type: .md | .txt \r\n\r\n  • Websites for Markdown online editors:\r\n    https://dillinger.io \r\n    https://stackedit.io/app# ';
+				  	notifcn = '  • 将当前对话的聊天记录导出为纯文本格式，可直接阅读。\r\n\r\n  • 导出聊天记录 · 单轮记忆：导出单轮聊天记录，即针对当前的上下文记忆进行导出，包含最新修改的系统提示词，不含发送失败的、撤回的、重问的记录。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 导出聊天记录 · 全部：将网页上的所有聊天记录（包含发送失败的、撤回的、重问的记录）和所有操作记录（包含系统提示词修改记录）导出并下载。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 如果导出时没有反应或下载失败，可能是因为浏览器或设备不兼容。\r\n\r\n  • 附 两个Markdown在线编辑器网站：\r\n    https://stackedit.cn/app# \r\n    http://tool.pfan.cn/markdown ';
+					notifen = '  • Export the chat history of the current chat as plain text format for easy reading.\r\n\r\n  • Export Chat History for a Single Round, which includes the current context and the most recent system prompt, but excluding failed messages, undo messages, and retry messages. Exported file format: Markdown. File type: .md | .txt\r\n\r\n  • Export All Chat History, export and download all chat history (including failed messages, undo messages, retry messages) and all operation records (including system prompt modification records) on the webpage. Exported file format: Markdown. File type: .md | .txt \r\n\r\n  • If there is no response or the download fails when exporting, it may be due to browser or device incompatibility.\r\n\r\n  • Websites for Markdown online editors:\r\n    https://dillinger.io \r\n    https://stackedit.io/app# ';
 				  	title = '';
 					break;
 				  case 'C-ChatList':
@@ -2037,14 +2092,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifcn += '\r\n  • 对话的数据不包括用户设置、用户头像、提示词模板、提示词编辑器草稿、密钥 (API-Key) 及API参数信息，切换不同对话时，这些数据不会发生改变。';
 					notifcn += '\r\n  • 可导出单个对话数据，或一次导出所有对话的数据。可用于分享，对方导入后可恢复对话数据，完全一致。';
 					notifcn += '\r\n\r\n  • 若浏览器支持本地存储 (localStorage) ，所有对话数据将会自动保存在浏览器缓存中。';
-					notifcn += '\r\n  • 非隐私模式（无痕模式）下，会同步不同标签页间的数据，自动新增、修改、合并，数据冲突会自动创建副本。';
+					notifcn += '\r\n  • 非隐私模式 (无痕模式) 下，会同步不同标签页间的数据，自动新增、修改、合并，数据冲突会自动创建副本。';
 					notifcn += '\r\n  • 可随时通过 [删除数据] 功能或浏览器的清除历史记录 (清除缓存) 功能来删除所有数据。';
 					if(!this.isSimpleMode){
 						notifcn += '\r\n  • 对话列表按照最近活动时间排序，新的靠前。';
 						notifcn += '\r\n  • #编号 和 #描述 可随意修改，仅有长度限制。';
 						notifcn += '\r\n  • 手动或自动创建对话副本时，副本的创建时间会自动加1秒或更多。';
-						notifcn += '\r\n\r\n  • 使用浏览器普通模式时：标签页或浏览器窗口可随时刷新或关闭，打开时均能恢复数据，且不同标签页的数据是共享的（同一浏览器打开相同网页的情况下）。';
-						notifcn += '\r\n  • 使用浏览器隐私模式（无痕模式）时：大多数支持本地存储，标签页可刷新，标签页或窗口之间不互通数据，标签页关闭时，所有数据都会被销毁。';
+						notifcn += '\r\n\r\n  • 使用浏览器普通模式时：标签页或浏览器窗口可随时刷新或关闭，打开时均能恢复数据，且不同标签页的数据是共享的 (同一浏览器打开相同网页的情况下)。';
+						notifcn += '\r\n  • 使用浏览器隐私模式 (无痕模式) 时：大多数支持本地存储，标签页可刷新，标签页或窗口之间不互通数据，标签页关闭时，所有数据都会被销毁。';
 					}
 					notifen = '  • Each chat data includes chat history, the current system prompt, the draft in the chat input box, and other data directly associated with the chat.';
 					notifen += '\r\n  • Chat data does not include user settings, avatars, prompt generator data, prompt editor drafts, API keys, and API parameter information. These data will not change when switching between different chats.';
@@ -2062,7 +2117,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				  	title = '';
 					break;
 				  case 'A-DataPrivacyAndManagement':
-					notifcn = '  • 所有数据仅存储于浏览器本地存储（localStorage）中，不会通过任何方式对外传输。\r\n';
+					notifcn = '  • 所有数据仅存储于浏览器本地存储 (localStorage) 中，不会通过任何方式对外传输。\r\n';
 					notifcn += '  • [删除数据] 可清空所有数据，或者通过浏览器的历史记录清除功能来清空数据 (清除缓存)。';
 					if(!this.isSimpleMode){
 						notifcn += '\r\n  • localStorage是浏览器提供的功能，用于在用户的本地设备上存储数据。 1) localStorage与域名相关联，同一个域名下的页面可以共享同一个localStorage。 2) 对于本地运行的HTML文件，localStorage根据文件地址和文件名进行绑定。不同路径或文件名的HTML文件有各自独立的localStorage。 3) 不同浏览器数据不互通。 4) 在浏览器隐私模式下，通常每个标签页都有独立的localStorage。';
@@ -2181,8 +2236,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 				if (document.documentElement.clientWidth < 414) {
 					let isshow = Math.random() < 0.6  ; //概率 随机 
 					if(this.isSimpleMode){ isshow = false; }
-					this.isShowTotaltokensSVG = !isshow;
-					this.isShowTotaltokensLabel = isshow;
+					//this.isShowTotaltokensSVG = !isshow;
+					//this.isShowTotaltokensLabel = isshow;//小屏幕可考虑显示 
+					this.isShowTotaltokensSVG = true; 
+					this.isShowTotaltokensLabel = false;//小屏幕直接不显示
 				}else {
 					this.isShowTotaltokensSVG = true;
 					this.isShowTotaltokensLabel = !this.isSimpleMode ; // !this.isSimpleMode = ( true && this.isSimpleMode )
@@ -2214,13 +2271,82 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 				this.showNotification(notif, 'bottom');
 			},
-			// 设置窗口 Temperature 警告
-			changeTemperature(){
-			
+			// 判断是否需要禁用网页缩放 user-scalable  *实际上所有情况下都可以缩放，只禁ios，但ios会忽略禁用指令
+			isDisableZoomOnIOS(){		
+				//仅iphone/ipad需要禁用缩放（排除夸克浏览器）。不禁用时，ios设备点击输入框会放大页面，输入后需要手动缩小页面，对于聊天网页而已，体验不好，很麻烦。 禁用后，ios设备中的safari、firefox、chrome、edge都还可以放大，会忽略指令，但是Quark浏览器除外。
+				let isIOS = /iPad|iPhone|ios|iPod/.test(navigator.userAgent) ; // 判断是否为 iOS 设备
+				let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent); // 判断是否为 Safari 内核
+				let isQuark = /Quark|quark/.test(navigator.userAgent);  // 判断是否为 夸克 浏览器，iphone中Quark会严格执行禁用缩放的命令，而其他浏览器都会忽略
+				//条件宽松点，isSafari可能是mac，禁用不影响
+				if((isIOS || isSafari) && !isQuark){
+					//user-scalable=no
+					return true;
+				}else{
+					//user-scalable=yes
+					return false;
+				}
 			},
-			// 设置窗口 MaxTokens  警告
+			// 设置窗口 - 更改移动端页面显示比例，默认0.8  change Page Scaling  mode: true=selected change  false=manual setting
+			changePageScaling(mode){ 
+				//验证，避免意外错误
+				let checkPageScaling;
+				if(mode === false){
+					checkPageScaling = parseFloat(this.pageScaling);// this.pageScaling like '0.8'
+				}else{
+					checkPageScaling = parseFloat(this.selectedPageScaling) / 100; // this.selectedPageScaling like '80%'
+					this.selectedPageScaling = '';//复原
+				}
+				
+				// 判断是否为空
+				if (isNaN(checkPageScaling)) {
+					checkPageScaling = 0.8;
+				}
+				// 判断是否在范围内
+				if (checkPageScaling < 0.5 || checkPageScaling > 1) { //通过setAttribute设置，超过100%没有效果
+					checkPageScaling = 0.8;
+				}
+				
+				// 确保格式正确 保留2位小数的字符串型
+				this.pageScaling = checkPageScaling.toFixed(2); // toString
+				
+				const user_scalable = this.isDisableZoomOnIOS() ? 'user-scalable=no,' : 'user-scalable=yes,' ; 
+				const newContent = 'width=device-width,initial-scale=' + this.pageScaling + ',minimum-scale=0.5,maximum-scale=2,' + user_scalable + 'viewport-fit=cover';
+				document.querySelector('meta[name="viewport"]').setAttribute('content', newContent);
+				
+				if(mode !== false){
+					const percent = (parseFloat(this.pageScaling) * 100).toFixed(0) + '%'; //转百分比
+					const notif = this.settingsLanguage == 'cn' ? '网页显示比例已改为 ' + percent + ' (如果网页放大了，请双指操作缩小)' : 'Page display scale has been changed to ' + percent + ' (If the page is zoomed in, use two fingers to zoom out).' ;
+					const notiftime = this.settingsLanguage == 'cn' ? 6500 : 7500;
+					this.showNotification(notif, 'bottom', '', notiftime);
+				}
+			},
+			// 设置窗口 Temperature
+			changeTemperature(){
+				const notif = this.settingsLanguage == 'cn' ? '"temperature" 变更为 ' + this.apitemperature.toString() : '"temperature" changed to ' + this.apitemperature.toString() ;
+				this.showNotification(notif, 'bottom');
+			},
+			// 设置窗口 MaxTokens
 			changeMaxTokens(){
-			
+				if(this.openSmartMaxTokens){
+					return;//自动调整不会激发事件，可以不用return
+				}
+				const notif = this.settingsLanguage == 'cn' ? '"max_tokens" 变更为 ' + this.apiMaxTokens.toString() : '"max_tokens" changed to ' + this.apiMaxTokens.toString() ;
+				this.showNotification(notif, 'bottom');
+			},
+			// 设置窗口 Top
+			changeTopP(){
+				const notif = this.settingsLanguage == 'cn' ? '"top_p" 变更为 ' + this.apiTopP.toString() : '"top_p" changed to ' + this.apiTopP.toString() ;
+				this.showNotification(notif, 'bottom');
+			},
+			// 设置窗口 PresencePenalty
+			changePresencePenalty(){
+				const notif = this.settingsLanguage == 'cn' ? '"presence_penalty" 变更为 ' + this.apiPresencePenalty.toString() : '"presence_penalty" changed to ' + this.apiPresencePenalty.toString() ;
+				this.showNotification(notif, 'bottom');
+			},
+			// 设置窗口 FrequencyPenalty
+			changeFrequencyPenalty(){
+				const notif = this.settingsLanguage == 'cn' ? '"frequency_penalty" 变更为 ' + this.apiFrequencyPenalty.toString() : '"frequency_penalty" changed to ' + this.apiFrequencyPenalty.toString() ;
+				this.showNotification(notif, 'bottom');
 			},
 
 			//粗略的估算tokens。仅适合 GPT-3.5 & GPT4， 不适合GPT-3 ，tokens计算方式完全不同。有技术的可以直接实现100%精准计算，不需要估算。参考官网，或者：https://gpt-tokenizer.dev
@@ -2701,7 +2827,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						//判断图片大小。 若大于350k，提醒不存到浏览器缓存，刷新后头像将被清除
 						if (filesize > 350) {
 							// 图片大小超过了350k
-							const notif_cn = '上传的图片大小超过了 350KB (0.35MB)，因此无法保存到浏览器本地存储（localStorage）中。这不会影响使用，只是在刷新或重新打开网页后，[用户头像]会失效，需要重新上传。\r\n\r\n  • localStorage容量有限，所以限制只存储大小在 350KB (0.35MB) 以内的1张图片，且只能是[用户头像]。\r\n  • 上传的图片仅会缓存在您的浏览器中，并不会通过任何方式对外传输。';
+							const notif_cn = '上传的图片大小超过了 350KB (0.35MB)，因此无法保存到浏览器本地存储 (localStorage) 中。这不会影响使用，只是在刷新或重新打开网页后，[用户头像]会失效，需要重新上传。\r\n\r\n  • localStorage容量有限，所以限制只存储大小在 350KB (0.35MB) 以内的1张图片，且只能是[用户头像]。\r\n  • 上传的图片仅会缓存在您的浏览器中，并不会通过任何方式对外传输。';
 							const notif_en = "The image you uploaded exceeds 350KB (0.35MB) in size and cannot be stored in the browser's local storage (localStorage). This will not affect usage, but the [User Avatar] will need to be re-uploaded when the page is reopened or refreshed.\r\n\r\n  • Due to limited capacity, localStorage restricts the storage of only one image under 350KB (0.35MB) and it can only be the user avatar. \r\n  • The uploaded images will only be stored in your browser cache and will not be transmitted over the network.";
 							notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 							notiftype = 'center';
@@ -2723,7 +2849,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							notiftype = 'bottom';
 						}
 					}else {
-						const notif_cn = '上传的[GPT头像]，不会存储到浏览器本地存储（localStorage）中，在刷新或重新打开网页后，上传的[GPT头像]将会失效，需要重新上传。\r\n\r\n  • localStorage容量有限，所以限制只存储大小在 350KB (0.35MB) 以内的1张图片，且只能是[用户头像]。\r\n  • 上传的图片仅会缓存在您的浏览器中，并不会通过任何方式对外传输。';
+						const notif_cn = '上传的[GPT头像]，不会存储到浏览器本地存储 (localStorage) 中，在刷新或重新打开网页后，上传的[GPT头像]将会失效，需要重新上传。\r\n\r\n  • localStorage容量有限，所以限制只存储大小在 350KB (0.35MB) 以内的1张图片，且只能是[用户头像]。\r\n  • 上传的图片仅会缓存在您的浏览器中，并不会通过任何方式对外传输。';
 						const notif_en = "The uploaded [GPT Avatar] will not be stored in the browser's local storage (localStorage). After reopening or refreshing the page, the uploaded [GPT Avatar] will become invalid and need to be re-uploaded.\r\n\r\n  • Due to limited capacity, localStorage restricts the storage of only one image under 350KB (0.35MB) and it can only be the [User Avatar]. \r\n  • The uploaded images will only be stored in your browser cache and will not be transmitted over the network.";
 						notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 						notiftype = 'center';
@@ -2744,7 +2870,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					//延迟执行 之前会出现“更换中...”和“已更换头像”
 					setTimeout(() => {
 						const bottom_time = this.settingsLanguage == 'cn' ? 5200 : 6500;
-						const center_title = this.settingsLanguage == 'cn' ? '提醒' : 'Tips'; // 提醒 信息
+						const center_title = this.settingsLanguage == 'cn' ? '提醒' : 'Tip'; // 提醒 信息
 						this.showNotification(notif, notiftype, center_title, bottom_time);
 					}, 2600);//毫秒，ms
 				};
@@ -3130,6 +3256,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.openSmartMaxTokens = true; //localStorage无此变量。默认开启，需要手动设置。
 						this.changeLanguage();
 						this.changeSimpleMode(false);
+						this.changePageScaling(false);
 						this.inputapichange(false); // 重新验证api-key时 改变按钮等状态
 						this.btnDisabledState_SaveApiURL = true; //保存按钮状态改为不可用
 						this.changeStyle_FontSize();
@@ -3196,6 +3323,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.openSmartMaxTokens = true; //默认开启，localStorage无此变量
 						this.changeLanguage();
 						this.changeSimpleMode(false);
+						this.changePageScaling(false);
 
 						this.inputapichange(false); // 重新验证api-key时 改变按钮等状态
 						this.btnDisabledState_SaveApiURL = true; //保存按钮状态改为不可用
@@ -3490,6 +3618,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 									
 									this.changeLanguage();
 									this.changeSimpleMode(false);
+									this.changePageScaling(false);
 									//其他读取后需要处理的
 									this.$nextTick(() => {
 										// 1 2 3 4 5
@@ -4103,6 +4232,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				}
 
 				// 版本兼容性处理 - none
+				// 日期：7.09  userSettings - 新增变量 pageScaling（移动设备页面比例）
 				
 					
 				// - Start 1.
@@ -4232,7 +4362,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const userVariables = this.getVariablesFromThis(this.userVariables_default);
 				
 				const userSettings = {
-					version: '1.7.05',
+					version: '1.7.09',
 					avatar: this.userAvatarUp_base64,
 					userAvatarURL: this.userAvatarURL,
 					gptAvatarURL: this.gptAvatarURL,
@@ -5155,7 +5285,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 			},
 			
 			// 对话列表窗口 - 改变最大宽度 *移动端可能会需要
-			changeChatListLayout() {
+			changeChatListMaxWidth() {
 				let chatListDiv = document.querySelector("#dialog-ChatList .dialog");
 				let	notif = this.settingsLanguage == 'cn' ? '最大宽度已恢复' : 'Max-Width restored' ;
 
@@ -5164,14 +5294,17 @@ to{transform:translate(-50%,-18px);opacity:1}
 				let maxWidth = chatListDiv.style.maxWidth;
 				if (maxWidth == '430px') {
 					chatListDiv.style.maxWidth = '800px';
+					chatListDiv.style.width = '87%';
 					notif = this.settingsLanguage == 'cn' ? '最大宽度已调至最大' : 'Max-Width adjusted to maximum' ;
 				}else if (maxWidth == '800px'){
 					chatListDiv.style.maxWidth = '430px';
+					chatListDiv.style.width = '95%';
 				}else {
 					chatListDiv.style.maxWidth = '430px'; 
+					chatListDiv.style.width = '95%';
 				}
 
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 2300);
 			},
 			
 			// 对话列表窗口 - 改变透明度 
@@ -5215,7 +5348,29 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.gptSystemPrompt = sys_prompt;
 				this.btnDisabledState_SetSystemPrompt = true;
 				notif = this.settingsLanguage == 'cn' ? '已复制到编辑区' : 'Copied to the Prompt Editor' ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 2000);
+			},
+			// 提示词窗口 - 改变最大宽度
+			changePromptGeneratorMaxWidth() {
+				let promptsDiv = document.querySelector("#dialog-promptgenerator .dialog");
+				let	notif = this.settingsLanguage == 'cn' ? '适合移动设备的宽度' : 'Optimized for mobile devices' ;
+
+				if (promptsDiv == null) { return; }
+	  
+				let width = promptsDiv.style.width;
+				if (width == '95%') {
+					promptsDiv.style.width = '75%';
+					promptsDiv.style.maxWidth = '75%';
+					notif = this.settingsLanguage == 'cn' ? '适合更大分辨率的宽度' : 'Optimized to support larger screens' ;
+				}else if (width == '75%'){
+					promptsDiv.style.width = '95%';
+					promptsDiv.style.maxWidth = '800px';
+				}else {
+					promptsDiv.style.width = '95%';
+					promptsDiv.style.maxWidth = '800px';
+				}
+
+				this.showNotification(notif, 'bottom', '', 2300);
 			},
 			// 提示词窗口 - 改变布局 *移动端可能会需要
 			changePromptGeneratorLayout() {
@@ -5335,16 +5490,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 			//按钮：说明 Help
 			openDialog_Help(){
 				let notif =  '';
-				let title = this.settingsLanguage == 'cn' ? 'LinGPT v7.05 - 帮助' : 'LinGPT v7.05 - Help' ;
+				let title = this.settingsLanguage == 'cn' ? 'LinGPT v7.09 - 帮助' : 'LinGPT v7.09 - Help' ;
 				let notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File ';
 				notifcn += '\r\n\r\nLinGPT ，只有一个 html 文件的 GPT-3.5 聊天网页，轻量，便捷，零门槛。下载到电脑，打开 html 文件即可使用，像打开一张图片一样简单。可上传至托管平台 / 主机 / 服务器，支持所有免费的静态网页托管平台，不到 500K 的静态网页，托管在 Github / Gitee 非常流畅。 1) 接口: 使用 OpenAI 官方 API ，同时可自定义 API ，支持免魔法的第三方 API 。 2) 模型: 目前无法测试 GPT-4 模型，仅支持 GPT-3.5 模型 (ChatGPT) 。 3) 密钥: 需自备 API Key ，轮询 Key 的功能待开发中。 4) 数据安全: v7.05 开始支持浏览器本地存储，所有数据仅存储在浏览器缓存中，支持导出、导入、删除。代码未加密，开源透明，安全无风险，推荐搭配官方接口使用。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入API Key并验证，通过后即可开始聊天。';
 				notifcn += '\r\n\r\n#对话\r\n功能: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)。 聊天: 1) 全自动智能调节 max_tokens ，告别手动设置。 2) 可使用Markdown语法，方法与官网版 ChatGPT (chat.openai.com) 相同，当 GPT 回复未使用 Markdown 格式时，可要求其使用 Markdown 格式回复（简称 MD 格式，主要应用于代码、表格、文章排版、显示网络图片等，多数情况下 GPT 会主动使用 MD 语法）。 3) 发现手机端有少部分输入法无法换行，如遇到这种情况请更换输入法重试，或可借用 [提示词窗口] 编辑好需要换行的内容，然后再复制到聊天框发送。 4) 电脑端支持 Shift + Enter 、Ctrl + Enter 、Command(⌘) + Enter 换行。';
-				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v7.05 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、 API 设置、查询 API 余额和有效期、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、压缩上下文(可导出)、多种上下文模式、轮询Key、免费Key试用...等';
+				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v7.09 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、 API 设置、查询 API 余额和有效期、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、压缩上下文(可导出)、多种上下文模式、轮询Key、免费Key试用...等';
 				//有单引号
 				let notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\nLinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server. It can be uploaded to any static website hosting platform like GitHub and provides a very smooth browsing experience.  1) API: This code uses the OpenAI API and supports third-party APIs. 2) Model: Currently, only the GPT-3.5 model (ChatGPT gpt-3.5-turbo) is supported as the GPT-4 model cannot be tested. 3) API Key: An OpenAI API key is required. 4) User Data Security: As of v7.05, browser local storage is now supported. All data is stored solely in the browser cache and supports export, import, and deletion. ";
 				notifen += "\r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter the API Key and check it, and you can start chatting after passing. ";
 				notifen += '\r\n\r\n#Chat\r\nFeatures: Multiple chat management, automatic saving, support for creating copies, data synchronization across multiple tab pages, export capability (backup/migration/sharing), import capability (restore chats).   Chatting: 1) Markdown syntax can be used, same as the official ChatGPT (chat.openai.com). When GPT replies without using Markdown format, it can be asked to reply in Markdown format (referred to as MD format, mainly used for code, tables, article formatting, displaying web images, etc. In most cases, GPT will automatically use MD syntax). 2) Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. ';
-				notifen += "\r\n\r\n#Prompt Generator \r\nv7.05, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, API settings, checking API balance and validity period, API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: Integrated prompts, shared prompts, compressed context, multiple context modes, key rotation, etc.";
+				notifen += "\r\n\r\n#Prompt Generator \r\nv7.09, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, API settings, checking API balance and validity period, API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: Integrated prompts, shared prompts, compressed context, multiple context modes, key rotation, etc.";
 				
 				notif = this.settingsLanguage == 'cn' ? notifcn : notifen ;
 				this.showNotification(notif, 'center', title);		
@@ -5895,7 +6050,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						tips_en += '\r\n\r\n' ;
 						tips_en += '"messages" :  The current length of the context (including the last message sent).\r\n' ;
 						tips_en += '"completion" :  The API parameter "max_tokens" (adjustable in the API settings).\r\n' ;
-						tips_en += "Tips: Here's an example, if you don't want to modify the content being sent: Currently " + maxLength + ' - ' + b_messagesLength + ' = ' + diffC + ', so you need to adjust the "max_tokens" in [API Settings] to be less than ' + diffC + ' ( ★ maximum value is ' + (diffC - 1) + '), then click [Retry] to resend the request.' ;
+						tips_en += "Tip: Here's an example, if you don't want to modify the content being sent: Currently " + maxLength + ' - ' + b_messagesLength + ' = ' + diffC + ', so you need to adjust the "max_tokens" in [API Settings] to be less than ' + diffC + ' ( ★ maximum value is ' + (diffC - 1) + '), then click [Retry] to resend the request.' ;
 						notif_en = "Sending failed. The length of the context is about to exceed the limit. After closing the notification, you can choose to retry after modifying the max_tokens, undo, or modify the content to continue.";
 						const autoMaxTokens_en = '\r\n\r\n★ The "Smart max_tokens" feature has been turned off for you. Please manually adjust [API Settings] > [max_tokens] for this request. You can re-enable this feature for the next request.'
 						notif_en = this.openSmartMaxTokens ? notif_en + autoMaxTokens_en : notif_en;
@@ -6713,8 +6868,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 读取"本地存储"前的一些默认设置。Below are some default settings that are set before reading local cache. 
 			
 				//将变量设为代码默认值  *似乎没必要设默认，新对话会读取默认
-				// -- Start. vs v1.7.05 (userVariables_default)  //*6.27 用户设置-变量的默认设置 已删除，不需要。目前逻辑是：无数据时一定会添加新对话，新对话就是使用默认设置创建，所以是多余的。
-				// -- End.  vs v1.7.05 (userVariables_default)	
+				// (userVariables_default)  //*6.27 用户设置-变量的默认设置 已删除，不需要。目前逻辑是：无数据时一定会添加新对话，新对话就是使用默认设置创建，所以是多余的。
 			
 				// 可修改 Editable. 默认的GPT头像-方案A（写在代码里的绿色SVG头像）二选一 Default GPT Avatar. Plan-A (GPT Green SVG). You can only choose either Plan A or Plan B.
 				this.isgptGreenSvgShow = true; //显示<svg>+隐藏<img>。 display<svg> + hide<img>
@@ -6748,6 +6902,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						// -- Start
 						this.changeLanguage();
 						this.changeSimpleMode(false);
+						this.changePageScaling(false);
 			
 						this.$nextTick(() => {
 							// 1 2 3 4 5 6
@@ -6771,6 +6926,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					
 					this.changeLanguage();
 					this.changeSimpleMode(false);
+					this.changePageScaling(false);
 					// 1 3 4 5 7 this.todoList_ChatDataRestored 写在 this.chatList_addNewChatData 中
 						
 					//提醒语言支持英语 Remind users that the webpage supports English.
@@ -6816,7 +6972,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							const notif_cn = '在Mac电脑上，如果您使用Safari直接打开本地的.html文件，即Mac电脑、Safari浏览器以及网页地址以"file:"开头，这三个条件同时存在时，标签页之间的数据同步功能将失效。\r\n要解决这个问题，只需改变其中任何一个条件即可。您可以尝试换个浏览器，或者使用在线的版本，或者使用Mac自带的本地web服务器功能。' ;
 							const notif_en = 'If you open a local .html file directly in Safari on a Mac computer, under the conditions of using Safari browser, Mac computer, and having the URL starting with "file:", the data syncing feature between tabs will be disabled. To resolve this issue, you can try changing any one of these conditions. You can switch to a different browser, use an online version, or utilize the built-in local web server functionality on Mac.';
 							const notif = this.settingsLanguage == 'cn' ? notif_cn + '\r\n\r\n' + notif_en : notif_en ;
-							const title = this.settingsLanguage == 'cn' ? '提示 Tips' : 'Tips' ;
+							const title = this.settingsLanguage == 'cn' ? '提示 Tip' : 'Tip' ;
 							setTimeout(() => {
 								this.showNotification(notif, 'center', title);
 							}, delaytime);
@@ -7034,6 +7190,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 			//先渲染一个带有<p>标签的空格，有内容，有行高。“保留一个空格，用来增加高度。在渲染首条消息前，有内容撑开高度，可以盖住气泡框左边的箭头。 Keep an empty space to increase the height. Before rendering the first message, the normal height can cover the left arrow.”
 			const first_msg_div = document.querySelectorAll('div.aimsg')[0];
 			first_msg_div.innerHTML = '<p> </p>';
+			
+			// 添加'页面缩放下拉框'的选项 (移动设备页面缩放的比例)
+			for (let i = 0.5; i < 1.01; i += 0.05) {
+				this.selectedPageScalingOptions.push((i.toFixed(2) * 100).toFixed(0) + '%');
+			}
 						
 			//隐藏遮罩。网页Loading加载阶段，遮罩可以避免加载慢导致闪屏/弹窗闪现/显示vue源代码等问题
 			const loadingmask = document.getElementById("loading-mask");
@@ -7243,8 +7404,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				if (!response.ok) {
 					console.log("urlSubscription - response.ok:",response.ok);
 					// Notification: Failed to check the balance. The reasons for the failure are not clear, and the possibility of "code malfunction" cannot be ruled out.(No impact on ChatGPT usage).
-					const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
-					const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/";
+					const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试(国内需要魔法)，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
+					const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/\r\n\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
 					const msg = window.currentlang == 'cn' ? msg_cn : msg_en ;
 					alert(msg);
 					return;
@@ -7315,8 +7476,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				isCheckAPIKey = false;
 				console.log(error);
 				// Notification: Failed to check the balance. The reasons for the failure are not clear, and the possibility of "code malfunction" cannot be ruled out.(No impact on ChatGPT usage).
-				const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
-				const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/";
+				const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试(国内需要魔法)，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
+				const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/\r\n\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
 				const msg = window.currentlang == 'cn' ? msg_cn : msg_en ;
 				alert(msg);
 				return [null, null, null, null, null, null, null, null, null]; //出错则返回9个空值
@@ -7327,8 +7488,21 @@ to{transform:translate(-50%,-18px);opacity:1}
 		//格式化日期
 		function formatDate(date) {
 			const year = date.getFullYear();
-			const month = (date.getMonth() + 1).toString().padStart(2, '0');
-			const day = date.getDate().toString().padStart(2, '0');
+			let month, day;
+			if (String.prototype.padStart) {
+				month = (date.getMonth() + 1).toString().padStart(2, '0');
+				day = date.getDate().toString().padStart(2, '0');
+			} else {
+				month = (date.getMonth() + 1).toString();
+				day = date.getDate().toString();
+				// 在月份和日期前补零
+				if (month.length === 1) {
+					month = '0' + month;
+				}
+				if (day.length === 1) {
+					day = '0' + day;
+				}
+			}
 			//ES6写法： return `${year}-${month}-${day}`;
 			return year + '-' + month + '-' + day;  // 兼容性更好。 Support more browsers.
 		}
@@ -7349,8 +7523,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 		  
 			isCheckAPIKey = true;
 			
-			msg_cn = '将为您查询OpenAI API的账号余额，请先关闭本弹窗，待查询结果出来后会自动弹出。';
-			msg_en = "After closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available.";
+			msg_cn = '将为您查询OpenAI API的账号余额，请先关闭本弹窗，待查询结果出来后会自动弹出。\r\n注意: 查余额需要魔法';
+			msg_en = "After closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available.\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
 			msg = window.currentlang == 'cn' ? msg_cn : msg_en ;
 			alert(msg);
 		 
@@ -7453,8 +7627,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				isCheckAPIKey = false;
 				console.log(error);
 				// Notification: Failed to check the balance. The reasons for the failure are not clear, and the possibility of "code malfunction" cannot be ruled out.(No impact on ChatGPT usage).
-				const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
-				const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/";
+				const msg_cn = '!! 查询余额失败，存在多种可能，检查网络后重试(国内需要魔法)，仍失败的话，请放弃查余额～ \r\n\r\nAPI-Key已验证成功，查询余额却失败，不排除是查询余额代码失效的原因（不影响GPT的使用）。\r\n\r\n可查看代码是否有更新：\r\nhttps://gitee.com/lin2025/gpt3.5/ \r\nhttps://github.com/lin2025/gpt3.5/';
+				const msg_en = "!! Failed to check the balance. The reasons for the failure are not clear, and the possibility of 'code malfunction' cannot be ruled out.(No impact on GPT usage) \r\n\r\nCheck for code updates:\r\nhttps://github.com/lin2025/gpt3.5/\r\n\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
 				const msg = window.currentlang == 'cn' ? msg_cn : msg_en ;
 				alert(msg);
 			});
