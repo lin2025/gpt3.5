@@ -2233,9 +2233,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 				//一些CSS样式/布局
 				//判断设备宽度 是否显示tokens 的文字 / 图标...
-				if (document.documentElement.clientWidth < 414) {
-					let isshow = Math.random() < 0.6  ; //概率 随机 
-					if(this.isSimpleMode){ isshow = false; }
+				if (document.documentElement.clientWidth < 450) {
+					//let isshow = Math.random() < 0.6  ; //概率 随机 
+					//if(this.isSimpleMode){ isshow = false; }
 					//this.isShowTotaltokensSVG = !isshow;
 					//this.isShowTotaltokensLabel = isshow;//小屏幕可考虑显示 
 					this.isShowTotaltokensSVG = true; 
@@ -2318,6 +2318,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					const notif = this.settingsLanguage == 'cn' ? '网页显示比例已改为 ' + percent + ' (如果网页放大了，请双指操作缩小)' : 'Page display scale has been changed to ' + percent + ' (If the page is zoomed in, use two fingers to zoom out).' ;
 					const notiftime = this.settingsLanguage == 'cn' ? 6500 : 7500;
 					this.showNotification(notif, 'bottom', '', notiftime);
+					this.changeSimpleMode(false);
 				}
 			},
 			// 设置窗口 Temperature
@@ -3254,9 +3255,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.setVariablesToThis(this.userVariables_default, this.userVariables_default, true); //*userVariables 变量
 						this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode ));//属于chatdata的变量，不属于userVariables。需要手动设置
 						this.openSmartMaxTokens = true; //localStorage无此变量。默认开启，需要手动设置。
+						this.changePageScaling(false);//需要在changeSimpleMode之前
 						this.changeLanguage();
 						this.changeSimpleMode(false);
-						this.changePageScaling(false);
 						this.inputapichange(false); // 重新验证api-key时 改变按钮等状态
 						this.btnDisabledState_SaveApiURL = true; //保存按钮状态改为不可用
 						this.changeStyle_FontSize();
@@ -3321,9 +3322,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 						
 						//还原默认变量后的操作 参考[恢复默认restoreDefault]中的步骤
 						this.openSmartMaxTokens = true; //默认开启，localStorage无此变量
+						this.changePageScaling(false);//需要在changeSimpleMode之前
 						this.changeLanguage();
 						this.changeSimpleMode(false);
-						this.changePageScaling(false);
 
 						this.inputapichange(false); // 重新验证api-key时 改变按钮等状态
 						this.btnDisabledState_SaveApiURL = true; //保存按钮状态改为不可用
@@ -3616,9 +3617,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 									const chat_Data = this.chatDataList.find(c => c.chatcreatedtime === this.chatcreatedtime);
 									this.loadChatData(chat_Data);//读取
 									
+									this.changePageScaling(false);//需要在changeSimpleMode之前
 									this.changeLanguage();
 									this.changeSimpleMode(false);
-									this.changePageScaling(false);
 									//其他读取后需要处理的
 									this.$nextTick(() => {
 										// 1 2 3 4 5
@@ -6900,9 +6901,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 					if(isLocalStorageRestored === true && this.chatDataList.length > 0){
 						// 3). 恢复数据后，需要改变样式或数据的地方。 Once the data is restored, need to change the Style / Data.
 						// -- Start
+						this.changePageScaling(false);//需要在changeSimpleMode之前
 						this.changeLanguage();
 						this.changeSimpleMode(false);
-						this.changePageScaling(false);
 			
 						this.$nextTick(() => {
 							// 1 2 3 4 5 6
@@ -6924,9 +6925,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 				if(isNewChatData){ // 空网页 添加新对话
 					this.chatList_addNewChatData(true);
 					
+					this.changePageScaling(false);//需要在changeSimpleMode之前
 					this.changeLanguage();
 					this.changeSimpleMode(false);
-					this.changePageScaling(false);
 					// 1 3 4 5 7 this.todoList_ChatDataRestored 写在 this.chatList_addNewChatData 中
 						
 					//提醒语言支持英语 Remind users that the webpage supports English.
