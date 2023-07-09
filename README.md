@@ -50,6 +50,8 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
+ - **新功能**: 页面缩放 (移动端)
+
  - **新功能**: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)
  
  - **新功能**: 支持浏览器本地存储，支持数据同步、导入、导出、删除、统计等操作
@@ -80,6 +82,8 @@ Give a Star 🌟 if you like it.
 
 
 ## 更新   
+
+- **7月09日** 移动端兼容性的优化；修复样式问题；增加移动端**页面缩放**功能。
 - **7月05日** **v7.05** 1) **新增**本地存储及数据管理功能; 2) **新增**多对话、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3) **修复**Windows系统的兼容性问题(滚动条、下拉菜单样式错误)；4) 优化UI。
 - **6月15日** 新增**上传头像**功能。**Smart max_tokens**升级全新算法，并加入计算错误后**自动重发**的功能。调整css兼容性。
 - **6月12日** 新增**Smart max_tokens**功能，全自动调节`max_tokens`。 修复问题：提示词允许保存空白（之前不小心给限制了）。
@@ -126,6 +130,7 @@ Give a Star 🌟 if you like it.
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
 
+ - **New Features**: Page Scaling (For Mobile)
  - **New Features**: Multiple chats management, automatic saving, copy creation, data synchronization, export (for backup / sharing), import (restore chat data).
  - **New Features**: Support for browser local storage, with operations including data synchronization, import, export, deletion, and statistics.
  - Smart max_tokens (Automatically adjusts the max_tokens)
@@ -139,6 +144,7 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
+- **July 9th** Optimized mobile compatibility; Fixed style issues; Added page scaling functionality for mobile.
 - **July 5th** **v7.05** 1) Added local storage and data management. 2) Added: multiple chats, automatic saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3) Bug fixes for Windows compatibility  (scrollbar, dropdown menu styling errors). 4) Optimized UI.
 - **June 15th** New Feature: **Upload Avatar**, Upgraded the **Smart max_tokens** algorithm with the feature to automatically resend requests in case of errors. Adjusted CSS compatibility.
 - **June 12th** The new **Smart max_tokens** feature was added, which automatically adjusts the max_tokens parameter. Bug fix: Fix the issue that the prompt allows saving blank space.
