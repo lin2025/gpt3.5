@@ -2407,26 +2407,26 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifcn += '\r\n  • 自动轮换 API Key 功能无法关闭。支持 Key 数量：1 个或以上。';
 					notifcn += '\r\n  • 对于非付费用户，如果您有两个 OpenAI 免费计划的账号，将获得很好的体验。建议往 LinGPT 添加每个 OpenAI 账号的 Key 的数量为 2～3 个 (虽然相同账号下的Key是共享请求配额的)，当然，每个账号只取  1 个 Key 也是可以的。';
 					notifcn += '\r\n  • 单个添加和批量添加没有区别。单个添加时不会记录无效 Key，而批量添加时，无效 Key 会在被记录。';
-					notifcn += '\r\n  • 批量添加支持识别两种格式：1）每行一个以"sk-"开头的 key；2）识别文本中带双引号的以"sk-"开头、长度为 51 位的 Key（可不换行，比如 JSON 文件的文本内容）。';
+					notifcn += '\r\n  • 批量添加支持识别两种格式：1）每行一个以"sk-"开头的 key；2）识别文本中带双引号的以"sk-"开头、长度为 51 位的 Key（支持不换行的文本，比如直接复制 JSON 文件的文本内容）。';
 					notifcn += '\r\n  • 批量添加时，不会立即验证有效性。如果添加了大量无效 Key，请求过程中，当单次连续检测到 20 个无效 Key 时，检测会中止。';
 					notifcn += '\r\n  • 排序会自动变化，显示的是上次轮询时的排序。';
 					notifcn += '\r\n  • 可修改级别，点击 API Key 的级别，根据提示进行修改。通常不需要修改级别。如果您的付费 Key 没有被标记为付费，这不是一个问题，不会影响实际使用。当出现连续被调用的情况，并达到鉴别标准时，系统会自动标记为付费。这需要一个过程，取决于添加 Key 的数量、请求的频率以及 Key 是否独享的情况。';
 					notifcn += '\r\n  • 如果想恢复之前被标记为"超出配额"的 Key，可以手动修改它的级别，优先改成 0 或 1。';
 					notifcn += '\r\n  • 批量删除：[设置] > [删除数据]，删除所有 API Key 。';
-					notifcn += '\r\n  • 编辑 JSON 文件工具推荐：https://jsoneditoronline.org';
+					notifcn += '\r\n  • 如果需要修改 LinGPT 的 JSON 数据文件，推荐 JSON 在线编辑工具：https://jsoneditoronline.org';
 
 					notifen = '  • The algorithm of [Auto Key Rotation] is designed according to the characteristics of keys in subscription and free plans. Combining with OpenAI error codes, API Key is dynamically marked and intelligently called based on actual usage.';
-					notifen += '\r\n  • [Auto Key Rotation] and [Auto Retry]: When a request encounters an error, the system will automatically determine whether to retry. To provide a better user experience, auto-retry will not be performed indefinitely. Some situations may stop retrying, while situations that require auto-retry will be judged comprehensively based on error types, retry times, and waiting time to determine whether it is suitable to resend the request by rotating the Key.';
+					notifen += '\r\n  • [Auto Key Rotation] and [Auto Retry]: When a request encounters an error, the system will automatically determine whether to retry. To provide a better user experience, auto-retry will not be performed indefinitely. Some situations may stop retrying, while situations that require auto-retry will be judged comprehensively based on error types, number of retries, and waiting time to determine whether it is suitable to resend the request by rotating the Key.';
 					notifen += '\r\n  • [Auto Key Rotation] function cannot be turned off. Supports Key quantity: 1 or more.';
 					notifen += '\r\n  • For non-paying users, if you have two OpenAI free plan accounts, you can get a better user experience. It is recommended to add 2-3 Keys for each OpenAI account added to LinGPT (although Keys under the same account share request quota), and of course, only adding 1 Key for each account is also acceptable.';
 					notifen += '\r\n  • There is no difference between adding a single Key or adding Keys in bulk. Invalid Keys will not be recorded when adding a single Key, while invalid Keys will be recorded when adding Keys in bulk.';
-					notifen += '\r\n  • Adding Keys in bulk supports identifying two formats: 1) one key starting with "sk-" per line; 2) a Key starting with "sk-" and with a length of 51 characters recognized in a text enclosed in double quotes (such as the text content of a JSON file) that can be on the same line without line breaks.';
+					notifen += '\r\n  • Adding Keys in bulk supports identifying two formats: 1) one key starting with "sk-" per line; 2) a Key starting with "sk-" and with a length of 51 characters recognized in a text enclosed in double quotes (Supports text without line breaks, such as directly copying the text content of a JSON file.).';
 					notifen += '\r\n  • When adding Keys in bulk, the system will not immediately check their validity. If a large number of invalid Keys are added, the check will be stopped when 20 consecutive invalid Keys are detected during the request process.';
-					notifen += '\r\n  • The sorting will automatically change and display the sorting when the Key was last rotated.';
-					notifen += '\r\n  • You can modify the level of the Key by clicking on the [level] of the API Key and following the prompts. Usually, there is no need to modify the level. If your paid Key is not marked as a payment account, it is not a problem and will not affect actual usage. When a Key is called continuously and reaches the identification standard, it will be automatically marked as a payment account. This is a process that depends on the number of Keys added, request frequency, and whether the Key is exclusively used.';
-					notifen += '\r\n  • If you want to restore a Key that was marked as "exceeding the quota," you can manually modify its level, preferably to 0 or 1.';
+					notifen += '\r\n  • The sorting will automatically change, and what you see is the sorting when the Key was last rotated during polling.';
+					notifen += '\r\n  • The level can be modified by clicking on the level of the API Key and following the prompts. Usually, there is no need to modify the level. If your paid Key is not marked as a paid account, it is not an issue and will not impact actual usage. When a Key is called continuously and reaches the identification standard, it will be automatically marked as a paid account. This is a process that depends on the number of Keys added, request frequency, and whether the Key is exclusively used.';
+					notifen += '\r\n  • If you want to restore a Key that was marked as "Quota exceeded", you can manually modify its level, preferably to 0 or 1.';
 					notifen += '\r\n  • Batch deletion: [Settings] > [Delete Data] > Delete all API Keys.';
-					notifen += '\r\n  • Recommended JSON file editing tool: https://jsoneditoronline.org.';
+					notifen += '\r\n  • If you want to modify the JSON file for LinGPT, we recommend using an online JSON editor tool: https://jsoneditoronline.org';
 
 				  	title = '';
 					break;
@@ -4789,6 +4789,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				//获取最新已验证的apikey数组数据 apiCheckedData
 				let storage_apiCheckedData = localStorage_apikeyData == null ? [] : localStorage_apikeyData.apiCheckedData;
 				storage_apiCheckedData = storage_apiCheckedData == null ? [] : storage_apiCheckedData;
+				storage_apiCheckedData = storage_apiCheckedData.filter(apidata => apidata.apikey && apidata.apikey.trim() !== '');//排除空项
 				
 				// 循环storage_apiCheckedData 验证数据 & 兼容性处理
 				//判断属性是否存在且数据是否合法，如果缺少属性 或 属性数据不合法，就补上属性和默认值
@@ -9271,7 +9272,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 			}
 			
 			//删除apikey为空的项，定义变量时 写了空的Key 需要在这里删除（代码需要靠前）
-			this.apiCheckedData = this.apiCheckedData.filter(item => item.apikey.trim() !== '');
+			this.apiCheckedData = this.apiCheckedData.filter(apidata => apidata.apikey && apidata.apikey.trim() !== '');//排除空项
 			
 			this.current_Year = new Date().getFullYear().toString();//更新当前的年份变量,String类型
 			
