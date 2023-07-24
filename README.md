@@ -28,12 +28,12 @@ Give a Star 🌟 if you like it.
 ## LinGPT
 
  - 简介：仅有一个`.html`文件的GPT，轻量，便捷，零门槛
- - 在线：不到500K的静态网页，托管在 Github / Gitee 非常流畅
+ - 在线：静态网页，体积小，托管在 Github / Gitee 非常流畅
  - 下载：下载到电脑，打开html文件即可使用，像打开一张图片一样简单
  - 上传：可上传至托管平台/主机/服务器，支持所有免费的静态网页托管平台
  - 接口：使用Open AI官方API，同时可自定义API。支持免魔法的第三方API
- - 模型：同ChatGPT `gpt-3.5-turbo`。目前仅支持GPT-3.5的两种模型 
- - 密钥：需自备 API Key。过几天增加轮询Key的功能
+ - 模型：同ChatGPT `gpt-3.5-turbo`。目前仅支持GPT-3.5的两种模型 (新增中)
+ - 密钥：需自备 API Key。支持**轮询**，不限数量，全自动智能的轮换 API Key
  - 数据：仅存储于浏览器本地缓存，支持导出、导入和删除
 
 
@@ -50,6 +50,10 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
+ - **新功能**: 支持自动重问 (当发送失败时，智能判断是否重试)
+ 
+ - **新功能**: 轮询Key，全自动的智能的轮换 API Key，支持批量添加
+ 
  - **新功能**: 页面缩放 (移动端)
 
  - **新功能**: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)
@@ -58,7 +62,7 @@ Give a Star 🌟 if you like it.
  
  - Smart max_tokens（全自动调节max_tokens）
  
- - API Key、API余额/有效期查询、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
+ - API Key、API余额/有效期查询 (余额查询于7月22日失效)、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
 
  - 支持Markdown（代码块、高亮代码、显示网络图片、显示表格、文章排版)
 
@@ -83,6 +87,7 @@ Give a Star 🌟 if you like it.
 
 ## 更新   
 
+- **7月23日** 1) 新增 **轮询 Key** 功能，智能的轮换 API Key; 2) 新增 **自动重问**功能，智能分析以确定是否重新发送请求； 3) 增强错误代码识别、修复代码中修改默认语言的问题、修复移动端部分输入法不能换行的问题、修复Windows中字体模糊等兼容性问题、修复聊天框bug及优化样式、修复其他样式问题、修复其他bug；优化综合体验。
 - **7月09日** 移动端兼容性的优化；修复样式问题；增加移动端**页面缩放**功能。
 - **7月05日** **v7.05** 1) **新增**本地存储及数据管理功能; 2) **新增**多对话、自动保存、创建副本、数据同步、导出分享、导入还原对话等功能；3) **修复**Windows系统的兼容性问题(滚动条、下拉菜单样式错误)；4) 优化UI。
 - **6月15日** 新增**上传头像**功能。**Smart max_tokens**升级全新算法，并加入计算错误后**自动重发**的功能。调整css兼容性。
@@ -117,7 +122,7 @@ Give a Star 🌟 if you like it.
  - Download and open the <kbd>index.html</kbd> file on your computer, input your OpenAI API Key to get started.
  - This code uses the OpenAI API and supports third-party APIs. 
  - Currently, only the GPT-3.5 model (ChatGPT `gpt-3.5-turbo`) is supported as the GPT-4 model cannot be tested. 
- - An OpenAI API key is required. 
+ - An OpenAI API key is required, no limit on quantity, supports Auto Key Rotation, intelligently rotates API keys.
  - User data is stored only in the browser's local cache, supporting export, import, and deletion. 
 
 
@@ -130,11 +135,13 @@ Give a Star 🌟 if you like it.
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
 
- - **New Features**: Page Scaling (For Mobile)
+ - **New Features**: Supports Automatic Retry (intelligently determines whether to retry when a request fails).
+ - **New Features**: Supports Auto Key Rotation, intelligently rotates API keys, supports bulk addition.
+ - **New Features**: Page Scaling (For Mobile).
  - **New Features**: Multiple chats management, automatic saving, copy creation, data synchronization, export (for backup / sharing), import (restore chat data).
  - **New Features**: Support for browser local storage, with operations including data synchronization, import, export, deletion, and statistics.
  - Smart max_tokens (Automatically adjusts the max_tokens)
- - API key, OpenAI API balance inquiry, custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
+ - API key, OpenAI API balance inquiry (The balance inquiry expired on July 22nd), custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
  - Markdown support (code block, syntax highlighting, displaying images, displaying tables, article formatting, etc.).
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
  - Undo, Retry, Clear Context, and supporting keyboard shortcuts.
@@ -144,6 +151,7 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
+- **July 23rd** 1) New Feature: **Auto Key Rotation**, 2) New Feature: **Automatic Retry**, 3) Added more error code categories; Fixed default language modification bug; Addressed font blurriness on Windows, chat box bugs, and other style issues; Optimized user experience.
 - **July 9th** Optimized mobile compatibility; Fixed style issues; Added page scaling functionality for mobile.
 - **July 5th** **v7.05** 1) Added local storage and data management. 2) Added: multiple chats, automatic saving, copy creation, data synchronization, chat export and sharing, and chat import and restoration. 3) Bug fixes for Windows compatibility  (scrollbar, dropdown menu styling errors). 4) Optimized UI.
 - **June 15th** New Feature: **Upload Avatar**, Upgraded the **Smart max_tokens** algorithm with the feature to automatically resend requests in case of errors. Adjusted CSS compatibility.
