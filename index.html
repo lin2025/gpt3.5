@@ -24,7 +24,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v7.23 - 大更新，新增重要功能。 Major update, introducing significant new features.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v7.29 - 支持更多GPT模型；完善数据管理。  (v7.23 大更新，新增重要功能。 Major update, introducing significant new features.)   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -79,8 +79,8 @@ body::-webkit-scrollbar-corner{background-color:#ededed}
 body{margin-bottom:0px;margin-top:8px;overflow-y:scroll;background-color:#ededed;font-family:Helvetica Neue,Helvetica,Hiragino Sans GB,"SF Pro SC",Microsoft YaHei,"PingFang SC",Arial,sans-serif}
 .bottom-position{height:95px}
 .newcontext-hr{height:1px;background-color:#cfcfcf;border:none;width:92%;margin-top:16px;margin-bottom:20px}
-.wechatstyle-datetime{display:block;font-size:13px;text-align:center;color:#bbbbbb;margin-top:20px;margin-bottom:17px}
-.msgdatetimediv{position:relative}
+.wechatstyle-datetime{display:block;font-size:13px;text-align:center;color:#bbbbbb;margin-top:20px;margin-bottom:17px;-webkit-text-size-adjust:100%;}
+.msgdatetimediv{position:relative;-webkit-text-size-adjust:100%;}
 .usermsg-datetime{font-size:12px;color:#bbbbbb;bottom:auto;left:auto;right:54px;top:-14px;position:absolute}
 .aimsg-datetime{font-size:12px;color:#bbbbbb;bottom:auto;left:57px;right:auto;top:-14px;position:absolute}
 .userinfo{display:flex;flex-direction:row-reverse;align-items:flex-start;padding-right:2px;margin-top:17px;animation:oneshow 0.8s ease 1}
@@ -455,7 +455,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<option v-if="settingsLanguage == 'cn'" v-for="option in simpleModeOptions_cn" :value="option.state">{{ option.label }}</option>
 						<option v-else v-for="option in simpleModeOptions_en" :value="option.state">{{ option.label }}</option>
 					</select>
-					<span style="margin-left:auto" :title="settingsLanguage == 'cn' ? '当前版本' : 'Current Version'">v7.23&nbsp;&nbsp;</span>
+					<span style="margin-left:auto" :title="settingsLanguage == 'cn' ? '当前版本' : 'Current Version'">v7.29&nbsp;&nbsp;</span>
 					<button  class="btn btnzoom-a" style="margin: 0px; padding: 0 3px;background: linear-gradient(to bottom, #fff, #fff);background-color: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" :title="settingsLanguage == 'cn' ? '在GitHub上查看最新版本' : 'View the latest version on GitHub'">
 						<a href="https://github.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 16 16"  fill="#1f2328"> 
@@ -571,27 +571,27 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<input @change="changeTemperature" type="range" class="slider" v-model.number="apitemperature"  min="0.0" max="2.0" step="0.1" value="0.7" >
 							</div>
 						</div>
-						<!-- 单次 最大令牌数量 max_tokens (4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4) --> 
+						<!-- 单次 最大令牌数量 max_tokens (4095 4096 4097 16384 16385  gpt-3.5 gpt-4 gpt3.5 gpt4) --> 
 						<div class="control-container" style="flex: 1 1 0%;">
 							<div>
-								<span>max_tokens(1~4096): {{apiMaxTokens}}</span>
+								<span>max_tokens(</span><span style="margin-left: 0px;font-weight:500;">1~{{gptModelList.find(model => model.modelname === apiGPTModel).maxtokens }}</span><span style="margin-left: 0px;">): {{apiMaxTokens}}</span>
 							</div>
 							<div class="control-bg">
-								<input @change="changeMaxTokens" type="range" :disabled="openSmartMaxTokens" class="slider" v-model.number="apiMaxTokens"  min="1" max="4096" step="1" value="2048" >
+								<input @change="changeMaxTokens" type="range" :disabled="openSmartMaxTokens" class="slider" v-model.number="apiMaxTokens"  min="1" :max="gptModelList.find(model => model.modelname === apiGPTModel).maxtokens" step="1" value="2048" >
 							</div>
 						</div>
 					</div>	
 	
 					<div class="panelrow" style="align-items: start; height:auto;">
 						<!-- GPT模型 GPT Model --> 
-						<div class="control-container" style="width:156px;flex-shrink: 0;">
+						<div class="control-container" style="flex-shrink: 0;" :style="{ width: apiGPTModel === 'gpt-3.5-turbo-16k-0613' ? '178px' : '156px'}">
 							<div>
 								<span>model: {{apiGPTModel}}</span>
 							</div>
-							<select class="dropdown" v-model="apiGPTModel" style="width: 100%;height: 24px;">
-								<option v-for="option in gptModelOptions" :value="option.model">{{ option.label }}</option>
-								<option v-if="settingsLanguage == 'cn' "  disabled value=""> - 暂时只支持GPT3.5</option>
-								<option v-else disabled value=""> - Only supports GPT3.5 for now</option>
+							<select @change="changeGPTModel" class="dropdown" v-model="apiGPTModel" style="width: 100%;height: 24px;">
+								<option v-for="model in gptModelList" :value="model.modelname">{{ model.alias ? model.alias : model.modelname }}</option>
+								<option disabled value="">{{ settingsLanguage == 'cn' ? ' - 暂时只支持GPT3.5' : ' - Only supports GPT3.5 for now' }}</option>
+								<option disabled value="">{{ settingsLanguage == 'cn' ? ' - 带有“16k”后缀的模型支持 16384 个 token' : ' - Models with the "16k" suffix support 16384 tokens' }}</option>
 							</select>
 						</div>
 	
@@ -640,7 +640,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							<option disabled value="">▼&nbsp;{{ settingsLanguage == 'cn' ? '预设选项：GPT官方接口 和 第三方接口' : 'Pre-set options: OpenAI API and Third-party API ' }}</option>
 							<option v-if="settingsLanguage == 'cn'" v-for="option in apiURLOptions_cn" :value="option.url">{{ option.label }}</option>
 							<option v-else v-for="option in apiURLOptions_en" :value="option.url">{{ option.label }}</option>
-							<option disabled value="">{{ settingsLanguage == 'cn' ? ' - 第三方接口来源网络，无法保证隐私安全和实效性' : ' - Third-party APIs can be unsafe or unreliable.' }}</option>
+							<option disabled value="">{{ settingsLanguage == 'cn' ? ' - 第三方接口来源网络，无法保证隐私安全和实效性' : ' - Third-party APIs can be unsafe or unreliable' }}</option>
 						</select>		
 					</div>
 	
@@ -713,6 +713,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<span>{{ settingsLanguage == 'cn' ? '字体大小' : 'Font Size' }}</span>
 							</div>
 							<select @change="changeStyle_FontSize" class="dropdown" v-model="settingsFontSize" style="width: 100%;height: 24px;">
+								<option disabled value="">{{ settingsLanguage == 'cn' ? ' - 避免在文本过多的对话中进行更改，以免导致网页崩溃' : " - To avoid crashes, don't make changes in chats with excessive content" }}</option>
 								<option v-for="option in settingsFontSizeOptions" :value="option.fontsize">{{ option.label }}</option>
 							</select>
 						</div>
@@ -871,7 +872,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						</div>
 						<div class="control-container" style=" flex: 1 1 0%;" :style="{ minWidth: settingsLanguage == 'cn' ? '130px' : '179px' }">
 							<div>
-								<span>{{ settingsLanguage == 'cn' ? '导出聊天记录' : 'Export Chat History' }}</span>
+								<span>{{ settingsLanguage == 'cn' ? '导出聊天记录/日志' : 'Export Chat History / Logs' }}</span>
 								<button  @click="showMiniHelp('A-ExportChatHistory')"  class="btn minibtn bluebtn btnzoom-b" style="margin-right: auto;" :title="settingsLanguage == 'cn' ? '功能说明' : 'Help'">?</button>
 							</div>
 							<select @change="changeSelectedExportChatHistory" :disabled="btnDisabledState_Export" class="dropdown" v-model="selectedExportChatHistory" style="width: 100%; height: 25px; margin: 2px 0px 4px;">
@@ -880,7 +881,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<option v-if="settingsLanguage == 'cn'" v-for="option in selectedExportChatHistoryOptions_cn" :value="option.type">{{ option.label }}</option>
 								<option v-else v-for="option in selectedExportChatHistoryOptions_en" :value="option.type">{{ option.label }}</option>
 								<option v-if="!isSimpleMode" disabled value="help2">{{ settingsLanguage == 'cn' ? ' - 导出为纯文本，不可用于导入' : ' - Export to Plain Text, Not available for import' }}</option>
-								<option v-if="!isSimpleMode" disabled value="help3">{{ settingsLanguage == 'cn' ? ' - 文本内容使用Markdown格式' : ' - Plain text is formatted using Markdown' }}</option>
+								<option v-if="!isSimpleMode" disabled value="help3">{{ settingsLanguage == 'cn' ? ' - 文本内容使用Markdown格式' : ' - Plain text is formatted using Markdown syntax' }}</option>
 							</select>
 						</div>
 					</div>
@@ -1130,6 +1131,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 					<div class="panelgroup-head">
 						<!--  对话创建时间 Chat Creation Time -->
 						<span style="margin-right: auto;" :style="{ color: isChatListTransparent ? 'rgba(204, 204, 204, 0.3)' : '#444444' }" >{{ (settingsLanguage == 'cn' ? '创建时间: ' : 'Creation Date: ') +  (chatdata.chatcreatedtime === null ? (settingsLanguage == 'cn' ? '新对话' : 'New Chat') : (chatdata.chatcreatedtime.startsWith(current_Year) ? chatdata.chatcreatedtime.slice(5) : chatdata.chatcreatedtime) ) }}</span>
+						<!--  占用存储空间大小 Storage Usage  *可考虑增加显示条件： display none - this.isLocalStorageAllowed && this.isLocalStorageSupported -->
+						<button class="btn minibtn" style="display: flex;width: auto; height: 16px; padding: 0px;margin-right: 0px; border-radius: 4px;cursor:auto;border: none !important; background: none !important;" :style="{ color: isChatListTransparent ? 'rgba(204, 204, 204, 0.3)' : '#444444' , display: chatdata.chatcreatedtime === null ? 'none' : 'flex' }" :title="settingsLanguage == 'cn' ? '占用存储空间大小' : 'Storage Usage'">
+							<svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+							</svg>
+							<span :style="{ color: isChatListTransparent ? 'rgba(204, 204, 204, 0.3)' : '#444444' }" >{{ (JSON.stringify(chatdata).length * 2 / 1024 / 1024).toFixed(2)}} MB</span>
+						</button>
 						<!--  goto Top -->
 						<button @click="gotoTop" class="btn minibtn btnzoom-c" :style="{ display:  (chatdata.chatcreatedtime === null || chatdata.chatcreatedtime !== selectedChatData.chatcreatedtime)  ? 'none' : 'flex'}"  style="width: 18px; height: 16px; padding: 0px; border-radius: 4px;" :title="settingsLanguage == 'cn' ? '滚动到顶部' : 'Scroll to Top'">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11l-5-5-5 5M17 18l-5-5-5 5"/>
@@ -1145,6 +1152,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 								<option value="">•••</option>
 								<option v-if="settingsLanguage == 'cn'" v-for="option in selectedChatListMoreOptions_Options_cn" :value="option.op">{{ option.label }}</option>
 								<option v-else v-for="option in selectedChatListMoreOptions_Options_en" :value="option.op">{{ option.label }}</option>
+								<option value="EraseLogs">5) {{ ( settingsLanguage == 'cn' ? '抹掉日志(Markdown格式, ≈' : 'Erase logs (Markdown, ≈' ) + (chatdata.chatVariables.chathistory.length * 2 / 1024 / 1024).toFixed(2) + 'MB)' }}</option>
 						</select>
 						<!--  删除 delete -->
 						<button @click="deleteChatData(chatdata)" class="btn minibtn redbtn btnzoom-c" style="display: flex; width: 16px; height: 16px; padding: 0px; border-radius: 4px;" :title="settingsLanguage == 'cn' ? '删除对话' : 'Delete Chat'">
@@ -1546,7 +1554,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				selectedChatListMoreOptions_Options_cn: [
 				  { label: '1) 导出/分享对话 (.json)', op: 'ExportChatData' },
 				  { label: '2) 创建副本', op: 'CreateCopy' },
-				  { label: '3) 清空记录（保留最近单轮记录）', op: 'ClearPrevious' },
+				  { label: '3) 清空记录 (保留最近单轮记录)', op: 'ClearPrevious' },
 				  { label: '4) 清空记录', op: 'ClearAll' }
 				],
 				selectedChatListMoreOptions_Options_en: [
@@ -1604,7 +1612,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				defaultAPIKey: '',//记录写在代码中的固定的APIKey（this.api），如果存在的话
 				
 				apitemperature: 0.7, //（0.0～2.0）接口参数 temperature 默认0.7 (官方默认1.0) v-model.number
-				apiMaxTokens:2048, //（1～4096）接口参数 max_tokens 默认2048 v-model.number (4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4)
+				apiMaxTokens:2048, //（1～4096～16384）接口参数 max_tokens 默认2048 v-model.number (4095 4096 4097 16384 16385 gpt-3.5 gpt-4 gpt3.5 gpt4)
 				apiTopP:1, // （0.0～1.0）接口参数 top_p 官方默认1 v-model.number
 				apiPresencePenalty:0, //（-2.0～2.0）接口参数 presence_penalty 官方默认0 v-model.number
 				apiFrequencyPenalty:0, //（-2.0～2.0）接口参数 frequency_penalty 官方默认0 v-model.number
@@ -1623,10 +1631,25 @@ to{transform:translate(-50%,-18px);opacity:1}
 				isFirstRetry_SmartMaxTokens:true, //是否为首次自动重问
 				isReminded_SmartMaxTokens:-1, //是否提醒过，提醒当前状态是关闭的。-1 不提醒 0 提醒  >0 不提醒
 				
-				apiGPTModel: 'gpt-3.5-turbo', // 接口参数 model 默认'gpt-3.5-turbo'
-				gptModelOptions: [
-				  { label: 'ChatGPT', model: 'gpt-3.5-turbo' },
-				  { label: 'gpt-3.5-turbo-0301', model: 'gpt-3.5-turbo-0301' }
+				apiGPTModel: 'gpt-3.5-turbo-16k', // 接口参数 model 默认'gpt-3.5-turbo-16k'
+				
+			//	<option v-for="option in gptModelOptions" :value="option.model">{{ option.label }}</option>
+			//	gptModelOptions: [
+			//	  { label: 'ChatGPT', model: 'gpt-3.5-turbo' },
+			//	  { label: 'gpt-3.5-turbo-0301', model: 'gpt-3.5-turbo-0301' },
+			//	  { label: 'gpt-3.5-turbo-0613', model: 'gpt-3.5-turbo-0613' },
+			//	  { label: 'gpt-3.5-turbo-16k', model: 'gpt-3.5-turbo-16k' },
+			//	  { label: 'gpt-3.5-turbo-16k-0613', model: 'gpt-3.5-turbo-16k-0613' }
+			//	],
+				// 以下填写的模型资料中 modelname 、 maxtokens 必须填写准确，与官方一致。如果要填写过期时间expiredtime，也必须与官方一致，格式为“2023-09-13T00:00:00”
+				// The model information, "modelname" and "maxtokens", must be accurately filled and consistent with the official information.  The expiration date of the model, "expiredtime", is optional and should be filled in the format of "2023-09-13T00:00:00".
+				// 可修改 Editable - GPT模型 GPT Model List   modelname:必填(Required)  maxtokens:必填(Required),Int  *注意数据类型、格式、及不要出现多余的空格。 *Please take note of the data type, format, and avoid any unnecessary spaces.
+				gptModelList: [ 
+					{ modelname: 'gpt-3.5-turbo-0301', alias: '', maxtokens: 4096,  expiredtime: '2023-09-13T00:00:00' },
+					{ modelname: 'gpt-3.5-turbo', alias: 'ChatGPT', maxtokens: 4096,  expiredtime: '' },
+					{ modelname: 'gpt-3.5-turbo-0613', alias: '', maxtokens: 4096,  expiredtime: '' },
+					{ modelname: 'gpt-3.5-turbo-16k', alias: '', maxtokens: 16384,  expiredtime: '' },
+					{ modelname: 'gpt-3.5-turbo-16k-0613', alias: '', maxtokens: 16384,  expiredtime: '' }
 				],
 				
 				//仅支持/v1/chat/completions类型接口url。 接口与模型的关系 https://platform.openai.com/docs/models/model-endpoint-compatibility
@@ -1853,14 +1876,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				selectedExportChatHistoryOptions_cn: [
 					{ label: '1) 导出聊天记录·单轮记忆 (.md)', type: 'ChatHistory_Single_MD' },
 					{ label: '2) 导出聊天记录·单轮记忆 (.txt)', type: 'ChatHistory_Single_TXT' },
-					{ label: '3) 导出聊天记录·全部 (.md)', type: 'ChatHistory_ALL_MD' },
-					{ label: '4) 导出聊天记录·全部 (.txt)', type: 'ChatHistory_ALL_TXT' }
+					{ label: '3) 导出聊天记录/日志·全部 (.md)', type: 'ChatHistory_ALL_MD' },
+					{ label: '4) 导出聊天记录/日志·全部 (.txt)', type: 'ChatHistory_ALL_TXT' }
 				],
 				selectedExportChatHistoryOptions_en: [
 					{ label: '1) Export Chat History for a Single Round (.md)', type: 'ChatHistory_Single_MD' },
 					{ label: '2) Export Chat History for a Single Round (.txt)', type: 'ChatHistory_Single_TXT' },
-					{ label: '3) Export All Chat History (.md)', type: 'ChatHistory_ALL_MD' },
-					{ label: '4) Export All Chat History (.txt)', type: 'ChatHistory_ALL_TXT' }
+					{ label: '3) Export All Chat History / Logs (.md)', type: 'ChatHistory_ALL_MD' },
+					{ label: '4) Export All Chat History / Logs (.txt)', type: 'ChatHistory_ALL_TXT' }
 				],
 				
 				
@@ -1879,7 +1902,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
 				// The First Message, This message is out of context,
 				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-				thefirstmessage: "### **LinGPT** ***v7.23*** \r\n##### **v7.23** 支持Key轮询，全自动智能的轮换API Key；支持自动重问；修复bug与优化体验。\r\n###### v7.23 Supports Auto Key Rotation, intelligently rotates API keys; Supports automatic retry; Bug fixes and User experience optimization.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
+				thefirstmessage: "### **LinGPT** ***v7.29*** \r\n##### **v7.29** 1) 支持 16K 模型，Demo默认模型:`gpt-3.5-turbo-16k`； 2) 优化数据管理功能。 **v7.23** 支持Key轮询，全自动智能的轮换API Key；支持自动重问。\r\n###### v7.29 1）Support for the latest 16K model, default model: gpt-3.5-turbo-16k; 2）Optimized data management functionality. v7.23 Supports Auto Key Rotation, intelligently rotates API keys; Supports automatic retry.\r\n\r\n_LinGPT - A GPT-3.5 Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 				
 				// v7.05 开始提示词不建议写在代码中。Starting from v7.05, it is advised not to write system prompts in the code. 
 				// 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，不会自动生效，需要手动保存后才会生效。
@@ -1929,8 +1952,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				//* Supports for browser local storage (localStorage), which can be directly modified in the [Settings] of the webpage.
 				userVariables_default: {
 					apitemperature: 0.7, //（0.0～2.0）接口参数 temperature 默认0.7 (官方默认1.0) v-model.number
-					apiMaxTokens:2048, //（1～4096）接口参数 max_tokens 默认2048 v-model.number (4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4)
-					apiGPTModel: 'gpt-3.5-turbo', // 接口参数 model 默认'gpt-3.5-turbo'
+					apiMaxTokens:2048, //（1～4096～16384）接口参数 max_tokens 默认2048 v-model.number (4095 4096 4097 16384 16385 gpt-3.5 gpt-4 gpt3.5 gpt4)
+					apiGPTModel: 'gpt-3.5-turbo-16k', // 接口参数 model 默认'gpt-3.5-turbo-16k'
 					apiTopP:1, // （0.0～1.0）接口参数 top_p 官方默认1 v-model.number
 					apiPresencePenalty:0, //（-2.0～2.0）接口参数 presence_penalty 官方默认0 v-model.number
 					apiFrequencyPenalty:0, //（-2.0～2.0）接口参数 frequency_penalty 官方默认0 v-model.number
@@ -2110,8 +2133,29 @@ to{transform:translate(-50%,-18px);opacity:1}
 			
 			//按钮：导出数据 JSON   
 			ExportData_JSON(stringData, filename){
-			
-
+				//计算大小
+				let filename_dataSize = '';
+				try{
+					const _dataSize = this.calculateStringSize(stringData, 'utf-16') / 1024 / 1024 ;
+					let notif = '';
+					if (_dataSize > 4.99 ){
+						notif = this.settingsLanguage == 'cn' ? '当前导出的数据已达到 ' + _dataSize.toFixed(2) + ' MB，可能无法在一些浏览器中导入 (部分浏览器本地存储上限为5MB)。如果需要适配更多的浏览器，建议分类导出 (或拆分为单个对话导出、抹掉日志)，以减小单个文件的大小。' : 'The currently exported data has reached ' + _dataSize.toFixed(2) + ' MB, which may exceed the local storage limit of 5MB for some browsers, causing import failure. If you need to adapt to more browsers, it is recommended to export data by categories to reduce the size of individual files or split them into separate chat exports, or erase logs.' ;
+						setTimeout(() => {
+							this.showNotification(notif, 'center', '');
+						}, 1600);//延迟 等首个通知弹出后 再替换
+					}else if (_dataSize > 3 ){
+						notif = this.settingsLanguage == 'cn' ? '当前导出的数据大小为 ' + _dataSize.toFixed(2) + ' MB。小贴士：可以通过拆分对话或抹掉日志来缩小文件' : 'The current exported data size is ' + _dataSize.toFixed(2) + ' MB. Tip: You can reduce the file size by exporting individual chats or erasing logs.' ;
+						setTimeout(() => {
+							this.showNotification(notif, 'bottom', '', 8000);
+						}, 1600);//延迟 等首个通知弹出后 再替换
+					}
+					filename_dataSize = _dataSize.toFixed(2); //单位：MB
+					filename_dataSize = '(' + filename_dataSize + 'MB) ';
+				}catch (e) {
+					filename_dataSize = '';
+					console.error('ExportData_JSON() - 计算大小出错，不影响导出',e);
+				}
+								
 				// 创建Blob对象并生成下载链接
 				const blob = new Blob([stringData], { type: 'application/json' });
 				const url = URL.createObjectURL(blob);
@@ -2121,7 +2165,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				downloadLink.href = url;
 				downloadLink.style.display="none";
 				const now = new Date();
-				filename = filename + ' ' +  this.formatDateYYYYMMDDHHmmss(now,'.').slice(5) + '.json' ; // like “10-14 10.23.45”
+				filename = filename + ' ' + filename_dataSize +  this.formatDateYYYYMMDDHHmmss(now,'.').slice(5) + '.json' ; // like “10-14 10.23.45”
 				downloadLink.download = filename; 
 				document.body.appendChild(downloadLink);
 				downloadLink.click(); 
@@ -2266,14 +2310,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 					title = '';
 					break;
 				  case 'A-APISettings':
-				  	notifcn = '  • 智能max_tokens(推荐开启): 启用“智能max_tokens”功能后，会出现小问号 [?] ，可以点击了解更多。\r\n\r\n  • temperature: 默认0.7，官方默认1.0。temperature ("温度") 用于控制GPT生成结果的随机性/多样性/创造力。过低 会导致生成的文本更加保守和重复。过高 会导致生成的文本更加随机和具有创造性 (约从1.2开始，就有几率出现无中生有的词或乱码) 。\r\n\r\n  • max_tokens: 生成结果时的最大token数，可随时调节。单轮对话 "上下文已消耗的token数量" 加上设置的 "max_tokens数量" 不能超过模型的上下文长度 (gpt3.5支持最高4096 tokens) 。\r\n\r\n • model: 模型，暂时仅支持gpt3.5模型。\r\n\r\n • 更多: 点击显示更多的API参数。';
+				  	notifcn = '  • 智能max_tokens(推荐开启): 启用“智能max_tokens”功能后，会出现小问号 [?] ，可以点击了解更多。\r\n\r\n  • temperature: 默认0.7，官方默认1.0。temperature ("温度") 用于控制GPT生成结果的随机性/多样性/创造力。过低 会导致生成的文本更加保守和重复。过高 会导致生成的文本更加随机和具有创造性 (约从1.2开始，就有几率出现无中生有的词或乱码) 。\r\n\r\n  • max_tokens: 生成结果时的最大token数，可随时调节。单轮对话 "上下文已消耗的token数量" 加上设置的 "max_tokens数量" 不能超过模型的上下文长度。\r\n\r\n • model: 模型，暂时仅支持gpt3.5模型。最新带有“16k”后缀的模型 (例: gpt-3.5-turbo-16k 、gpt-3.5-turbo-16k-0613) 支持 16384 个 token，GPT记忆较之前版本翻了四倍。\r\n\r\n • 更多: 点击显示更多的API参数。';
 					//含单引号
-					notifen = "  • Smart max_tokens (recommended to enable): After enabling the 'Smart max_tokens' feature, a small question mark [?] will appear, which can be clicked to learn more.\r\n\r\n  • temperature: The 'temperature' setting controls how creative and diverse the text generated by GPT is. Lower values result in more repetitive and simpler text, while higher values result in more random and creative text. \r\n\r\n  • max_tokens: The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length (gpt3.5 support 4096).\r\n\r\n  • model: Only supports GPT3.5 for now.\r\n\r\n  • More：Click to display more API parameter settings.\r\n\r\n  • OpenAI - API reference: \r\n    https://platform.openai.com/docs/api-reference/chat/create ";
+					notifen = "  • Smart max_tokens (recommended to enable): After enabling the 'Smart max_tokens' feature, a small question mark [?] will appear, which can be clicked to learn more.\r\n\r\n  • temperature: The 'temperature' setting controls how creative and diverse the text generated by GPT is. Lower values result in more repetitive and simpler text, while higher values result in more random and creative text. \r\n\r\n  • max_tokens: The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.\r\n\r\n  • model: Only supports GPT3.5 for now. The latest models with the '16k' suffix (e.g. gpt-3.5-turbo-16k, gpt-3.5-turbo-16k-0613) support 16384 tokens.\r\n\r\n  • More：Click to display more API parameter settings.\r\n\r\n  • OpenAI - API reference: \r\n    https://platform.openai.com/docs/api-reference/chat/create ";
 				  	title = '';
 					break;
 				  case 'A-SmartMaxTokens':
-				  	notifcn = '开启“智能max_tokens”后，全自动调节 max_tokens，无需手动调节。\r\n如果关闭“智能max_tokens”，需要手动调节 max_tokens，且可能需要多次调节，才能让上下文（记忆）达到接近 4096 tokens 的高使用率。\r\n\r\n  • 默认开启“智能max_tokens”\r\n  • 这是一个非精准调节的计算策略。长对话中，95%可以做到“智能”，5%遇到错误会自动关闭，并提示您手动调节。';
-					notifen = 'When "Smart max_tokens" is enabled, max_tokens will be automatically adjusted without manual intervention. \r\nIf "Smart max_tokens" is disabled, you will need to manually adjust max_tokens, which may require multiple adjustments to get the context tokens close to the upper limit of 4096. \r\n\r\n  • "Smart max_tokens" is enabled by default.\r\n  • This is not an OpenAI algorithm, but it can be "smart" about 95% of the time for longer chats. If errors occur, it will automatically disable and prompt you to manually adjust the max_tokens.';
+				  	notifcn = '开启“智能max_tokens”后，全自动调节 max_tokens，无需手动调节。\r\n如果关闭“智能max_tokens”，需要手动调节 max_tokens，且可能需要多次调节，才能让上下文（记忆）达到高使用率。\r\n\r\n  • 默认开启“智能max_tokens”\r\n  • 这是一个非精准调节的计算策略。长对话中，95%可以做到“智能”，5%遇到错误会自动关闭，并提示您手动调节。';
+					notifen = 'When "Smart max_tokens" is enabled, max_tokens will be automatically adjusted without manual intervention. \r\nIf "Smart max_tokens" is disabled, you will need to manually adjust max_tokens, which may require multiple adjustments to get the context tokens close to the upper limit of the model. \r\n\r\n  • "Smart max_tokens" is enabled by default.\r\n  • This is not an OpenAI algorithm, but it can be "smart" about 95% of the time for longer chats. If errors occur, it will automatically disable and prompt you to manually adjust the max_tokens.';
 					if(!this.isSimpleMode){
 						notifcn += '\r\n  • 如何做到精准调节？GPT-3.5 (ChatGPT) 与 GPT-4 模型均采用 cl100k_base 编码器，cl100k_base 可以精准计算 tokens 。您可以自己修改代码以达到完美的效果。\r\n  • 以下现象与OpenAI官方有关：发送的第一条消息，额外有增加 13 tokens，之后发送的消息，每条增加 10 tokens。';
 						notifen += '\r\n  • How to achieve precise adjustments?  Both GPT-3.5 (ChatGPT) and GPT-4 models use the cl100k_base encoder, which can accurately calculate tokens. If you are familiar with this technology, you can modify the code to achieve perfect results.\r\n  • The following phenomenon is related to OpenAI: the first message sent will have an additional 13 tokens, and each subsequent message will have an additional 10 tokens added.';
@@ -2302,8 +2346,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 				  	title = '';
 					break;
 				  case 'A-ExportChatHistory':
-				  	notifcn = '  • 将当前对话的聊天记录导出为纯文本格式，可直接阅读。\r\n\r\n  • 导出聊天记录 · 单轮记忆：导出单轮聊天记录，即针对当前的上下文记忆进行导出，包含最新修改的系统提示词，不含发送失败的、撤回的、重问的记录。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 导出聊天记录 · 全部：将网页上的所有聊天记录（包含发送失败的、撤回的、重问的记录）和所有操作记录（包含系统提示词修改记录）导出并下载。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 如果导出时没有反应或下载失败，可能是因为浏览器或设备不兼容。\r\n\r\n  • 附 两个Markdown在线编辑器网站：\r\n    https://stackedit.cn/app# \r\n    http://tool.pfan.cn/markdown ';
-					notifen = '  • Export the chat history of the current chat as plain text format for easy reading.\r\n\r\n  • Export Chat History for a Single Round, which includes the current context and the most recent system prompt, but excluding failed messages, undo messages, and resend messages. Exported file format: Markdown. File type: .md | .txt\r\n\r\n  • Export All Chat History, export and download all chat history (including failed messages, undo messages, resend messages) and all operation records (including system prompt modification records) on the webpage. Exported file format: Markdown. File type: .md | .txt \r\n\r\n  • If there is no response or the download fails when exporting, it may be due to browser or device incompatibility.\r\n\r\n  • Websites for Markdown online editors:\r\n    https://dillinger.io \r\n    https://stackedit.io/app# ';
+				  	notifcn = '  • 将当前对话的聊天记录导出为纯文本格式，可直接阅读。\r\n\r\n  • 导出聊天记录 · 单轮记忆：导出单轮聊天记录，即针对当前的上下文记忆进行导出，包含最新修改的系统提示词，不含发送失败的、撤回的、重问的记录。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 导出聊天记录/日志 · 全部：将网页上的所有聊天记录（包含发送失败的、撤回的、重问的记录）和所有操作记录（包含系统提示词修改记录）导出并下载。格式：Markdown。文件类型：.md 或 .txt\r\n\r\n  • 如果导出时没有反应或下载失败，可能是因为浏览器或设备不兼容。\r\n\r\n  • 附 两个Markdown在线编辑器网站：\r\n    https://stackedit.cn/app# \r\n    http://tool.pfan.cn/markdown ';
+					notifen = '  • Export the chat history of the current chat as plain text format for easy reading.\r\n\r\n  • Export Chat History for a Single Round, which includes the current context and the most recent system prompt, but excluding failed messages, undo messages, and resend messages. Exported file format: Markdown. File type: .md | .txt\r\n\r\n  • Export All Chat History / Logs, export and download all chat history (including failed messages, undo messages, resend messages) and all operation records (including system prompt modification records) on the webpage. Exported file format: Markdown. File type: .md | .txt \r\n\r\n  • If there is no response or the download fails when exporting, it may be due to browser or device incompatibility.\r\n\r\n  • Websites for Markdown online editors:\r\n    https://dillinger.io \r\n    https://stackedit.io/app# ';
 				  	title = '';
 					break;
 				  case 'C-ChatList':
@@ -2318,6 +2362,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notifcn += '\r\n  • #编号 和 #描述 可随意修改，仅有长度限制。';
 						notifcn += '\r\n  • 手动或自动创建对话副本时，副本的创建时间会自动加1秒或更多。';
 						notifcn += '\r\n  • 新对话 (未发送过消息) 不会被保存。';
+						notifcn += '\r\n  • 对话日志: 单个对话的所有记录 (包含操作记录、撤回的内容以及发送失败的内容等)，用于导出 Markdown 格式的纯文本聊天记录，有些对话日志可能会比较大。';
 						notifcn += '\r\n\r\n  • 使用浏览器普通模式时：标签页或浏览器窗口可随时刷新或关闭，打开时均能恢复数据，且不同标签页的数据是共享的 (同一浏览器打开相同网页的情况下)。';
 						notifcn += '\r\n  • 使用浏览器隐私模式 (无痕模式) 时：大多数支持本地存储，标签页可刷新，标签页或窗口之间不互通数据，标签页关闭时，所有数据都会被销毁。';
 					}
@@ -2332,6 +2377,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notifen += '\r\n  • #ID and #description can be freely modified, with length limitations.';
 						notifen += '\r\n  • When manually or automatically creating a copy of a chat, the chat creation time of the copy will be incremented by 1 second or more.';
 						notifen += '\r\n  • New chat (with no messages sent) will not be saved.';
+						notifen += '\r\n  • Chat Logs: All records of individual conversations, including activity logs, retracted messages, and failed messages, are stored. These logs can be exported as plain text chat records in Markdown format. Some logs of chats may be large in size.';
 						notifen += '\r\n\r\n  • In the normal mode of the browser, Tabs or browser windows can be refreshed or closed at any time, and data will be restored upon reopening. Data is shared between different tabs (when opening the same webpage in the same browser).';
 						notifen += '\r\n  • In private/incognito mode, Local storage is supported in most cases, tabs can be refreshed, but data is not shared between tabs or windows, and cache data is cleared when tabs are closed.';
 				  	}
@@ -2341,7 +2387,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifcn = '  • 所有数据仅存储于浏览器本地存储 (localStorage) 中，不会通过任何方式对外传输。\r\n';
 					notifcn += '  • [删除数据] 可清空所有数据，或者通过浏览器的历史记录清除功能来清空数据 (清除缓存)。';
 					if(!this.isSimpleMode){
-						notifcn += '\r\n  • localStorage是浏览器提供的功能，用于在用户的本地设备上存储数据。 1) localStorage与域名相关联，同一个域名下的页面可以共享同一个localStorage。 2) 对于本地运行的HTML文件 (地址以 file:/// 开头)，localStorage通常是共享的。同一浏览器下，不同的本地网页共用着同一个localStorage。 3) 不同浏览器数据不互通。 4) 在浏览器隐私模式下，通常每个标签页都有独立的localStorage。';
+						notifcn += '\r\n  • localStorage是浏览器提供的功能，用于在用户的本地设备上存储数据。 1) localStorage与域名相关联，同一个域名下的页面可以共享同一个localStorage。 2) 对于本地运行的HTML文件 (地址以 file:/// 开头)，localStorage通常是共享的。同一浏览器下，不同的本地网页共用着同一个localStorage (以实际情况为准)。 3) 不同浏览器数据不互通。 4) 在浏览器隐私模式下，通常每个标签页都有独立的localStorage。';
 					}
 					
 					notifcn += '\r\n\r\n  • LinGPT数据:  全自动保存\r\n';
@@ -2368,7 +2414,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifen = "  • All data is stored only in the browser's local storage (localStorage) and is not transmitted externally.\r\n";
 					notifen += "  • [Delete Data] can clear all data or use the browser's history clearing function to empty the data (clear cache).";
 					if(!this.isSimpleMode){
-						notifen += "\r\n  • localStorage is a browser-provided feature that allows storing data on the user's local device. 1) localStorage is associated with a specific domain, enabling sharing of the same localStorage among pages within the same domain.  2) For locally-run HTML files (address starting with file:///), localStorage is generally shared. In the same browser, different local web pages share the same localStorage.  3) localStorage is not shared across different browsers.  4) In privacy mode, typically each tab has its own isolated localStorage.";
+						notifen += "\r\n  • localStorage is a browser-provided feature that allows storing data on the user's local device. 1) localStorage is associated with a specific domain, enabling sharing of the same localStorage among pages within the same domain.  2) For locally-run HTML files (address starting with file:///), localStorage is generally shared. In the same browser, different local web pages share the same localStorage (depending on the actual situation).  3) localStorage is not shared across different browsers.  4) In privacy mode, typically each tab has its own isolated localStorage.";
 					}
 
 					notifen += '\r\n\r\n  • LinGPT Data: Fully automated saving\r\n';
@@ -2574,10 +2620,93 @@ to{transform:translate(-50%,-18px);opacity:1}
 					this.changeSimpleMode(false);
 				}
 			},
+			//totaltokens 是否超出 模型max_tokens的最大值
+			isTotaltokens_Exceeds_Maxtokens(modeldata){
+				const model_data = modeldata != null ? modeldata : this.gptModelList.find(model => model.modelname === this.apiGPTModel);
+				
+				if (this.totaltokens > model_data.maxtokens ){ //当前totaltokens 已经超过模型的最大max_tokens数  *注意：这里不要用(this.totaltokens >= model_data.maxtokens )或(this.totaltokens >= model_data.maxtokens - 1 )，否则刚好到用16384的时候，重问会弹窗要求换模型。
+					const notif = this.settingsLanguage == 'cn' ? '当前上下文记忆已使用的 tokens 数量为 ' + this.totaltokens + ' ，已超出当前模型支持的最大 max_tokens 数量 ( ' + model_data.maxtokens + ' )！\r\n请处理历史记录或切换到支持更大 max_tokens 的模型。\r\n\r\n当前模型(model):  ' + this.apiGPTModel  : 'The current context has used ' + this.totaltokens + ' tokens, which exceeds the maximum max_tokens ' + model_data.maxtokens + ' supported by the current model! \r\nPlease handle the chat history or switch to a model that supports a larger max_tokens.\r\n\r\nThe current model: ' + this.apiGPTModel ;
+					setTimeout(() => {
+						alert(notif);
+					}, 80);//延迟目的。如果是切换模型(下拉框)，弹太快界面上显示的是切换之前的模型。延迟一点，切换后的模型显示出来后，再弹。
+					return true;
+				}
+				return false;
+			},	
+				
+			// 设置窗口 GPT Model
+			changeGPTModel(){
+				if (this.checkBusyStatus()) {
+					// 如果返回 true，正在发送或正在验证
+					return;
+				} 
+				
+				let notif = '';
+				const model_data = this.gptModelList.find(model => model.modelname === this.apiGPTModel);
+				
+				let smart_maxtokens_notif = false; //是否建议开启smart max_tokens
+				//切换模型后，修正可能存在的apiMaxTokens不合理的情况 （尤其是在没有开启smart max_tokens的时候）
+				if (this.isTotaltokens_Exceeds_Maxtokens(model_data)){ //当前totaltokens 已经超过模型的最大max_tokens数, 弹窗警告 + 返回
+					this.apiMaxTokens = model_data.maxtokens - 1;
+					return;
+				}
+				if ( model_data.maxtokens >= this.totaltokens + 1 ){ //若没有开启smart max_tokens，避免totaltokens + apiMaxTokens 超过 maxtokens。 保留1，而不是更大的差值，是为了容易被用户注意到apiMaxTokens的设置不合理，引导用户手动修改max_tokens。
+					const diff1 = model_data.maxtokens - this.totaltokens; 
+					if (diff1 - this.apiMaxTokens > 200){
+						//nothing to do  差值200以上，目的：smart_maxtokens_notif = flase，不提醒
+					}else{
+						this.apiMaxTokens = this.apiMaxTokens > diff1 ? diff1 : this.apiMaxTokens;
+						smart_maxtokens_notif = true;
+					}
+				}
+				
+				if(smart_maxtokens_notif && !this.openSmartMaxTokens){ //建议开启 && 当前未开启
+					notif = this.settingsLanguage == 'cn' ? '不同模型的 max_tokens 上限不同，建议启用 [智能max_tokens] 功能' : 'The max_tokens limit varies for different models. Enable the [Smart max_tokens] feature for optimal results.' ;
+					this.showNotification(notif, 'bottom', '', 5000);
+				}else{
+					notif = this.settingsLanguage == 'cn' ? '"GPT模型 (model)" 变更为 ' + this.apiGPTModel : '"model" changed to ' + this.apiGPTModel ;
+					this.showNotification(notif, 'bottom', '', 2000);
+				}
+					
+				//切换模型后，检测模型是否过期，过期时提醒用户
+				if(this.gptModel_CheckExpiration(this.apiGPTModel, 4000)){ //true:该模型过期  延时4秒
+					return;
+				}
+			},
+			// 检测Model是否过期  返回true为过期
+			gptModel_CheckExpiration(model_name, delaytime) {
+				if (model_name == null || model_name === ''){
+					return false;
+				}
+				delaytime = delaytime == null ? 0 : delaytime;
+				
+				try{
+					for (const model of this.gptModelList) {
+						if (model.modelname === model_name && model.expiredtime !== '') {
+							const currentTime = new Date();// 获取当前时间
+							const expirationDate = new Date(model.expiredtime); // 创建过期时间
+							if (currentTime >= expirationDate) {
+								const date_YYYYMMDD = this.formatDateYYYYMMDDHHmmss(expirationDate,':').slice(0, 10);
+								const notif = this.settingsLanguage == 'cn' ? model.modelname + ' 于 ' + date_YYYYMMDD + ' 被 OpenAI 弃用，该模型将不再可用。请切换到另一个模型。' : model.modelname + ' has been deprecated by OpenAI on ' + date_YYYYMMDD + ', and this model will no longer be available. Please switch to another model.' ;
+								setTimeout(() => {
+									this.showNotification(notif, 'center', '');
+								}, delaytime);
+								return true;
+							} else {
+								return false;
+							}
+						}
+					}
+					return false;
+				}catch (e) {
+					console.error('gptModel_CheckExpiration() - 检测Model是否过期',e);
+					return false;
+				}
+			},
 			// 设置窗口 Temperature
 			changeTemperature(){
 				const notif = this.settingsLanguage == 'cn' ? '"temperature" 变更为 ' + this.apitemperature.toString() : '"temperature" changed to ' + this.apitemperature.toString() ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 1800);
 			},
 			// 设置窗口 MaxTokens
 			changeMaxTokens(){
@@ -2585,26 +2714,26 @@ to{transform:translate(-50%,-18px);opacity:1}
 					return;//自动调整不会激发事件，可以不用return
 				}
 				const notif = this.settingsLanguage == 'cn' ? '"max_tokens" 变更为 ' + this.apiMaxTokens.toString() : '"max_tokens" changed to ' + this.apiMaxTokens.toString() ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 1800);
 			},
 			// 设置窗口 Top
 			changeTopP(){
 				const notif = this.settingsLanguage == 'cn' ? '"top_p" 变更为 ' + this.apiTopP.toString() : '"top_p" changed to ' + this.apiTopP.toString() ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 1800);
 			},
 			// 设置窗口 PresencePenalty
 			changePresencePenalty(){
 				const notif = this.settingsLanguage == 'cn' ? '"presence_penalty" 变更为 ' + this.apiPresencePenalty.toString() : '"presence_penalty" changed to ' + this.apiPresencePenalty.toString() ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 1800);
 			},
 			// 设置窗口 FrequencyPenalty
 			changeFrequencyPenalty(){
 				const notif = this.settingsLanguage == 'cn' ? '"frequency_penalty" 变更为 ' + this.apiFrequencyPenalty.toString() : '"frequency_penalty" changed to ' + this.apiFrequencyPenalty.toString() ;
-				this.showNotification(notif, 'bottom');
+				this.showNotification(notif, 'bottom', '', 1800);
 			},
 
 			//粗略的估算tokens。仅适合 GPT-3.5 & GPT4， 不适合GPT-3 ，tokens计算方式完全不同。有技术的可以直接实现100%精准计算，不需要估算。参考官网，或者：https://gpt-tokenizer.dev
-			linTokenizer(message) {
+			lingptTokenizer(message) {
 				// tool ： https://gpt-tokenizer.dev
 				// To support new languages ., 
 				// 1). you should refer to the englishMixedArr and englishSingleArr to add new codes.  *Different languages are handled differently. The estimation for English is based on words or consecutive letters, while for Chinese, it is based on single characters.
@@ -2723,11 +2852,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 					return;
 				}
 				
-				//重问时(成功过的/得到过回复后的重问) When retrying. (After receiving a reply from GPT)  *(4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4)
+				//获取当前模型 模型数据 保护模型的参数/属性  Get the current model's model data  - model's parameters/attributes.
+				const model_data = this.gptModelList.find(model => model.modelname === this.apiGPTModel);
+				
+				//重问时(成功过的/得到过回复后的重问) When retrying. (After receiving a reply from GPT)  *(4095 4096 4097 16384 16385  gpt-3.5 gpt-4 gpt3.5 gpt4)
 				if( this.userMsgTokensForRetry != 0 ){
-					this.apiMaxTokens = 4096 - this.totaltokens; // 此时this.totaltokens为精准的total tokens（如果提示词没有变动/变化不大的话）。 this.totaltokens = 上下文 + 本次重问的信息 
-					//这里其实没必要减去一个值，tokens足够的情况下，减低点预防“因修改提示词而导致超额”的情况
-					if ( this.apiMaxTokens > 3500 ){
+					this.apiMaxTokens = model_data.maxtokens - this.totaltokens; // 此时this.totaltokens为精准的total tokens（如果提示词没有变动/变化不大的话）。 this.totaltokens = 上下文 + 本次重问的信息 
+					//这里其实没必要减去一个值，tokens足够的情况下，减低点 以预防“因修改提示词而导致超额”的情况
+					if ( this.apiMaxTokens > 4097 ){ // 4096
+						this.apiMaxTokens = this.apiMaxTokens - 600 ; 
+					}else if ( this.apiMaxTokens > 3500 ){
 						this.apiMaxTokens = this.apiMaxTokens - 350 ;
 					}else if ( this.apiMaxTokens > 2600 ){
 						this.apiMaxTokens = this.apiMaxTokens - 300 ;
@@ -2748,35 +2882,61 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const sendmsg_openai = 10;
 				
 				
-				// 预估当前消息的tokens数量
-				let estimatedTokens = this.linTokenizer(sendMsg);
-			//console.log("当前预估 原始的sendmsg: " + estimatedTokens);
+				// 预估当前消息的tokens数量 Estimate the tokens of the current message.
+				let estimatedTokens = 0;
+				try{
+					estimatedTokens = this.lingptTokenizer(sendMsg);
+				}catch (e) {
+					estimatedTokens = Math.ceil(sendMsg.length * 0.75);
+					const notif_cn = '\r\n\r\nSafari?(不排除是浏览器兼容性问题) 出错了(this.lingptTokenizer - 估算tokens时出错了)，可能是因为您发的内容太太太大了～\r\n请避免发送大量文本，建议您撤回刚刚发送的内容。大量文本会占用本地存储空间，而浏览器本地存储通常只支持5-10MB的容量。发送大量文本可能会导致自动保存不断失败而频繁报错。';
+					const notif_en = '\r\n\r\nSafari?(It is possible that this is a browser compatibility issue.) Oops, an error occurred (this.lingptTokenizer - There seems to be an error in the token calculation), possibly because the content you provided is tooooo large!\r\nPlease avoid sending large amounts of text. It is recommended that you withdraw the content you just sent. Large amounts of text can occupy local storage space, and browser local storage usually supports a capacity of only 5-10MB. Sending large amounts of text may result in frequent errors due to continuous failure of automatic saving.';
+					const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en;
+					this.showNotification('Error Message: ' + e.message + notif, 'center','Error - this.lingptTokenizer');
+				}
+		//	console.log("当前预估的tokens: " + estimatedTokens);
 				if ( this.msgContent.length < 2 ){ //如果是首条信息
 					estimatedTokens = estimatedTokens + firstsendmsg_openai ;
 					let sysprompt = this.msgContent[0]["content"] ;
 					if ( sysprompt != '') { //如果存在系统提示词
-						const syspromptTokens = this.linTokenizer(sysprompt); //预估系统提示词的tokens
-			//console.log("首条 系统提示词 预估（未+13） : " + syspromptTokens);
+						const syspromptTokens = this.lingptTokenizer(sysprompt); //预估系统提示词的tokens
+		//	console.log("此为首条消息，加上系统提示词后的预估的tokens（未加上13tokens） : " + syspromptTokens);
 						estimatedTokens = estimatedTokens + syspromptTokens;
 					}
 				}else { //非首条，不需要计算系统提示词，因为它的精准tokens数量会被包含在this.totaltokens当中
 					estimatedTokens = estimatedTokens + sendmsg_openai ;
 				}
 				
-	 		//console.log("当前预估（若是首条含提示词，含+13/+10） : " + estimatedTokens);
+	 	//	console.log("当前预估的tokens（含+13/+10；若是首条消息，这里还包含了提示词的tokens）: " + estimatedTokens);
 	
 				
-				// (4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4) 如果升级为GPT4 GPT-4模型，这里的4096需要修改  If upgraded to the GPT-4 model, the value of 4096 here needs to be modified. 
+				// (4095 4096 4097 16384 16385  gpt-3.5 gpt-4 gpt3.5 gpt4) 如果升级为GPT4 GPT-4模型，这里的4096需要修改  If upgraded to the GPT-4 model, the value of 4096 here needs to be modified. 
 				// 计算需要设置的max_tokens   
-				// *linTokenizer中，预估estimatedTokens的结果会偏大点（多数时候）
-				let remainingTokens = 4096 - this.totaltokens - estimatedTokens; //预估剩余的 可用于max_tokens的数量
-			//console.log("max_tokens原本设为 : " + Math.ceil(remainingTokens));
+				// *lingptTokenizer中，预估estimatedTokens的结果会偏大点（多数时候）
+				let remainingTokens = model_data.maxtokens - this.totaltokens - estimatedTokens; //预估剩余的 可用于max_tokens的数量
+		//	console.log("max_tokens初步设定为: " + Math.ceil(remainingTokens));
 				let n = 0 ;
-				if ( estimatedTokens < 500 ){
-					n = 200 - (estimatedTokens * 150 / 500); //估越少 n越大 允许max_tokens设置高一点；
+				let larger_maxtokens_n = 0;
+				let larger_maxtokens_i = 0;
+				if ( model_data.maxtokens < 4100 && estimatedTokens < 500 ){ //4096
+					n = 200 - (estimatedTokens * 150 / 500); //预估的token越少 n就越大 允许设置max_tokens更高一点； *没有什么特别，不这么做也可以
+				}else if(model_data.maxtokens > 16300 && estimatedTokens < 500 ){
+					larger_maxtokens_n = 200 - (estimatedTokens * 150 / 500);
 				}
+				
+				if(model_data.maxtokens > 4100){ //16384
+					larger_maxtokens_i = remainingTokens / 4096 * 400;
+				}
+				
+				//v7.29 回顾/备忘：1 主要基于“多数情况下lingptTokenizer的预估值会偏大”，默认发送内容的token越大，预留的误差量也就越大。 2 以下代码仅是微调  3 以下数值均没有特殊意义 
+				//  4 当remainingTokens接近模型的max_tokens上限时，说明提问内容的token很小，所以使用n进一步微调，调的不多，意义也不大。另外，此时即使提问只用了10来个token，也会算成200来个token。因为gpt通常不会回复达到“接近4000token（上限）”或者“接近165000token（上限）”的内容量，所以这种情况下，多计算些误差并不会影响使用体验与回复质量。
 				// remainingTokens = Math.ceil(remainingTokens); //向上取整数
-				if ( remainingTokens > 3500 ){
+				if ( remainingTokens > 15800 && model_data.maxtokens > 16300 && model_data.maxtokens < 16400 ){ //模糊的指定16384，如果有超过16384的新模型，应该跳至remainingTokens = remainingTokens - larger_maxtokens_i
+					remainingTokens = remainingTokens - 400 + larger_maxtokens_n;
+				}else if ( remainingTokens > 15000 && model_data.maxtokens > 16300 && model_data.maxtokens < 16400 ){ //模糊的指定16384
+					remainingTokens = remainingTokens - 370 + larger_maxtokens_n;
+				}else if ( remainingTokens > 4096 ){ // 超过 4096 的模型
+					remainingTokens = remainingTokens - larger_maxtokens_i;
+				}else if ( remainingTokens > 3500 ){
 					remainingTokens = remainingTokens - 400 + n;
 				}else if ( remainingTokens > 2500 ){
 					remainingTokens = remainingTokens - 370 + n;
@@ -2796,15 +2956,24 @@ to{transform:translate(-50%,-18px);opacity:1}
 					remainingTokens = remainingTokens - 10;
 				}else if ( remainingTokens > 0 ){
 					remainingTokens = (remainingTokens - 3) > 0 ? (remainingTokens - 3) : remainingTokens ;
-				}else {
-				//新增自动重问功能，计算错误 > max_tokens过高导致报错 > 从报错信息中得到精准tokens > 精准设置max_tokens > 自动重问 
-				//this.apiMaxTokens保持不变。保持不变，可能会报错，也可能不会报错（遇到过很多这种情况）。两种不同的处理方式：1 不改变this.apiMaxTokens，会存在小概率不报错的情况，此时max_tokens的值可能大也可能小，如果太小会直接影响回复的质量。   2、把this.apiMaxTokens调高，比如调到4095故意报错，报错可以得到精准的max_tonkens上限并自动修复，然后自动重问。 唯一不足就是免费账号每分钟只能请求3次，经常会遇到429错误。
-				//最终方案： this.apiMaxTokens + 200 。本身会报错的，不加也会报错。 其他情况，如果+200不报错，那就继续，+200等于是设立了max_tokens的最低值。
-				// (4095 4096 4097  gpt-3.5 gpt-4 gpt3.5 gpt4)
-				this.apiMaxTokens = this.apiMaxTokens + 200;
-				remainingTokens = this.apiMaxTokens > 4000 ? 4000 : this.apiMaxTokens; //4000无特殊意义
+				}else { // <= 0
+					//"Smart max_tokens"驱动的自动重问功能，计算错误 > 因为max_tokens设置过高而导致报错 > 从报错信息中获得精准的tokens（msg） > 精准设置max_tokens > 自动重问 
+					// (4095 4096 4097 16384 16385  gpt-3.5 gpt-4 gpt3.5 gpt4)
+					// v7.29 为了适配16k的模型 + 有了轮询/轮换key功能后可以无惧"429错误"。 *发送的单条内容越大，预估的误差也会增大 
+					// 比例：600 => 100 ，要么保证GPT的回复空间(保证回复质量)，要么就故意报错激活自动重问功能。 *建议免费计划要使用2个账号的Key来轮询。
+					let temp_x = estimatedTokens / 6;
+					
+					//通过“可用Key”的数量调整比例，更加激进，出错的概率也提高，目的是激活自动重问/自动修复
+					const good_key_count = this.apiCheckedData.filter(apidata => [0, 1, 2, 3].includes(apidata.level)).length;
+					if (good_key_count >= 3 || this.apiCheckedData.some(apikeydata => apikeydata.level === 0)) {
+						temp_x = estimatedTokens / 4;
+					} else if (good_key_count >= 2){
+						temp_x = estimatedTokens / 5.3;
+					}
+					
+					remainingTokens = temp_x >= 50 ? temp_x : 50;
 				}
-			//console.log("max_tokens最终设为 : " + Math.ceil(remainingTokens));
+		//	console.log("max_tokens最终设为(微调，减小，降低错误发生率) : " + Math.ceil(remainingTokens));
 				this.apiMaxTokens = Math.ceil(remainingTokens);
 			},
 			
@@ -3798,7 +3967,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							//Start. 读取事件
 							reader.onload = (event) => {
 							  try{
-								let contentsJSON = event.target.result;
+								var contentsJSON = event.target.result;
 								let dataObject = JSON.parse(contentsJSON);
 								//错误 文件错误 格式错误
 								if ( dataObject === null || typeof dataObject === 'undefined' || typeof dataObject !== 'object') {
@@ -4000,9 +4169,46 @@ to{transform:translate(-50%,-18px);opacity:1}
 									this.showNotification(notif, 'center',title);
 								}, 650);
 							  }catch (e) { //reader.onload = (event) => 
-									notif = this.settingsLanguage == 'cn' ? '出错了\r\n\r\n错误信息：' + e.message : 'Error\r\n\r\nError Message: ' + e.message ;
-									this.showNotification(notif, 'center','Err - { reader.onload = (event) => }');
-									console.error('importLocalStorageData() - reader.onload = (event) => 事件',e);
+									const e_message = e.message ? e.message : '';
+									const e_name = e.name ? e.name : '';
+									if( !this.localStorageExceedsMaximum(e_message,e_name)){ //先判断是否本地存储满了 Determining if it is due to running out of local storage capacity
+										notif = this.settingsLanguage == 'cn' ? '出错了\r\n\r\n错误信息：' + e.message : 'Error\r\n\r\nError Message: ' + e.message ;
+										this.showNotification(notif, 'center','Err - { reader.onload = (event) => }');
+										console.error('importLocalStorageData() - reader.onload = (event) => 事件',e);
+									}else{
+									//提醒用户 存储空间用量 及 文件大小 
+										let localStorageSize_A = null; //所有本地数据 算法A
+										let localStorageSize_B = null; //所有本地数据 算法B
+										localStorageSize_A = this.calculateLocalStorageSize();
+										localStorageSize_B = this.calculateLocalStorageUsage();
+										notif = this.settingsLanguage == 'cn' ? '导入失败 - 本地存储空间不足\r\n\r\n' : 'Import Failed - Insufficient Local Storage Space\r\n\r\n' ;
+										let notif_temp = '';
+										
+										if (localStorageSize_A !== null && localStorageSize_B !== null && localStorageSize_A !== localStorageSize_B ) {
+										// 均不为null
+											//判断大小，小的赋值给A，大的赋值给B
+											if (localStorageSize_A > localStorageSize_B) {
+												let temp = localStorageSize_A;
+												localStorageSize_A = localStorageSize_B;
+												localStorageSize_B = temp;
+											}
+											notif_temp = this.settingsLanguage == 'cn' ? '当前浏览器本地存储已使用 ' : "The current browser's local storage usage is ";
+											notif_temp = notif_temp + (this.settingsLanguage == 'cn' ? localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB' : localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB') ;
+											notif_temp = '\r\n\r\n' + notif_temp + '。';
+										}else{
+										// 只有一个变量为 null 的情况 , 这里不考虑都等于null的情况
+											localStorageSize_A = localStorageSize_A === null ? localStorageSize_B : localStorageSize_A ;
+											notif_temp = this.settingsLanguage == 'cn' ? '当前浏览器本地存储已使用 ' : "The current browser's local storage usage is ";
+											notif_temp = notif_temp + (this.settingsLanguage == 'cn' ? localStorageSize_A + ' MB' :  localStorageSize_A + ' MB') ;
+											notif_temp = '\r\n\r\n' + notif_temp + '。';
+										}
+							
+										const sizeInMB = this.calculateStringSize(contentsJSON, 'utf-16') / 1024 / 1024;
+										const sizeStr = sizeInMB.toFixed(3) + ' MB';
+										notif = notif + (this.settingsLanguage == 'cn' ? '本次导入的 JSON 数据大小为 ' + sizeStr  : 'The size of the JSON data imported this time is ' + sizeStr ) ;
+										notif = notif + notif_temp  + (this.settingsLanguage == 'cn' ? '浏览器通常仅支持约 5MB 或 10MB 的本地存储空间 (localStorage)，不同浏览器和版本之间可能会有所差异。如果由于浏览器本地存储空间不足而导入失败，您可以尝试删除一些对话数据 (或先抹掉日志)，或者尝试更换浏览器后再次导入。\r\n建议: 在重新导入之前先刷新页面。' : 'Browsers typically only support around 5MB or 10MB of local storage space, with variations across different browsers and versions. If the import fails due to insufficient browser storage space, you can try deleting some chat data or erase logs, or switch to a different browser and try again. \r\nSuggestion: Refresh the page before importing again.' );
+										alert(notif);
+									}
 							  }
 							//End. reader.onload = (event) => ...
 							};
@@ -4021,9 +4227,13 @@ to{transform:translate(-50%,-18px);opacity:1}
 					
 				}, 150);//第二次保存，延迟保存
 				}catch (e) {
-					notif = this.settingsLanguage == 'cn' ? '出错了\r\n\r\n错误信息：' + e.message : 'Error\r\n\r\nError Message: ' + e.message ;
-					this.showNotification(notif, 'center','Err - importLocalStorageData()');
-					console.error('importLocalStorageData() - 导入数据',e);
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					if( !this.localStorageExceedsMaximum(e_message,e_name)){ //先判断是否本地存储满了 Determining if it is due to running out of local storage capacity
+						notif = this.settingsLanguage == 'cn' ? '出错了\r\n\r\n错误信息：' + e.message : 'Error\r\n\r\nError Message: ' + e.message ;
+						this.showNotification(notif, 'center','Err - importLocalStorageData()');
+						console.error('importLocalStorageData() - 导入数据',e);
+					}
 				}
 				
 			},
@@ -4055,6 +4265,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						let avatarSize = null; //单独-上传头像
 						let chatDataListSize = null; //单独-聊天数据
 						let promptsDataSize = null; //单独-提示词
+						let chatDataListSize_chatHistoryLogs = 0; //单独-聊天数据中的 Logs部分
 						try{
 							localStorageSize_A = this.calculateLocalStorageSize();
 						}catch (e) {}
@@ -4070,7 +4281,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 						try{
 							promptsDataSize = this.calculateLocalStorageUsage_Item('promptsData');
 						}catch (e) {}
-				
+						try{ //v7.27 计算日志 (用于导出单个对话的markdown格式的全部聊天记录与操作记录)
+							let logs_totalSize = 0;
+							this.chatDataList.forEach((chatData) => {
+								const chathistoryString = chatData.chatVariables.chathistory;
+								const sizeInMB = this.calculateStringSize(chathistoryString, 'utf-16') / 1024 / 1024;
+								logs_totalSize += sizeInMB;
+							});
+							chatDataListSize_chatHistoryLogs = logs_totalSize.toFixed(4);
+						}catch (e) {}
+						
 						let notif = '';
 						const head = this.settingsLanguage == 'cn' ? '浏览器本地存储 (localStorage) 使用情况：\r\n' : 'The usage of browser local storage (localStorage) :\r\n';
 						
@@ -4080,14 +4300,24 @@ to{transform:translate(-50%,-18px);opacity:1}
 						avatarSize = avatarSize.toString() === '0' ? '0.0000' : avatarSize;
 						chatDataListSize = chatDataListSize.toString() === '0' ? '0.0000' : chatDataListSize;
 						promptsDataSize = promptsDataSize.toString() === '0.0003' ? ' < 0.0003' : promptsDataSize;
+						chatDataListSize_chatHistoryLogs = chatDataListSize_chatHistoryLogs === null ? '0.0000' : chatDataListSize_chatHistoryLogs;
 						let otherSizeStr = '\r\n';
-						otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 聊天数据占用：' + chatDataListSize + ' MB' : '\r\n  • Chat data size: ' + chatDataListSize + ' MB' ;
+						otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  部分数据的存储情况如下:' : '\r\n  Storage status for some data:' ;
+						otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 聊天数据占用：' + chatDataListSize + ' MB  (其中日志部分占用：' + chatDataListSize_chatHistoryLogs + ' MB)' : '\r\n  • Chat data size: ' + chatDataListSize + ' MB  (with "Logs" size: ' + chatDataListSize_chatHistoryLogs + ' MB)';
 						otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 用户头像(转码后)占用：' + avatarSize + ' MB' : '\r\n  • User avatar (encoded) size: ' + avatarSize + ' MB' ;
 						otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 提示词数据占用：' + promptsDataSize + ' MB' : '\r\n  • Prompts data size: ' + promptsDataSize + ' MB' ;
 						otherSizeStr += '\r\n  • ...';
 						
+					//if ( !this.isSimpleMode ){
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n\r\n  小贴士:' : '\r\n\r\n  Tips:' ;
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 电脑端浏览器本地存储通常为 10MB' : '\r\n  • Local storage for desktop browsers is typically 10MB.' ;
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 移动端浏览器本地存储通常为 5MB' : '\r\n  • Local storage for mobile browsers is typically 5MB.' ;
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • Safari (iPhone / Mac) 的本地存储一般为 5MB' : '\r\n  • Local storage for Safari (iPhone / Mac) is usually 5MB.' ;
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • "日志": 单个对话的所有记录 (包含操作记录、撤回的内容以及发送失败的内容等)，用于导出 Markdown 格式的纯文本聊天记录，有些对话日志可能会比较大。' : '\r\n  • "Logs": All records of individual conversations, including activity logs, retracted messages, and failed messages, are stored. These logs can be exported as plain text chat records in Markdown format. Some logs of chats may be large in size.' ;
+							otherSizeStr += this.settingsLanguage == 'cn' ? '\r\n  • 如何删除对话日志: 打开 [对话列表]，点击 [...] 选 抹掉日志' : '\r\n  • How to delete chat logs: Open the [Chat List], click on [...], and select Erase logs.' ;
+					//}
 						
-						if (localStorageSize_A !== null && localStorageSize_B !== null) {
+						if (localStorageSize_A !== null && localStorageSize_B !== null && localStorageSize_A !== localStorageSize_B ) {
 						// 均不为null
 							//判断大小，小的赋值给A，大的赋值给B
 							if (localStorageSize_A > localStorageSize_B) {
@@ -4095,16 +4325,24 @@ to{transform:translate(-50%,-18px);opacity:1}
 								localStorageSize_A = localStorageSize_B;
 								localStorageSize_B = temp;
 							}
-							notif = this.settingsLanguage == 'cn' ? '已用：' + localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB' : 'Used: ' + localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB' ;
+							notif = this.settingsLanguage == 'cn' ? '已使用：' + localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB' : 'Used: ' + localStorageSize_A + ' ～ ' +  localStorageSize_B + ' MB' ;
 							notif = head + notif;
-							notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用：' + (5 - localStorageSize_B).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size: ' + (5 - localStorageSize_B).toFixed(4) + ' MB' ;
+							if ( (5 - localStorageSize_B) > -0.1 ){
+								notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用 (假设上限为 5MB)：' + (5 - localStorageSize_B).toFixed(4) + ' MB\r\n预计剩余可用 (假设上限为 10MB)：' + (10 - localStorageSize_B).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size (assuming a limit of 5MB): ' + (5 - localStorageSize_B).toFixed(4) + ' MB\r\nEstimated Remaining Size (assuming a limit of 10MB): '  + (10 - localStorageSize_B).toFixed(4) + ' MB' ;
+							}else{
+								notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用 (假设上限为 10MB)：' + (10 - localStorageSize_B).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size (assuming a limit of 10MB): ' + (10 - localStorageSize_B).toFixed(4) + ' MB' ;
+							}
 							notif += otherSizeStr;
-						}else if ((localStorageSize_A === null && localStorageSize_B !== null) || (localStorageSize_A !== null && localStorageSize_B === null)) {
+						}else if ((localStorageSize_A === null && localStorageSize_B !== null) || (localStorageSize_A !== null && localStorageSize_B === null) || (localStorageSize_A !== null && localStorageSize_A === localStorageSize_B) ) {
 						// 只有一个变量为 null 的情况
 							localStorageSize_A = localStorageSize_A === null ? localStorageSize_B : localStorageSize_A ;
-							notif = this.settingsLanguage == 'cn' ? '已用：' + localStorageSize_A + ' MB' : 'Used: ' + localStorageSize_A + ' MB' ;
+							notif = this.settingsLanguage == 'cn' ? '已使用：' + localStorageSize_A + ' MB' : 'Used: ' + localStorageSize_A + ' MB' ;
 							notif = head + notif;
-							notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用：' + (5 - localStorageSize_A).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size: ' + (5 - localStorageSize_A).toFixed(4) + ' MB' ;
+							if ( (5 - localStorageSize_B) > -0.1 ){
+								notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用 (假设上限为 5MB)：' + (5 - localStorageSize_A).toFixed(4) + ' MB\r\n预计剩余可用 (假设上限为 10MB)：' + (10 - localStorageSize_A).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size (assuming a limit of 5MB): ' + (5 - localStorageSize_A).toFixed(4) + ' MB\r\nEstimated Remaining Size (assuming a limit of 10MB): '  + (10 - localStorageSize_A).toFixed(4) + ' MB' ;
+							}else{
+								notif += this.settingsLanguage == 'cn' ? '\r\n预计剩余可用 (假设上限为 10MB)：' + (10 - localStorageSize_A).toFixed(4) + ' MB' : '\r\nEstimated Remaining Size (assuming a limit of 10MB): ' + (10 - localStorageSize_A).toFixed(4) + ' MB' ;
+							}
 							notif += otherSizeStr;
 						}else{
 						// 均为null
@@ -4117,7 +4355,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 							notiftime = 1300; //如果通知弹窗已经存在，延迟1.3秒弹出
 						}
 						setTimeout(() => {
-							this.showNotification(notif, 'center', '');
+							const title = this.settingsLanguage == 'cn' ? '用量统计' : 'Usage statistics' ;
+							this.showNotification(notif, 'center', title);
 						}, notiftime);//延迟弹出
 						
 					}, 100);//延迟计算
@@ -4176,7 +4415,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				}
 				return total;
 			},
-			//计算本地存储的大小 方法B
+			//计算本地存储的大小 方法B *在本地存储中，数据通常以字符串的形式存储。在大多数情况下，字符串是以UTF-16编码表示的，这意味着每个字符占用2个字节（16位）
 			calculateLocalStorageUsage() {
 				let totalBytes = 0;
 
@@ -4220,6 +4459,28 @@ to{transform:translate(-50%,-18px);opacity:1}
 					}
 				}
 				return null;
+			},
+			//本地存储超出浏览器的最大限制
+			localStorageExceedsMaximum(errormessage,errorname) {
+				errormessage = errormessage == null ? '' : errormessage ;
+				errorname = errormessage == null ? '' : errorname ;
+				const errName = errorname.toUpperCase();
+				const temp_a = errormessage.includes("quota") && errormessage.includes("exceeded");
+				const temp_b = errorname.includes("QuotaExceededError") || (errName.includes("EXCEEDED") && errName.includes("QUOTA")) || (errName.includes("ERROR") && errName.includes("QUOTA"));
+				if(temp_a || temp_b){
+					let notif_cn = "  • 您的浏览器本地存储已超过最大容量限制。\r\n  • 如果频繁弹出本提示，是因为自动保存时由于存储空间不足而保存失败，请尽快释放存储空间，否则新数据将持续保存失败 (最近的数据会丢失)。\r\n\r\n小贴士:\r\n  • 不同浏览器的本地存储限额不同，常见的限额为 10MB或 5MB。您可以打开新页面，[设置] > [数据管理与隐私]中，点击打开最后一个 [用量统计]，以查看本地存储的使用情况。";
+					notif_cn += "\r\n  • 在  [数据管理与隐私] 中您可以删除全部对话数据，在 [对话列表窗口] 中您可以选择性删除单个对话数据或抹掉对话日志。需要备份的对话可选择导出 JSON 文件。\r\n  • 导入时请注意: 1) 确保本地存储有足够的可用空间来容纳导入的数据; 2) 超过 5MB 的数据需要使用支持 10MB 本地存储的浏览器来进行导入; 3) 可使用隐私模式或使用其他浏览器来临时处理数据。";
+					let notif_en = "  • The browser's local storage has exceeded the maximum capacity limit.\r\n  • If this prompt frequently pops up, it is because the automatic saving fails due to insufficient storage space. Please free up storage space as soon as possible, otherwise new data will continue to fail to save (The most recent data will be lost).\r\n\r\nTips:\r\n  • Different browsers have different limits for local storage, with the most common limits being 10MB or 5MB. You can open a new page and go to [Settings] > [Data Privacy and Management]. Click on the last option [Usage Statistics] to view the usage of local storage.";
+					notif_en += "\r\n  • In [Data Privacy and Management], you can delete all chat data, and in [Chat List], you can selectively delete individual chat data or erase logs. Before deletion, you can choose to export a JSON file as a backup.\r\n  • Note when importing: 1) Ensure sufficient available space in local storage to accommodate imported data; 2) Use a browser that supports 10MB local storage for importing data exceeding 5MB; 3) Use privacy mode or an alternative browser to temporarily handle the data.";
+					const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
+					const title = this.settingsLanguage == 'cn' ? '本地存储 (localStorage) 空间不足' : "Insufficient local storage space" ;
+					setTimeout(() => {
+						this.showNotification(notif, 'center', title); 
+					}, 2000);//延迟，避免之前有通知
+					return true;
+				}else{
+					return false;
+				}
 			},
 			
 
@@ -4487,6 +4748,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 					storage.removeItem(testKey);
 					return true;
 				} catch (e) {
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+					
 					return false;
 				}
 			},
@@ -4778,8 +5043,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 					gptAvatarURL: this.gptAvatarURL,
 					userVariables
 				};
-				//保存到localStorage	
-				localStorage.setItem('userSettings', JSON.stringify(userSettings)); 
+				try{
+					//保存到localStorage	
+					localStorage.setItem('userSettings', JSON.stringify(userSettings)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 			},
 					
 			// 保存API Keys Data  更新合并最新数据，唯一不足：多标签不同步删除，需要删除时，应该只保留一个标签页。否则其他未关闭的标签页大概率会恢复已删除的key。
@@ -4816,8 +5087,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const apikeyData = this.getVariablesFromThis(this.apikeyData_default);
 				//手动增加版本
 				apikeyData.version = this.apikeyData_Version; 
-				//保存到localStorage	
-				localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				try{
+					//保存到localStorage	
+					localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 			},
 								
 			// 保存提示词 Prompts Data
@@ -4832,8 +5109,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const promptsData = this.getVariablesFromThis(this.promptsData_default);
 				//手动增加版本
 				promptsData.version = this.promptsData_Version;
-				//保存到localStorage	
-				localStorage.setItem('promptsData', JSON.stringify(promptsData)); 
+				try{
+					//保存到localStorage	
+					localStorage.setItem('promptsData', JSON.stringify(promptsData)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 			},
 					
 			// 保存当前对话 ChatData
@@ -4864,8 +5147,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 					localStorage_chatDataList.unshift(chat_Data); // 不存在时，新增
 				}
 				
-				//保存到localStorage
-				localStorage.setItem('chatDataList', JSON.stringify(localStorage_chatDataList)); 
+				try{
+					//保存到localStorage
+					localStorage.setItem('chatDataList', JSON.stringify(localStorage_chatDataList)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 				
 				//保存后，还原可能存在的新对话/空对话
 				if(chatdata_null != null){
@@ -4896,8 +5185,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 					localStorage_chatDataList.unshift(chatdata); // 不存在时，新增
 				}
 				
-				//保存到localStorage
-				localStorage.setItem('chatDataList', JSON.stringify(localStorage_chatDataList));
+				try{
+					//保存到localStorage
+					localStorage.setItem('chatDataList', JSON.stringify(localStorage_chatDataList));
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 			},
 											
 			// *禁用本地存储时  保存单条对话 更新List  ChatData  NoLocalStorage
@@ -5577,6 +5872,57 @@ to{transform:translate(-50%,-18px);opacity:1}
 					this.ExportData_JSON(dataString, fileName);
 				//延时0.15秒
 				}, 150);
+				}else if(optionsStr === 'EraseLogs'){ 
+				// 5) 抹掉日志 Erase Logs
+					//1 先保存当前data  刷新ChatDataList
+					this.localStorage_SaveData(null,'chatDataList');//保存
+					//禁用本地存储时的保存
+					if(!this.isLocalStorageSupported || !this.isLocalStorageAllowed ){
+						this.saveChatData_NoLocalStorage(null);
+					}
+				
+				//延时0.15秒  *同步 缓冲
+				setTimeout(() => {
+					//chatdata
+					let chat_Data = this.chatDataList.find(c => c.chatcreatedtime === chatdata.chatcreatedtime);//确保chatdata数据最新，主要针对当前对话的情况
+					chat_Data.chatlasttime = this.formatDateYYYYMMDDHHmmss(new Date(),':'); //现在的时间
+					
+					// chatVariables   logs <=> chathistory
+					const historyhead = this.settingsLanguage == 'cn' ? '# GPT聊天记录 / Chat History  \r\n\r\n' : '# Chat History  \r\n\r\n' ;
+					const eraseLogsStr = this.settingsLanguage == 'cn' ? '### #于 ' + chat_Data.chatlasttime + ' 手动抹掉日志\r\n***\r\n\r\n' : '### #Manually erase logs on ' + chat_Data.chatlasttime + '\r\n***\r\n\r\n' ;
+				 	chat_Data.chatVariables.chathistory = historyhead + eraseLogsStr; //清空，重置Logs(chathistory)
+					
+					if(iscurrentdata){
+						//读取 刷新
+						this.loadChatData(chat_Data);
+						//保存当前data *会获取最新List
+						this.localStorage_SaveData(null,'chatDataList');//保存
+						//禁用本地存储时的保存
+						if(!this.isLocalStorageSupported || !this.isLocalStorageAllowed ){
+							this.saveChatData_NoLocalStorage(null);
+						}
+						//其他读取后需要处理的
+						this.$nextTick(() => {
+							// 1 3 4 5
+							this.todoList_ChatDataRestored('ClearAll');	
+						});
+						
+						//回到顶部
+						this.gotoTop_List();
+					}else{
+						
+						this.saveChatData_Single(chat_Data); //单一的保存，不影响界面任何数据
+						//禁用本地存储时的保存
+						if(!this.isLocalStorageSupported || !this.isLocalStorageAllowed ){
+							this.saveChatData_NoLocalStorage(chat_Data);
+						}
+						this.chatDataList_Sort();// ChatDataList排序
+					}
+					
+					const notif = this.settingsLanguage == 'cn' ? '已抹掉对话 { #' + chat_Data.chatid + ' } 的日志' : 'The logs for chat { #' + chat_Data.chatid + ' } have been erased';
+					this.showNotification(notif, 'bottom', '',3500);
+				//延时0.15秒
+				}, 150);
 				}
 				
 				if(optionsStr == 'ClearPrevious' || optionsStr == 'ClearAll' ){
@@ -5681,47 +6027,53 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.chatDataList = this.chatDataList.filter(c => c.chatcreatedtime !== chatdata.chatcreatedtime); //删除目标对话，保留其他对话，顺序不会改变
 				notif = this.settingsLanguage == 'cn' ? '对话已删除' : 'Chat has been deleted' ;
 				this.showNotification(notif, 'bottom'); 
-				if(iscurrentdata){
-					if(this.chatDataList == [] || this.chatDataList.length == 0){
-						//将最新的this.chatDataList保存到localStorage
-						if(this.isLocalStorageAllowed && this.isLocalStorageSupported){
-							localStorage.setItem('chatDataList', JSON.stringify(this.chatDataList));
-						}
+				try{
+					if(iscurrentdata){
+						if(this.chatDataList == [] || this.chatDataList.length == 0){
+							//将最新的this.chatDataList保存到localStorage
+							if(this.isLocalStorageAllowed && this.isLocalStorageSupported){
+								localStorage.setItem('chatDataList', JSON.stringify(this.chatDataList));
+							}
 						
-						//延迟1秒弹消息
-						setTimeout(() => {
-							notif = this.settingsLanguage == 'cn' ? '列表空，已自动添加一个新的对话' : 'The list is empty. A new chat has been automatically added.' ;
-							this.showNotification(notif, 'bottom', '',2900); 
-						}, 1400);
-						//添加新对话
-						this.chatList_addNewChatData(true);
+							//延迟1秒弹消息
+							setTimeout(() => {
+								notif = this.settingsLanguage == 'cn' ? '列表空，已自动添加一个新的对话' : 'The list is empty. A new chat has been automatically added.' ;
+								this.showNotification(notif, 'bottom', '',2900); 
+							}, 1400);
+							//添加新对话
+							this.chatList_addNewChatData(true);
+						}else{
+							//将最新的this.chatDataList（需要去null）保存到localStorage
+							const newChatDataList =  this.chatDataList.filter(c => c.chatcreatedtime !== null);
+							if(this.isLocalStorageAllowed && this.isLocalStorageSupported){
+								localStorage.setItem('chatDataList', JSON.stringify(newChatDataList));
+							}
+						
+							index = index - 1; //被删的前一位
+							index = index < 0 ? 0 : index;
+							index = index < this.chatDataList.length ? index : 0; // <=(this.chatDataList.length - 1)
+							//7 读取 读取对话数据 还原聊天记录 恢复聊天设置
+							this.loadChatData(this.chatDataList[index]);
+				
+							//其他读取后需要处理的
+							this.$nextTick(() => {
+								// 1 2 3 4 5 6
+								this.todoList_ChatDataRestored('hasdata', 100);		
+							});
+						}	
 					}else{
 						//将最新的this.chatDataList（需要去null）保存到localStorage
 						const newChatDataList =  this.chatDataList.filter(c => c.chatcreatedtime !== null);
 						if(this.isLocalStorageAllowed && this.isLocalStorageSupported){
 							localStorage.setItem('chatDataList', JSON.stringify(newChatDataList));
 						}
-						
-						index = index - 1; //被删的前一位
-						index = index < 0 ? 0 : index;
-						index = index < this.chatDataList.length ? index : 0; // <=(this.chatDataList.length - 1)
-						//7 读取 读取对话数据 还原聊天记录 恢复聊天设置
-						this.loadChatData(this.chatDataList[index]);
-				
-						//其他读取后需要处理的
-						this.$nextTick(() => {
-							// 1 2 3 4 5 6
-							this.todoList_ChatDataRestored('hasdata', 100);		
-						});
-					}	
-				}else{
-					//将最新的this.chatDataList（需要去null）保存到localStorage
-					const newChatDataList =  this.chatDataList.filter(c => c.chatcreatedtime !== null);
-					if(this.isLocalStorageAllowed && this.isLocalStorageSupported){
-						localStorage.setItem('chatDataList', JSON.stringify(newChatDataList));
 					}
+					this.chatDataList_Sort();// ChatDataList排序
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
 				}
-				this.chatDataList_Sort();// ChatDataList排序
 			//延时0.1秒
 			}, 100);
 		//延时0.1秒
@@ -6137,7 +6489,13 @@ to{transform:translate(-50%,-18px);opacity:1}
 					//手动增加版本
 					apikeyData.version = this.apikeyData_Version; 
 					//保存
-					localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+					try{
+						localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+					}catch(e){
+						const e_message = e.message ? e.message : '';
+						const e_name = e.name ? e.name : '';
+						this.localStorageExceedsMaximum(e_message,e_name);
+					}
 									
 					if(!this.btnDisabledState_CheckAPI){ //如果当前是“未通过验证”的状态
 						//恢复apikey到输入框，并恢复按钮状态
@@ -6248,8 +6606,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const apikeyData = this.getVariablesFromThis(this.apikeyData_default);
 				//手动增加版本
 				apikeyData.version = this.apikeyData_Version; 
-				//保存到localStorage	
-				localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				try{
+					//保存到localStorage	
+					localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 						
 				const notif = this.settingsLanguage == 'cn' ? '修改成功' : 'Modification successful' ;
 				this.showNotification(notif, 'bottom');
@@ -6291,8 +6655,14 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const apikeyData = this.getVariablesFromThis(this.apikeyData_default);
 				//手动增加版本
 				apikeyData.version = this.apikeyData_Version; 
-				//保存到localStorage	
-				localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				try{
+					//保存到localStorage	
+					localStorage.setItem('apikeyData', JSON.stringify(apikeyData)); 
+				}catch(e){
+					const e_message = e.message ? e.message : '';
+					const e_name = e.name ? e.name : '';
+					this.localStorageExceedsMaximum(e_message,e_name);
+				}
 			
 			
 				//上次可用的，如果是本次被删的key，这里需要清除
@@ -7112,16 +7482,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 			//按钮：说明 Help
 			openDialog_Help(){
 				let notif =  '';
-				let title = this.settingsLanguage == 'cn' ? 'LinGPT v7.23 - 帮助' : 'LinGPT v7.23 - Help' ;
+				let title = this.settingsLanguage == 'cn' ? 'LinGPT v7.29 - 帮助' : 'LinGPT v7.29 - Help' ;
 				let notifcn = 'LinGPT - A GPT-3.5 Webpage with Just a Single HTML File ';
-				notifcn += '\r\n\r\nLinGPT ，只有一个 html 文件的 GPT-3.5 聊天网页，轻量，便捷，零门槛。下载到电脑，打开 html 文件即可使用，像打开一张图片一样简单。可上传至托管平台 / 主机 / 服务器，支持所有免费的静态网页托管平台，托管在 Github / Gitee 非常流畅。 1) 接口: 使用 OpenAI 官方 API ，同时可自定义 API ，支持免魔法的第三方 API 。 2) 模型: 目前无法测试 GPT-4 模型，仅支持 GPT-3.5 模型 (ChatGPT) 。 3) 密钥: 需自备 API Key，不限数量，支持轮询，全自动智能的轮换 API Key，无需设置。 4) 数据安全: 支持浏览器本地存储，所有数据仅存储在浏览器缓存中，支持导出、导入、删除。代码未加密，开源透明，安全无风险，推荐搭配官方接口使用。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入 API Key 或批量添加后即可开始聊天。';
+				notifcn += '\r\n\r\nLinGPT ，只有一个 html 文件的 GPT-3.5 聊天网页，轻量，便捷，零门槛。下载到电脑，打开 html 文件即可使用，像打开一张图片一样简单。可上传至托管平台 / 主机 / 服务器，支持所有免费的静态网页托管平台，托管在 Github / Gitee 非常流畅。 1) 接口: 使用 OpenAI 官方 API ，同时可自定义 API ，支持免魔法的第三方 API 。 2) 模型: 目前没有可以测试 GPT-4 模型的账号，所以仅支持 GPT-3.5 模型 (已升级支持最新的 ChatGPT 16K 版本) 。 3) 密钥: 需自备 API Key，不限数量，支持轮询，全自动智能的轮换 API Key，无需设置。 4) 数据安全: 支持浏览器本地存储，所有数据仅存储在浏览器缓存中，支持导出、导入、删除。代码未加密，开源透明，安全无风险，推荐搭配官方接口使用。\r\n\r\n#开始使用\r\n跟随红色按钮指引，填入 API Key 或批量添加后即可开始聊天。';
 				notifcn += '\r\n\r\n#对话\r\n功能: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)。 \r\n聊天: 1) 全自动智能调节 max_tokens ，告别手动设置。 2) 支持自动重问 (当发送失败时，智能判断是否重试)。 3) 可使用 Markdown 语法，方法与官网版 ChatGPT (chat.openai.com) 相同，当 GPT 回复未使用 Markdown 格式时，可要求其使用 Markdown 格式回复（简称 MD 格式，主要应用于代码、表格、文章排版、显示网络图片等，多数情况下 GPT 会主动使用 MD 语法）。 4) iPhone / iPad 中，搜狗输入法在换行时可能存在兼容性问题，。 5) 电脑端支持 Shift + Enter 、Ctrl + Enter 、Command(⌘) + Enter 换行。 6) 如果想中断正在发送的请求，可通过刷新网页来实现。';
-				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v7.23 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、 API 设置、查询 API 余额和有效期 (余额查询于7月22日失效)、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、压缩上下文(可导出)、多种上下文模式...等';
+				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v7.29 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、 API 设置、查询 API 余额和有效期 (余额查询于7月22日失效)、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#持续更新中\r\n更新日志 https://gitee.com/lin2025/gpt3.5/  或  https://github.com/lin2025/gpt3.5/ \r\n待开发的功能：集成提示词、共享提示词、压缩上下文(可导出)、多种上下文模式...等';
 				//有单引号
-				let notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\nLinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server. It can be uploaded to any static website hosting platform like GitHub and provides a very smooth browsing experience.  1) API: This code uses the OpenAI API and supports third-party APIs. 2) Model: Currently, only the GPT-3.5 model (ChatGPT gpt-3.5-turbo) is supported as the GPT-4 model cannot be tested. 3) API Key: OpenAI API key required, no limit on quantity, supports Auto Key Rotation, intelligently rotates API keys. 4) User Data Security: Supports browser local storage. All data is stored solely in the browser cache and supports export, import, and deletion. ";
+				let notifen = "LinGPT - A GPT-3.5 Webpage with Just a Single HTML File \r\n\r\nLinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server. It can be uploaded to any static website hosting platform like GitHub and provides a very smooth browsing experience.  1) API: This code uses the OpenAI API and supports third-party APIs. 2) Model: Currently, only the GPT-3.5 model (Supports the latest ChatGPT 16K) is supported as there is no account available for testing the GPT-4 model. 3) API Key: OpenAI API key required, no limit on quantity, supports Auto Key Rotation, intelligently rotates API keys. 4) User Data Security: Supports browser local storage. All data is stored solely in the browser cache and supports export, import, and deletion. ";
 				notifen += "\r\n\r\n#Getting Started \r\nFollow the red button's guidance, enter your API Key or add them in bulk, and start chatting. ";
-				notifen += '\r\n\r\n#Chat\r\nFeatures: Multiple chat management, automatic saving, support for creating copies, data synchronization across multiple tab pages, export capability (backup/migration/sharing), import capability (restore chats). \r\nChatting: 1) Fully automatic intelligent adjustment of max_tokens. 2) Supports automatic retry (intelligently determines whether to retry when a request fails). 3) Markdown syntax can be used, same as the official ChatGPT (chat.openai.com). When GPT replies without using Markdown format, it can be asked to reply in Markdown format (referred to as MD format, mainly used for code, tables, article formatting, displaying web images, etc. In most cases, GPT will automatically use MD syntax). 4) Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. 5) There is no stop request function. If you want to interrupt a request that is being sent, you can do so by refreshing the web page.';
-				notifen += "\r\n\r\n#Prompt Generator \r\nv7.23, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, API settings, checking API balance and validity period (The balance inquiry expired on July 22nd), API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: Integrated prompts, shared prompts, compressed context, multiple context modes, etc.";
+				notifen += '\r\n\r\n#Chat\r\nFeatures: Multiple chat management, automatic saving, support for creating copies, data synchronization across multiple tab pages, export capability (backup/migration/sharing), import capability (restore chats). \r\nChatting: 1) Fully automatic intelligent adjustment of max_tokens. 2) Supports automatic retry (intelligently determines whether to retry when a request fails). 3) Markdown syntax can be used, same as the official ChatGPT (chat.openai.com). When GPT replies without using Markdown syntax, it can be asked to reply in Markdown format (referred to as MD, mainly used for code, tables, article formatting, displaying web images, etc. In most cases, GPT will automatically use MD syntax). 4) Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks. 5) There is no stop request function. If you want to interrupt a request that is being sent, you can do so by refreshing the web page.';
+				notifen += "\r\n\r\n#Prompt Generator \r\nv7.29, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, API settings, checking API balance and validity period (The balance inquiry expired on July 22nd), API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window. \r\n\r\n#Updates \r\nhttps://github.com/lin2025/gpt3.5/ \r\nFeatures to be developed: Integrated prompts, shared prompts, compressed context, multiple context modes, etc.";
 				
 				notif = this.settingsLanguage == 'cn' ? notifcn : notifen ;
 				this.showNotification(notif, 'center', title);		
@@ -7269,6 +7639,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 	  		},   
 			//按钮：重问 Retry *Undo and resend
 			retry(){
+				if(this.isTotaltokens_Exceeds_Maxtokens()){
+					return;//当前totaltokens 已经超过模型的最大max_tokens数, 弹窗警告 + 返回
+				}
+				
 				this.isRetry_RetryMessage = ''; //先重置
 				
 				//v5,11 修复逻辑错误、bug。全新逻辑，涉及：撤销+重问+发送失败+Tokens等。  v5,11 Fix bugs. Fix logic errors. Brand new logic. Regarding: undo, retry, send failed, tokens...
@@ -7511,13 +7885,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 				let autoRetry_errortype = '';//用于自动重问/自动重试
 				let autoRetry_bottomnotifCN = '';//用于自动重问/自动重试 简短通知
 				let autoRetry_bottomnotifEN = '';//用于自动重问/自动重试 简短通知
+				
+				const model_data = this.gptModelList.find(model => model.modelname === this.apiGPTModel);
 					
 				//判断错误类型
 				if( error.message &&  error.message.includes('Type error')){
 				//密钥含非法符号、全角符号等 illegal symbols
 					notif_cn = 'API Key 含有非法符号。OpenAI的所有密钥均以 sk- 开头，不含有汉字、全角符号或其他非法符号。建议复制粘贴 API Key，避免意外输入全角符号或其他非法符号。';
 					notif_en = 'All the OpenAI keys begin with sk- as the first three characters, and do not contain any full-width symbols, or other illegal symbols.';
-					title = this.settingsLanguage == 'cn' ?  '错误 - API Key 格式非法' : 'Error - API Key Has Invalid Format';
+					title = this.settingsLanguage == 'cn' ?  '错误 - API Key 格式非法' : 'Error - Invalid API Key Format';
 					apidata_errorState ='';//用于更新this.apiCheckedData
 				}else if ( error.message &&  ( error.message == 'timeout exceeded' || timeoutRegExp.test(error.message) )){
 				// 网络超时 Timeout exceeded
@@ -7754,8 +8130,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						tips_cn += '规则： B + C  < A ( ' + maxLength + ' )\r\n' ;
 						tips_cn += '★ 当前：仅 B 就已经超过 ' + maxLength + ' （超出了 ' + ( a_messagesLength - maxLength ) + ' ）' ;
 						if ( !this.isSimpleMode ){
-							tips_cn += '\r\n  • token：单位，即"令牌"\r\n' ;
-							tips_cn += '  • 接口版ChatGPT(GPT3.5)最高只支持 4096/4097 tokens' ;
+							tips_cn += '\r\n\r\n  • token：单位，即"令牌"' ;
+							tips_cn += '\r\n  • 当前 GPT 模型 (' + model_data.modelname + ') 最高支持 ' + model_data.maxtokens + '/' + (model_data.maxtokens + 1) + ' tokens' ;
+							//completion_tokens(本次提问内容的token数)需要等下次对话结束才能计算得出（提问的token数会比实际的高，疑似官方会添加隐藏的提示词。意义大不，仅做参考）经过测试，1、当this.msgContent包含系统提示词这一项时（[0]，即使为空），首条会额外占用 13 token ； 2、之后每条发送的信息额外占用 10 token 。
+							tips_cn += '\r\n  • OpenAI官方行为：首条消息额外占用 13 个token，之后的每条消息都会额外加 10 个token (发送只有 1 个token的内容，实际上会占用 11 个token)。(与代码写法有一定关系，本代码将空的提示词设为空的字符串提交)' ;
 						}
 						notif_cn = '发送失败，GPT记忆（上下文长度）超过上限。关闭通知后，您可以选择：修改发送内容长度、撤销聊天记录等操作来继续之前的对话。';
 						const autoMaxTokens1_cn = '\r\n\r\n★ 已为您关闭"智能max_tokens"功能，请根据下方的错误提示信息来修改发送内容的长度 (或通过 [撤销]、[清除记忆] 来释放tokens)，然后手动调节 [API设置] 中的 [max_tokens] 。待问题解决后，下次可尝试重新打开该功能。'
@@ -7765,6 +8143,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						
 						tips_en += '\r\n\r\n' ;
 						tips_en += '  • "messages" :  The current length of the context (including the last message sent).' ;
+						if ( !this.isSimpleMode ){
+							// The tokens for sending messages are higher than the actual count, which is probably because OpenAI adds hidden prompt words. After testing, 1) when the "system prompt"  is included in the context of this.msgContent in the code (this.msgContent[0]), even if the system prompt is empty, the first message will have an extra 13 tokens; 2) each subsequent message will take up an additional 10 tokens.
+							tips_en += '\r\n  • Official behavior of OpenAI: The first message will occupy an additional 13 tokens, and each subsequent message will add 10 additional tokens (sending content with 1 token will actually occupy 11 tokens). (It is related to the code writing style, when the system prompt is empty, this code submits an empty string to OpenAI.)' ;
+						}
 						notif_en = "Sending failed. The length of the context exceeds the limit. After closing the notification, you can choose to modify the content, or undo to continue.";
 						const autoMaxTokens1_en = '\r\n\r\n★ The "Smart max_tokens" feature has been turned off for you. Please make adjustments (such as modifying the content length) based on the [OpenAI - API Error Message] below, and then manually adjust [API Settings] > [max_tokens] for this request. Once the issue is resolved, you can re-enable this feature for the next request.'
 						const autoMaxTokens2_en = '\r\n\r\n★ Please make adjustments (such as modifying the content length) based on the [OpenAI - API Error Message] below, and then manually adjust [API Settings] > [max_tokens] for this request. (The "Smart max_tokens" feature is currently unavailable. You can try re-enabling it once you have resolved the "content exceeds limit" issue).'
@@ -7796,8 +8178,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						const diffC = parseInt(maxLength) - parseInt(b_messagesLength) ;
 						tips_cn += '★ 调整：如果不修改发送内容，当前 A - B = ' + diffC + '，所以必须调整API设置中的"max_tokens"，最大为 ' + (diffC - 1) + '，然后重问即可';
 						if ( !this.isSimpleMode ){
-							tips_cn += '\r\n  • token：单位，即"令牌"\r\n' ;
-							tips_cn += '  • 接口版ChatGPT(GPT3.5)最高只支持 4096/4097 tokens' ;
+							tips_cn += '\r\n\r\n  • token：单位，即"令牌"' ;
+							tips_cn += '\r\n  • 当前 GPT 模型 (' + model_data.modelname + ') 最高支持 ' + model_data.maxtokens + '/' + (model_data.maxtokens + 1) + ' tokens' ;
+							//completion_tokens(本次提问内容的token数)需要等下次对话结束才能计算得出（提问的token数会比实际的高，疑似官方会添加隐藏的提示词。意义大不，仅做参考）经过测试，1、当this.msgContent包含系统提示词这一项时（[0]，即使为空），首条会额外占用 13 token ； 2、之后每条发送的信息额外占用 10 token 。
+							tips_cn += '\r\n  • OpenAI官方行为：首条消息额外占用 13 个token，之后的每条消息都会额外加 10 个token (发送只有 1 个token的内容，实际上会占用 11 个token)。(与代码写法有一定关系，本代码将空的提示词设为空的字符串提交)' ;
 						}
 						notif_cn = '发送失败，GPT记忆（上下文长度）即将超限。关闭通知后，您可以选择：调整max_tokens后点击重问、撤销聊天记录、修改发送内容长度等操作来继续之前的对话。';
 						const autoMaxTokens1_cn = '\r\n\r\n★ 已为您关闭"智能max_tokens"功能，本次请根据下方的错误提示信息来手动调节 [API设置] 中的 [max_tokens] 。待问题解决后，下次可尝试重新打开该功能。'
@@ -7809,6 +8193,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						tips_en += '  • "messages" :  The current length of the context (including the last message sent).\r\n' ;
 						tips_en += '  • "completion" :  The API parameter "max_tokens" (adjustable in the API settings).\r\n' ;
 						tips_en += "  •  Tip:  Here's an example, if you don't want to modify the content being sent: Currently " + maxLength + ' - ' + b_messagesLength + ' = ' + diffC + ', so you need to adjust the "max_tokens" in [API Settings] to be less than ' + diffC + ' ( ★ maximum value is ' + (diffC - 1) + '), then click [Retry] to resend the request.' ;
+						if ( !this.isSimpleMode ){
+							// The tokens for sending messages are higher than the actual count, which is probably because OpenAI adds hidden prompt words. After testing, 1) when the "system prompt"  is included in the context of this.msgContent in the code (this.msgContent[0]), even if the system prompt is empty, the first message will have an extra 13 tokens; 2) each subsequent message will take up an additional 10 tokens.
+							tips_en += '\r\n  • Official behavior of OpenAI: The first message will occupy an additional 13 tokens, and each subsequent message will add 10 additional tokens (sending content with 1 token will actually occupy 11 tokens). (It is related to the code writing style, when the system prompt is empty, this code submits an empty string to OpenAI.)' ;
+						}
 						notif_en = "Sending failed. The length of the context is about to exceed the limit. After closing the notification, you can choose to retry after modifying the max_tokens, undo, or modify the content to continue.";
 						const autoMaxTokens1_en = '\r\n\r\n★ The "Smart max_tokens" feature has been turned off for you. Please manually adjust [API Settings] > [max_tokens] based on the [OpenAI - API Error Message] below. Once the issue is resolved, you can re-enable this feature for the next request.'
 						const autoMaxTokens2_en = '\r\n\r\n★ Please manually adjust [API Settings] > [max_tokens] based on the [OpenAI - API Error Message] below. \r\n★ Reminder: The "Smart max_tokens" feature is currently disabled. It is recommended to enable the "Smart max_tokens" feature, and only manually adjust max_tokens when it stops automatically.'
@@ -7915,7 +8303,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 			  //10 no  404 当前账号不属于任何组织   *key出问题，最好不重发
 				//11 yes *2次 500 服务器问题 Server error
 				//12 yes *2次 503 503-1 503-2 服务器问题 超载或错误
-				//14 no  400 超4096tokens  “智能max_tokens”会处理&重发
+				//14 no  400 超过max_tokens上限  “智能max_tokens”会处理&重发
 				//15 no  other 其他未知情况   *保留错误信息 不重发
 				//new 16 yes  429-5 tokens请求过快(每分钟)  Rate limit reached for tokens(per min)
 			  //new 17 yes 401 > FirstCheckedKey_401 密钥无效 API Key Error
@@ -8248,6 +8636,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 				if ( window.marked == null ){
 					alert("marked.js（Markdown插件）尚未加载成功，请数秒后再尝试...\r\nmarked.js (Markdown Plugin) has not been loaded successfully, please try again in a few seconds...");
 					return;
+				}
+				
+				if(this.isTotaltokens_Exceeds_Maxtokens()){
+					return;//当前totaltokens 已经超过模型的最大max_tokens数, 弹窗警告 + 返回
 				}
 				
 				let isRetry = false; //**是否重问，默认false - 正常发问
@@ -9020,7 +9412,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 						}
 					}, 0);
 				});
-					
+				
+				//检测当前模型是否过期  弹通知提醒
+				this.gptModel_CheckExpiration(this.apiGPTModel, 16000);//延迟16秒
 				
 				//1.mac电脑+2.使用safari浏览器+3.直接打开html文件（非本地web服务），三条件同时存在时，storage事件无法激活。解决方式：改变任一条件
 				//监听事件 在所有标签页中添加 StorageEvent 监听器
@@ -9618,12 +10012,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 				return;
 			}
 		  
-			isCheckAPIKey = true;
+			//1111111 余额代码失效，暂时注释掉  isCheckAPIKey = true;
 			
-			msg_cn = '将为您查询OpenAI API的账号余额，请先关闭本弹窗，待查询结果出来后会自动弹出。\r\n\r\n注意: 查余额需要魔法';
-			msg_en = "After closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available.\r\n\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
+			//1111111 余额代码失效，7.27 功能关闭
+			//1111111 暂时注释掉 msg_cn = '将为您查询OpenAI API的账号余额，请先关闭本弹窗，待查询结果出来后会自动弹出。\r\n\r\n注意: 查余额需要魔法';
+			//1111111 暂时注释掉 msg_en = "After closing this pop-up window, the account balance of the API will be checked. The query result will automatically pop up when it is available.\r\n\r\nTip: If your location is not supported by OpenAI, use a VPN to check your balance.";
+			msg_cn = 'OpenAI API 账号余额查询功能已停用\r\n7月22日～26日，OpenAI 陆续停止了使用 API Key 来查询余额和其他账号信息的通道。现在需要使用 Session Key 来进行查询，但 Session Key 是动态变化的，目前暂时没有很好的余额查询方案，因此暂时停用此功能。';
+			msg_en = 'The balance inquiry feature of the OpenAI API has been deactivated.\r\nFrom July 22nd to 26th, OpenAI suspended the ability to query balances and other account information using the API Key. Currently, to check the balance, a Session Key needs to be used. However, as the Session Key is dynamically changing, there is currently no viable solution to query the balance, which has resulted in the temporary suspension of this feature.';
 			msg = window.currentlang == 'cn' ? msg_cn : msg_en ;
 			alert(msg);
+			return; //add 1111111 7.27 功能关闭，add 返回
 		 
 			//因为是在API Key验证成功后才能查询余额，所以此处无需判断API Key的有效性、格式是否正确等情况
 
