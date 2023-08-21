@@ -4,9 +4,9 @@
 
 <h1 align="center">LinGPT</h1>
 
-<p align="center">A GPT-3.5 Webpage with Just a Single HTML File</p>
+<p align="center">A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File</p>
 
-<p align="center">只有一个html文件的GPT-3.5聊天网页</p>
+<p align="center">只有一个html文件的 ChatGPT 聊天网页</p>
 
 <p align="center">
   <a href="https://github.com/lin2025/gpt3.5/"><img height="22" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="Github"></a>
@@ -31,11 +31,10 @@ Give a Star 🌟 if you like it.
  - 在线：静态网页，体积小，托管在 Github / Gitee 非常流畅
  - 下载：下载到电脑，打开html文件即可使用，像打开一张图片一样简单
  - 上传：可上传至托管平台/主机/服务器，支持所有免费的静态网页托管平台
- - 接口：使用Open AI官方API，同时可自定义API。支持免魔法的第三方API
- - 模型：支持所有 GPT-3.5 模型，支持 ChatGPT **16K** (`gpt-3.5-turbo-16k`，16384 tokens) 
- - 密钥：需自备 API Key。支持**轮询**，不限数量，全自动智能的轮换 API Key
+ - 接口：支持 OpenAI 官方API 和第三方平台API (已适配常见代理平台)，支持免魔法
+ - 模型：支持所有最新的 GPT-3.5 和 GPT-4 模型
+ - 密钥：支持 OpenAI 官方Key 和第三方平台专用Key，支持**轮询**
  - 数据：仅存储于浏览器本地缓存，支持导出、导入和删除
-> 我没有可以测试 GPT-4 的账号，所以仅支持 GPT-3.5 模型，你可以自行添加 GPT-4 模型测试
 
 ## 在线体验
 
@@ -50,7 +49,9 @@ Give a Star 🌟 if you like it.
 
 > GPT生成回复采用一次性返回，非流式响应，互交体验会降低，但也有优点 - 不会中断、内容多时响应快
 
- - **新功能**: 已升级支持最新的 ChatGPT 16K 模型 (`gpt-3.5-turbo-16k-0613`等)
+ - **新功能**: 支持第三方平台的专用Key，适配部分第三方代理平台 (api2d、next-web、openai-sb、aiproxy、openaimax、aigc2d、api2gpt、chatai、closeai、ohmygpt、aiayw、czl...)
+				
+ - **新功能**: 适配最新模型，支持 GPT-3.5、GPT-4 全部模型
 
  - **新功能**: 支持自动重问 (当发送失败时，智能判断是否重试)
  
@@ -89,6 +90,7 @@ Give a Star 🌟 if you like it.
 
 ## 更新   
 
+- **8月21日** 1) 升级支持 GPT-4；2) 支持第三方API Key，适配第三方代理平台。
 - **7月29日** 1) 升级支持最新的模型，支持 16K 模型；2) 优化数据管理功能: 可显示对话大小、支持抹去日志、改进提示等。
 - **7月23日** 1) 新增 **轮询 Key** 功能，智能的轮换 API Key; 2) 新增 **自动重问**功能，智能分析以确定是否重新发送请求； 3) 增强错误代码识别、修复代码中修改默认语言的问题、修复移动端部分输入法不能换行的问题、修复Windows中字体模糊等兼容性问题、修复聊天框bug及优化样式、修复其他样式问题、修复其他bug；优化综合体验。
 - **7月09日** 移动端兼容性的优化；修复样式问题；增加移动端**页面缩放**功能。
@@ -122,12 +124,11 @@ Give a Star 🌟 if you like it.
 ## LinGPT
  - LinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server.
  - Can be uploaded to any static website hosting platform like GitHub and provides a very smooth browsing experience.
- - Download and open the <kbd>index.html</kbd> file on your computer, input your OpenAI API Key to get started.
- - This code uses the OpenAI API and supports third-party APIs. 
- - Supports all GPT-3.5 models, including ChatGPT 16K (`gpt-3.5-turbo-16k`, 16384 tokens).
- - An OpenAI API key is required, no limit on quantity, supports Auto Key Rotation, intelligently rotates API keys.
+ - Download and open the <kbd>index.html</kbd> file on your computer, input API Key to get started.
+ - Supports OpenAI API and Third-party APIs (reverse proxy). 
+ - Supports the latest GPT-3.5 and GPT-4 models.
+ - Supports both OpenAI API Key and Third-party proxy keys. Supports fully automatic intelligent rotation of API keys. 
  - User data is stored only in the browser's local cache, supporting export, import, and deletion. 
-> I cannot test GPT-4, so only support GPT-3.5 models. You can add GPT-4 testing yourself.
 
 ## Demo
 
@@ -138,7 +139,8 @@ Give a Star 🌟 if you like it.
 
 > This code does not use streaming response, GPT will generate the complete response text at once.
 
- - **New Features**: Upgraded to support the latest ChatGPT 16K model (such as `gpt-3.5-turbo-16k-0613`).
+ - **New Features**: Support for third-party API keys, optimized for compatibility with third-party proxy platforms.
+ - **New Features**: Support for all models of GPT-3.5 and GPT-4.
  - **New Features**: Supports Automatic Retry (intelligently determines whether to retry when a request fails).
  - **New Features**: Supports Auto Key Rotation, intelligently rotates API keys, supports bulk addition.
  - **New Features**: Page Scaling (For Mobile).
@@ -155,6 +157,7 @@ Give a Star 🌟 if you like it.
 
 ## Updates   
 
+- **August 21st** 1) Upgraded to support GPT-4 model. 2) Supports third-party API keys (reverse proxy service providers).
 - **July 29rd** 1) Upgraded to support the latest model, including 16K models. 2) Optimized data management features: ability to display chat size, support for erasing logs, improved prompts, etc.
 - **July 23rd** 1) New Feature: **Auto Key Rotation**, 2) New Feature: **Automatic Retry**, 3) Added more error code categories; Fixed default language modification bug; Addressed font blurriness on Windows, chat box bugs, and other style issues; Optimized user experience.
 - **July 9th** Optimized mobile compatibility; Fixed style issues; Added page scaling functionality for mobile.
