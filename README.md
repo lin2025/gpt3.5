@@ -65,7 +65,7 @@ Give a Star 🌟 if you like it.
  
  - Smart max_tokens（全自动调节max_tokens）
  
- - API Key、API余额/有效期查询 (余额查询于7月22日失效)、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
+ - API Key、API余额/有效期查询、自定义接口网址、自定义API请求参数（model、max_tokens、temperature、top_p、presence_penalty、frequency_penalty）
 
  - 支持Markdown（代码块、高亮代码、显示网络图片、显示表格、文章排版)
 
@@ -147,7 +147,7 @@ Give a Star 🌟 if you like it.
  - **New Features**: Multiple chats management, automatic saving, copy creation, data synchronization, export (for backup / sharing), import (restore chat data).
  - **New Features**: Support for browser local storage, with operations including data synchronization, import, export, deletion, and statistics.
  - Smart max_tokens (Automatically adjusts the max_tokens)
- - API key, OpenAI API balance inquiry (The balance inquiry expired on July 22nd), custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
+ - API key, OpenAI API balance inquiry, custom API endpoint, custom API requests (model, max_tokens, temperature, top_p, presence_penalty, frequency_penalty.).
  - Markdown support (code block, syntax highlighting, displaying images, displaying tables, article formatting, etc.).
  - system prompt, context mode, token statistics, one-click copy, automatic parsing of OpenAI error codes, function help.
  - Undo, Retry, Clear Context, and supporting keyboard shortcuts.
