@@ -26,7 +26,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v8.22    v8.21 大更新，支持GPT-4 && 优化兼容第三方平台API。 Major update, supporting GPT-4 and compatible with third-party APIs.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v8.22  v8.21 大更新，支持GPT-4 && 优化兼容第三方平台API。 Major update, supporting GPT-4 and compatible with third-party APIs.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -1756,6 +1756,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				OpenaiProxyCom_API_URL: 'https://api.openai-proxy.com/v1/chat/completions', //不要改 固定常量
 				
 				// 8.11 收集自网络的还算靠谱第三方付费API，仅在语言为中文时显示。 Part of the third-party paid APIs collected from the Internet will only be displayed when the language is set to Chinese.
+				// search for >> display: settingsLanguage == 'cn' ? 'block' : 'none'
 				isLoadThirdPartyPaidAPIs: false, //是否加载第三方收费API的URL（加载到下拉框中）Load the URL of the third-party paid API (displayed in the preset dropdown menu)?
  				apiURLOptions_LoadThirdPartyPaidAPIs: [
 				  { label: '第三方  • 专用Key 免魔法 API2D平台', url: 'https://oa.api2d.net/v1/chat/completions' },
@@ -6639,6 +6640,54 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 			 	this.api = apidata.apikey; 
 				this.inputapichange(false);
+				
+				
+				if (apidata.apiurl === "") {
+					return;
+				}
+				if( apidata.apiurl.toLowerCase() === this.apiURL.toLowerCase() ){
+					return;
+				}
+				
+				let notif_cn = '该 API Key 上次使用的接口与当前接口不一致。\r\n点击 [确定 (好)] 可快速更换为上次使用的接口网址，点击 [取消] 则保持当前接口网址不变，请选择...';
+				let notif_en = 'The API URL used with this API Key last time differs from the current API URL. \r\nClick [Confirm (OK)] to quickly change it to the API URL used last time, or click [Cancel] to keep the current API URL unchanged. Please choose...';
+				notif_cn = notif_cn + '\r\n\r\n上次接口: ' + apidata.apiurl + '\r\n当前接口: ' + this.apiURL ;
+				notif_en = notif_en + '\r\n\r\nLast API URL: ' + apidata.apiurl + '\r\nCurrent API URL: ' + this.apiURL ;
+				const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
+	
+				this.is_Alert_Confirm_Prompt_Open = true;
+				const confirmed = confirm(notif); //用户选择是否继续，继续会自动更换接口URL
+				if (!confirmed) {
+					setTimeout(() => {
+						this.is_Alert_Confirm_Prompt_Open = false;
+					}, 100);
+					return;//取消 将返回
+				}
+				setTimeout(() => {
+					this.is_Alert_Confirm_Prompt_Open = false;
+				}, 100);
+				
+				
+				//更换接口网址 Change API URL
+				this.apiURL = apidata.apiurl;
+				this.inputApiURL = apidata.apiurl;
+				this.btnDisabledState_SaveApiURL = true;
+				
+				//API URL： 下拉框匹配
+				let isExist = false;
+				if(this.settingsLanguage === 'cn'){
+					isExist = this.apiURLOptions_cn.some(item => item.url === this.inputApiURL.toLowerCase());
+					if( !isExist && this.isLoadThirdPartyPaidAPIs){
+						isExist = this.apiURLOptions_LoadThirdPartyPaidAPIs.some(item => item.url === this.inputApiURL.toLowerCase());
+					}
+				}else{
+					isExist = this.apiURLOptions_en.some(item => item.url === this.inputApiURL.toLowerCase());
+				}
+				if(isExist){
+					this.selectedApiURL = this.inputApiURL.toLowerCase();
+				}else{
+					this.selectedApiURL = "";
+				}
 			},
 			
 			// 默认选中一个第三方Key
@@ -7559,6 +7608,13 @@ to{transform:translate(-50%,-18px);opacity:1}
 					//	}
 					//}
 					
+					//已验证key的数组中取key *代码执行到这里，一定不是第三方单Key模式。非第三方单Key模式，那么getFirstAvailableAPIKey返回的就一定是OpenAI Key
+					const getkey = this.getFirstAvailableAPIKey();
+					if(getkey != null && getkey.apikey != null){
+						this.api = getkey.apikey;
+						this.inputapichange(false);
+						return;
+					}
 					//写在代码中的 OpenAI Key 数组 "default_apiKeyArray_WrittenInTheCode"
 					if(this.default_apiKeyArray_WrittenInTheCode.length > 0){
 						const foundElement = this.default_apiKeyArray_WrittenInTheCode.find(key => {
@@ -7577,13 +7633,6 @@ to{transform:translate(-50%,-18px);opacity:1}
 							this.inputapichange(false);
 							return;
 						}
-					}
-					//已验证key的数组中取key *代码执行到这里，一定不是第三方单Key模式。非第三方单Key模式，那么getFirstAvailableAPIKey返回的就一定是OpenAI Key
-					const getkey = this.getFirstAvailableAPIKey();
-					if(getkey != null && getkey.apikey != null){
-						this.api = getkey.apikey;
-						this.inputapichange(false);
-						return;
 					}
 					
 					//以下：其他情况，未验证的key
@@ -7957,8 +8006,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 							vpn = 'third-party';
 						}else if( this.api.startsWith('sk-') && this.list_OnlyUseThirdPartyKey_DomainKeyword.some(char => this.apiURL.toLowerCase().includes(char)) ){
 						//3) "包含sk-" && "本来不应该支持sk-的第三方（现在竟然请求成功了，属于意外情况）"  *弹窗，需要手动确认
-							const notif_cn = '本次需要您手动标记当前 API Key 是否属于 OpenAI 官方Key，点击 [确定 (好)] 将标记为 OpenAI 官方Key，点击 [取消] 将标记为第三方接口的专用Key，请选择...\r\n\r\nAPI Key: ' + this.api + '\r\n接口网址: ' + this.apiURL ;
-							const notif_en = 'Please manually confirm if the current API Key belongs to OpenAI API Key this time. Click [Confirm (OK)] to mark it as OpenAI API Key, or click [Cancel] to mark it as a Third-party API Key. Please choose...\r\n\r\nAPI Key: ' + this.api + '\r\nAPI URL (Endpoint): ' + this.apiURL ;
+							const notif_cn = '本次需要您手动标记当前 API Key 是否属于 OpenAI 官方Key。\r\n点击 [确定 (好)] 将标记为 OpenAI 官方Key，点击 [取消] 将标记为第三方接口的专用Key，请选择...\r\n\r\nAPI Key: ' + this.api + '\r\n接口网址: ' + this.apiURL ;
+							const notif_en = 'Please manually confirm if the current API Key belongs to OpenAI API Key this time. \r\nClick [Confirm (OK)] to mark it as OpenAI API Key, or click [Cancel] to mark it as a Third-party API Key. Please choose...\r\n\r\nAPI Key: ' + this.api + '\r\nAPI URL (Endpoint): ' + this.apiURL ;
 							const notif_isThirdParty = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 							if (confirm(notif_isThirdParty)) {//弹窗询问 手动选择 标记sk-开头的key是官方Key还是第三方Key
 								// 官方 && 属于gpt-4模型
