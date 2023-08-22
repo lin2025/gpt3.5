@@ -26,7 +26,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v8.21 大更新，支持GPT-4 && 优化兼容第三方平台API。 Major update, supporting GPT-4 and compatible with third-party APIs.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v8.22 v8.21 大更新，支持GPT-4 && 优化兼容第三方平台API。 Major update, supporting GPT-4 and compatible with third-party APIs.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@
 <!-- 可修改 Editable - 默认不屏蔽搜索引擎机器人，想屏蔽的请去除注释。 Default allow search engine robots. -->
 <!-- <meta name="ROBOTS" content="noindex,nofllow"> -->
 <!-- 可修改 Editable - 网页标题 -->
-<title>LinGPT - GPT3.5</title>
+<title>LinGPT - ChatGPT / GPT-4</title>
 <meta name="description" content="LinGPT - A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File." />
 <!-- 网页在手机/平板上的显示比例  默认缩放80%（ initial-scale=0.8 ） -->
 <meta name="viewport" content="width=device-width,initial-scale=0.8,minimum-scale=0.5,maximum-scale=2,user-scalable=yes,viewport-fit=cover">
@@ -1770,10 +1770,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 				//可修改 Editable。 Functions： Third-party API Keys Start With 'sk-', But it's not OpenAI's key. It needs to be excluded. Keywords are used to compare domain names/URLs.
 				//可修改 Editable (Professional)
 				excludeList_ThirdPartyKeyStartWithSK_DomainKeyword: [
-					'ohmygpt', 'textai', 'aigptx', 'opapi', //此行4个都属于ohmygpt
-					'closeai-asia', 'closeai-proxy', 'openai-proxy.o', 'openai-proxy.l', //此行4个都属于closeai-asia
-					'aiayw','aikey.o','czl.n','apiai.c','rcouyi', //此行均使用开源One-api搭建
-					'aiproxy', 'openaimax'
+					'ohmygpt', 'textai.bu', 'aigptx', 'opapi.wi', //此行4个都属于ohmygpt
+					'closeai-asia', 'closeai-proxy', 'openai-proxy.or', 'openai-proxy.liv', //此行4个都属于closeai-asia
+					'aiayw','i.aikey.on','czl.n','i.apiai.c','rcouyi', //此行均使用开源One-api搭建
+					'aiproxy.io', 'openaimax', 'chatai.beauty/v1/chat'
 				],
 	//*The third-party API platforms (reverse proxies) that have been added are mostly developed by Chinese developers (or primarily targeting Chinese users). You can continue to add more.	
 				//可修改 Editable。 功能：只能使用第三方Key的第三方接口的URL关键词。   选择/保存"接口URL"后，匹配到以下关键词，将自动切换为第三方Key模式。 
@@ -1784,11 +1784,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 				//Q&A - Example: nextweb.fun provides two API URLs: 1) "https://chatgpt1.nextweb.fun/api/proxy/v1/chat/completions" only supports OpenAI Key, and 2) "https://api.nextweb.fun/openai/v1/chat/completions" only supports third-party Key. Therefore, the keyword "nextweb.fun/openai" can be used to distinguish between the two. Specify that the API URL containing "nextweb.fun/openai" only supports third-party Key.
 				//可修改 Editable (Professional)
 				list_OnlyUseThirdPartyKey_DomainKeyword: [  
-					'api2d', 'nextweb.fun/openai', 'openai-sb', 'aiproxy','caipacity','openaimax','aigc2d',
-					'api2gpt','chatai.beauty',
-					'closeai-asia', 'closeai-proxy', 'openai-proxy.o', 'openai-proxy.l', //此行4个都属于closeai-asia
-					'aigptx','ohmygpt','textai','opapi', //此行4个都属于ohmygpt
-					'aiayw','aikey.o','czl.n','apiai.c','rcouyi' //此行均使用开源One-api搭建
+					'api2d', 'nextweb.fun/openai/v1/chat', 'openai-sb', 'aiproxy.io', 'openaimax', 'aigc2d', //"aiproxy.io"需要避免与"aiproxy.xyz"冲突
+					'chatai.beauty/v1/chat', 'api2gpt',
+					'closeai-asia', 'closeai-proxy', 'openai-proxy.or', 'openai-proxy.liv', //此行4个都属于closeai-asia
+					'ohmygpt','textai.bu','aigptx','opapi.wi', //此行4个都属于ohmygpt
+					'aiayw','i.aikey.on','czl.n','i.apiai.c','rcouyi' //此行均使用开源One-api搭建
 				],
 				
 				
@@ -3944,7 +3944,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.updateAvatar('gpt', false);
 						
 						this.setVariablesToThis(this.userVariables_default, this.userVariables_default, true); //*userVariables 变量
+						this.inputApiURL = this.apiURL;
+						this.selectedApiURL = this.inputApiURL;
 						this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode ));//属于chatdata的变量，不属于userVariables。需要手动设置
+						
 						this.openSmartMaxTokens = true; //localStorage无此变量。默认开启，需要手动设置。
 						this.changePageScaling(false);//需要在changeSimpleMode之前
 						this.changeLanguage();
@@ -4017,6 +4020,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 						localStorage.removeItem('userSettings');
 						//根据变量列表和默认值 还原默认变量
 						this.setVariablesToThis(this.userVariables_default, this.userVariables_default, true);
+						
+						//更新输入框、下拉框
+						this.inputApiURL = this.apiURL;
+						this.selectedApiURL = this.inputApiURL;
 						
 						//还原默认变量后的操作 参考[恢复默认restoreDefault]中的步骤
 						this.openSmartMaxTokens = true; //默认开启，localStorage无此变量
@@ -8698,8 +8705,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notif_cn = '网络错误，可能只是暂时的，建议先重试一次。';
 					notif_en = 'Network error. The error may be temporary, so it is recommended to try again first. ';
 					if(this.apiURL.toLowerCase() !== this.OpenAI_API_URL){
-						notif_cn += '\r\n ★ 当前使用的是第三方API，如果是由于第三方接口的原因临时出现网络错误，可能是因为服务器过载、正在进行维护，或者线路不稳定。如果错误频繁发生，您可以尝试更改网络环境 (更改IP、打开或关闭魔法)。';
-						notif_en += '\r\n ★ Currently using a third-party API. If there is a temporary network error, it may be due to server overload, maintenance, or unstable connection. If network errors occur frequently, you can try changing the network environment (change your IP, open a VPN, or disable VPN).';
+						notif_cn += '\r\n ★ 当前使用的是第三方API，如果是由于第三方接口的原因临时出现网络错误，可能是因为服务器过载、正在进行维护，或者因 IP / DNS解析问题导致连接不稳定。如果错误频繁发生，您可以尝试更改网络环境 (更改IP、切换移动流量/Wi-Fi、打开或关闭魔法、更换一个公共DNS)。';
+						notif_en += '\r\n ★ Currently using a third-party API. If there is a temporary network error, it may be due to server overload, maintenance, or unstable connection caused by issues such as IP/DNS resolution. If network errors occur frequently, you can try changing the network environment (change your IP, switch mobile network / Wi-Fi, open or disable VPN, or switch to a public DNS).';
 					}
 					
 					// 第三方API不兼容的情况，与 api2gpt的api 可能不兼容。  * api2gpt (注意：safari打开api2gpt网站会出现欺骗性警告，此平台被腾讯安全标注有安全问题) 
@@ -8729,7 +8736,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						apidata_errorState ='error-other'; 
 					}
 					
-					// 适配第三方API * aiproxy 
+					// 适配第三方API * aiproxy.io
 					if ( responseMessage.toLowerCase().includes("no permission to access") ) {
 						notif_cn = '您没有此模型 (model: ' + this.apiGPTModel + ') 的访问权限，请更换模型 (model) 或在第三方网站中修改模型的权限。';
 						notif_en = "You do not have permission to access this model (model: " + this.apiGPTModel + "), Please switch to a different model or modify the model's permissions on the third-party website.";
@@ -9186,10 +9193,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notif_cn += '\r\n  • 请参阅下方的 API 错误信息。';
 						notif_en += '\r\n  • Please refer to the API Error Message below.';
 					}
-					// 适配第三方API 通用 *key无效  *chatai.beauty(落格智聊)、
+					// 适配第三方API 通用 *key无效  *chatai.beauty、
 					if (  responseMessage.toLowerCase().includes("invalid token") || ( responseMessage.toLowerCase().includes("invalid") && (responseMessage.toLowerCase().includes("token") || responseMessage.toLowerCase().includes("key")) )  ) {
 						notif_cn = notif_cn + '\r\n  • 密钥无效' + (responseMessage.toLowerCase().includes("token") ? ' (令牌无效)' : '') + '，请核对接口网址 (API URL) 与密钥 (API Key) 是否匹配。';
 						notif_en = notif_en + '\r\n  • Invalid API Key' + (responseMessage.toLowerCase().includes("token") ? ' (Invalid API Token)' : '') + '. Please check if the API Endpoint (API URL) matches the API Key' + (responseMessage.toLowerCase().includes("token") ? ' (API Token).' : '.');
+					}
+					// 适配第三方API * chatai.beauty
+					if ( responseMessage.toLowerCase().includes("not enough credit")) {
+						notif_cn = notif_cn + '\r\n  • 您的账号信用/额度不足。';
+						notif_en = notif_en + '\r\n  • 您的账号信用/额度不足。';
 					}
 					// 适配第三方API 通用 *model无效  
 					if ( responseMessage.toLowerCase().includes("not authorized") && responseMessage.toLowerCase().includes("this model") ) {
