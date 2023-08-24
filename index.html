@@ -8789,11 +8789,17 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notif_cn = 'API Key 无效。建议复制粘贴 API Key，避免输错。如果仍然出错，说明是无效密钥，或密钥已被停用、删除，建议登录' + temp_2 + '查看 API Key 是否出现变动。';
 					notif_en = 'API Key is invalid. It is recommended to copy and paste the API Key to avoid input errors. If the error persists, it indicates an invalid API key or that the API key has been deactivated or deleted, please log in to' + temp_2 + 'to check the API Key.';
 					title = this.settingsLanguage == 'cn' ?  '错误 - 401 无效的 API Key' : 'Error - 401 API Key is invalid';
-					if( responseMessage.toLowerCase().includes("incorrect api key provided") &&  responseMessage.toLowerCase().includes("openai") ){ // OpenAI :Incorrect API key provided
+					// OpenAI
+					if( responseMessage.toLowerCase().includes("openai.com") || this.apiURL.toLowerCase() === this.OpenAI_API_URL || this.apiURL.toLowerCase() === this.OpenaiProxyCom_API_URL ){  // .includes("incorrect api key provided") | .includes("associated with a deactivated account") | other...
 					//只有sk-开头的OpenAI Key 才需要标记401无效，其他情况不考虑
 						apidata_errorState ='401';//用于更新this.apiCheckedData *如果是发送状态下的401，标记key为无效(level=8)
 					}else{
 						apidata_errorState ='error-other'; 
+					}
+					// OpenAI Key *This key is associated with a deactivated account.
+					if ( responseMessage.toLowerCase().includes("associated with a deactivated account") && responseMessage.toLowerCase().includes("openai.com") ) {
+						notif_cn += '\r\n ★ 该 API Key 对应的 OpenAI 账号已被停用。';
+						notif_en += '\r\n ★ The OpenAI account associated with this API Key has been deactivated.';
 					}
 					
 					// 适配第三方API * aiproxy.io
