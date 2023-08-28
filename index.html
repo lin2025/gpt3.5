@@ -26,7 +26,7 @@
 
 <!--	:::欢迎来以下评论区留言交流:::	 -->
 <!--		抖音：@林同学不姓林	B站：@林同学不姓林  https://space.bilibili.com/3493262545389917    小站 http://lin2025.gitee.io   -->
-<!--		当前版本 v8.22  v8.21 大更新，支持GPT-4 && 优化兼容第三方平台API。 Major update, supporting GPT-4 and compatible with third-party APIs.   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
+<!--		当前版本 v8.28 新增记忆模式(上下文模式) Added [Contextual mode].   最新更新 https://github.com/lin2025/gpt3.5/  国内线路：https://gitee.com/lin2025/gpt3.5/   -->
 
 
 <!DOCTYPE html>
@@ -367,7 +367,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 	
 		<!-- Second row - Left -->
 		<div class="panelrow" style="margin-bottom: 7px;">
-		  	<button  @click="clearContext" :disabled="btnDisabledState_Clear"  class="btn" style="margin-left:12px;margin-right: 4px;" :title="settingsLanguage == 'cn' ? '清除' : 'Clear'">
+			<!-- new - orangered : -3 ~ -2  -->
+			<!-- new - red : -1 ~ 0 ~ 达到...   -1 ~ 0 ~ have reached...  -->
+		  	<button  @click="clearContext" :disabled="btnDisabledState_Clear"  class="btn" style="margin-left:12px;margin-right: 4px;" 
+			:class="{'orangeredbtn': !Number.isInteger(settingsContextualMode) ? false : (  !btnDisabledState_Clear && ( (settingsContextualMode > 100 && succQA_Count >= settingsContextualMode - 103 && succQA_Count < settingsContextualMode - 101) || (settingsContextualMode > 0 && settingsContextualMode < 100 && succQA_Count >= settingsContextualMode - 3 && succQA_Count < settingsContextualMode - 1) )  ) ? true : false ,
+					'redbtn': !Number.isInteger(settingsContextualMode) ? false : (  !btnDisabledState_Clear && ( (settingsContextualMode > 100 && succQA_Count >= settingsContextualMode - 101) || (settingsContextualMode > 0 && settingsContextualMode < 100 && succQA_Count >= settingsContextualMode - 1) )  ) ? true : false   }" 
+			:title="settingsLanguage == 'cn' ? '清除记忆' : 'Clear Context'">
 				<div>
 					<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
 						<polyline points="3 6 5 6 21 6"></polyline>
@@ -384,7 +389,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 			<!-- red : >= model.maxtokens * 0.9  -->
 			<button  disabled class="btn" style="margin-left: 0px;margin-right: 4px;cursor: auto;" 
 				:style="{ color: totaltokens < 2000 ? '#1aad19 !important' : (  totaltokens < ( gptModelList.find(model => model.modelname === apiGPTModel) ? gptModelList.find(model => model.modelname === apiGPTModel).maxtokens : 4096 ) * 0.9 ? '#f94000 !important' : '#fa1e0a !important'  ),
-				fontWeight: totaltokens < ( gptModelList.find(model => model.modelname === apiGPTModel) ? gptModelList.find(model => model.modelname === apiGPTModel).maxtokens : 4096 ) * 0.9 ? 'normal' : 'bold'  }">
+				fontWeight: totaltokens < ( gptModelList.find(model => model.modelname === apiGPTModel) ? gptModelList.find(model => model.modelname === apiGPTModel).maxtokens : 4096 ) * 0.9 ? 'normal' : 'bold'  }"
+				:title="settingsLanguage == 'cn' ? 'Token用量' : 'Tokens Usage'">
 				<div :style="{ display: isShowTotaltokensSVG ? 'flex' : 'none' }" >
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="25" height="18"  viewBox="0 0 25 19"  fill="currentColor" stroke-width="0.02"  stroke="currentColor"  stroke-linecap="round" stroke-linejoin="round">
 							<path d="m10.62109,1.66441c-1.05095,-0.60518 -2.43437,-0.9385 -3.89526,-0.9385c-1.46093,0 -2.84426,0.33332 -3.89526,0.9385c-1.12359,0.64701 -1.74652,1.53053 -1.75767,2.49024l-0.00051,0l0,10.75701c0,1.91873 2.48327,3.42172 5.65344,3.42172c3.17018,0 5.65349,-1.50299 5.65349,-3.42172l0,-10.74381l-0.00023,0c-0.00557,-0.96482 -0.62926,-1.85344 -1.758,-2.50345zm0.77473,6.82194c0,1.32648 -2.13857,2.44712 -4.66998,2.44712c-2.53136,0 -4.66994,-1.12064 -4.66994,-2.44712l0,-0.18096c1.01002,0.8957 2.70835,1.47278 4.66994,1.47278c1.96163,0 3.65992,-0.57714 4.66998,-1.47278l0,0.18096zm0,2.13876c0,1.32652 -2.13857,2.44716 -4.66998,2.44716c-2.53136,0 -4.66994,-1.12068 -4.66994,-2.44716l0,-0.18092c1.01002,0.89565 2.70835,1.47278 4.66994,1.47278c1.96163,0 3.65992,-0.57713 4.66998,-1.47278l0,0.18092zm-9.33992,1.95788c1.01002,0.8957 2.70835,1.47278 4.66993,1.47278c1.96164,0 3.65992,-0.57713 4.66998,-1.47283l0,0.18102c0,1.32647 -2.13857,2.44711 -4.66998,2.44711c-2.53136,0 -4.66993,-1.12064 -4.66993,-2.44711l0,-0.18097zm9.33992,-6.23549c0,1.32647 -2.13857,2.44711 -4.66998,2.44711c-2.53137,0.00005 -4.66994,-1.12063 -4.66994,-2.44711l0,-0.22269c1.01002,0.88937 2.70835,1.46238 4.66993,1.46238c1.96164,0 3.65992,-0.57306 4.66998,-1.46238l0,0.22269l0,0zm-8.07442,-3.83077c0.90403,-0.52061 2.11309,-0.80727 3.40444,-0.80727c1.29139,0 2.50046,0.28671 3.40449,0.80727c0.80423,0.46309 1.2655,1.06963 1.2655,1.66405c0,1.31336 -2.13857,2.4229 -4.66998,2.4229c-2.53136,0 -4.66994,-1.10954 -4.66994,-2.4229c0,-0.59441 0.46127,-1.20095 1.26549,-1.66405zm3.40444,14.83319c-2.53136,0 -4.66993,-1.11656 -4.66993,-2.43826l0,-0.18982c1.01002,0.89566 2.70835,1.47279 4.66993,1.47279c1.96164,0 3.65992,-0.57713 4.66998,-1.47279l0,0.18987c0,1.32166 -2.13862,2.43822 -4.66998,2.43822z"/>
@@ -467,7 +473,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<option v-if="settingsLanguage == 'cn'" v-for="option in simpleModeOptions_cn" :value="option.state">{{ option.label }}</option>
 						<option v-else v-for="option in simpleModeOptions_en" :value="option.state">{{ option.label }}</option>
 					</select>
-					<span style="margin-left:auto" :title="settingsLanguage == 'cn' ? '当前版本' : 'Current Version'">v8.21&nbsp;&nbsp;</span>
+					<span style="margin-left:auto" :title="settingsLanguage == 'cn' ? '当前版本' : 'Current Version'">v8.28&nbsp;&nbsp;</span>
 					<button  class="btn btnzoom-a" style="margin: 0px; padding: 0 3px;background: linear-gradient(to bottom, #fff, #fff);background-color: #fff;height: 20px;width: 20px; box-shadow: 0 0 0px 0.5px rgba(80, 80, 80, 0.08);" :title="settingsLanguage == 'cn' ? '在GitHub上查看最新版本' : 'View the latest version on GitHub'">
 						<a href="https://github.com/lin2025/gpt3.5/" target="_blank">
 							<svg xmlns="http://www.w3.org/2000/svg" width="14" viewBox="0 0 16 16"  fill="#1f2328"> 
@@ -650,7 +656,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<button @click="saveApiURL" :disabled="btnDisabledState_SaveApiURL" class="btn" style="border-radius: 0px 6px 6px 0px;margin-left:-3px;"  >
 							{{ settingsLanguage == 'cn' ? '保存' : 'Save' }} 
 						</button>	
-						<select @change="updateInputApiURL" :disabled="btnDisabledState_ApiURL" class="dropdown" v-model="selectedApiURL" :class="{ 'orangereddropdown': ( inputApiURL.toLowerCase().trim() !== OpenAI_API_URL ) }" :style="{ width: selectedApiURL === '' ? '31px' : (  settingsLanguage == 'cn' ? (selectedApiURL === apiURLOptions_en[0]['url'] ? '46px' : '57px') : (selectedApiURL === apiURLOptions_en[0]['url'] ? '63px' : '71px')  )  }" :title="settingsLanguage == 'cn' ? '接口URL选项 (可选)' : 'Endpoint Options (Optional)'">
+						<select @change="updateInputApiURL" :disabled="btnDisabledState_ApiURL" class="dropdown" v-model="selectedApiURL" :class="{ 'orangereddropdown': ( !btnDisabledState_ApiURL && inputApiURL.toLowerCase().trim() !== OpenAI_API_URL ) }" :style="{ width: selectedApiURL === '' ? '31px' : (  settingsLanguage == 'cn' ? (selectedApiURL === apiURLOptions_en[0]['url'] ? '46px' : '57px') : (selectedApiURL === apiURLOptions_en[0]['url'] ? '63px' : '71px')  )  }" :title="settingsLanguage == 'cn' ? '接口URL选项 (可选)' : 'Endpoint Options (Optional)'">
 							<option disabled value="">▼&nbsp;{{ settingsLanguage == 'cn' ? '预设选项：GPT官方接口 和 第三方接口(来源于网络)' : 'Pre-set options: OpenAI API and Third-party APIs (Internet resources)' }}</option>
 							<option v-if="settingsLanguage == 'cn'" v-for="option in apiURLOptions_cn" :value="option.url">{{ option.label }}</option>
 							<option v-else v-for="option in apiURLOptions_en" :value="option.url">{{ option.label }}</option>
@@ -716,6 +722,20 @@ to{transform:translate(-50%,-18px);opacity:1}
 					</div>
 				
 					<div class="panelrow" style="align-items: start; height:auto;flex-wrap: wrap;justify-content: stretch;">
+						<!-- 记忆模式 / 上下文模式  Contextual Mode  *部分功能[保留最后xx条记忆]/[Keep Last] 待开发 To be developed--> 
+						<div class="control-container" style="min-width: 110px;max-width: 210px;flex: 1 1 0%;margin: 0px 3px;">
+							<div>
+								<span>{{ settingsLanguage == 'cn' ? '记忆模式' : 'Contextual Mode' }}</span>
+							</div>
+							<select @change="changeContextualMode" :disabled="btnDisabledState_ContextualMode" class="dropdown" v-model="settingsContextualMode" style="width: 100%;height: 24px;" 
+								:class="{ 'orangereddropdown': !Number.isInteger(settingsContextualMode) ? false : settingsContextualMode === 0 ? false : btnDisabledState_ContextualMode ? false : true }">
+								<option v-if="!isSimpleMode" disabled value="help1">{{ settingsLanguage == 'cn' ? ' - 记忆: 即"上下文"。每次一问一答会产生 2 条记忆' : " - Every 2 context messages correspond to each Q&A session." }}</option>
+								<option disabled value="help2">{{ settingsLanguage == 'cn' ? ' - 设置[记忆上限]，达到后，会在发送新消息时自动清除之前全部记忆' : " - [Limit]: The context will be automatically cleared after reaching the limit." }}</option>
+								<option disabled value="help3">{{ settingsLanguage == 'cn' ? ' - 设置[保留最后xx条记忆]，会始终保持记忆为最新的xx条历史消息 *待开发' : " - [Keep Last]: Always keep the last ** number of messages as the context. *To be developed" }}</option>
+								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsContextualModeOptions_cn" :value="option.mode">{{ option.label }}</option>
+								<option v-else v-for="option in settingsContextualModeOptions_en" :value="option.mode">{{ option.label }}</option>
+							</select>
+						</div>
 						<!-- 语言切换 中/英 Language --> 
 						<div class="control-container" style="min-width: 80px;max-width: 180px;flex: 1 1 0%;margin: 0px 3px;">
 							<div>
@@ -766,23 +786,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 							</select>
 						</div>
 			
-			
-						<!-- 记忆模式 / 上下文模式  Contextual Mode --> 
-						<div class="control-container" style="min-width: 110px;max-width: 210px;flex: 1 1 0%;margin: 0px 3px;">
-							<div>
-								<span>{{ settingsLanguage == 'cn' ? '记忆模式' : 'Contextual Mode' }}</span>
-							</div>
-							<select @change="changeContextualMode" :disabled="btnDisabledState_ContextualMode" class="dropdown" v-model="settingsContextualMode" style="width: 100%;height: 24px;">
-								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsContextualModeOptions_cn" :value="option.mode">{{ option.label }}</option>
-								<option v-else v-for="option in settingsContextualModeOptions_en" :value="option.mode">{{ option.label }}</option>
-								<option disabled value="">更多:待开发  More:Under development</option>
-							</select>
-						</div>
+
 	
-						<!-- 验证API Key 快捷键 Check API Key Shortcut  --> 
+						<!-- 验证API Key 快捷键 Check API Key Shortcut  ***v8.27 改用途 改成"打开Key模式窗口"的快捷键 Change the original purpose to "Open Key Mode window". --> 
 						<div class="control-container" style="min-width: 150px;max-width: 260px;flex: 1 1 0%;margin: 0px 3px;">
 							<div>
-								<span>{{ settingsLanguage == 'cn' ? '[验证API Key]快捷键' : '[Check API Key] Shortcut' }}</span>
+								<span>{{ settingsLanguage == 'cn' ? '[Key 模式] 快捷键' : '[Key Mode] Shortcut' }}</span>
 							</div>
 							<select class="dropdown" v-model="settingsShortcut_CheckApiKey" style="width: 100%;height: 24px;">
 								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsShortcutCheckApiKeyOptions_cn" :value="option.shortcut">{{ option.label }}</option>
@@ -790,10 +799,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 							</select>
 						</div>
 		
-						<!-- 清空快捷键 Clear Context Shortcut--> 
+						<!-- 清除记忆快捷键 Clear Context Shortcut--> 
 						<div class="control-container" style="min-width: 140px;max-width: 250px;flex: 1 1 0%;margin: 0px 3px;">
 							<div>
-								<span>{{ settingsLanguage == 'cn' ? '[清空]快捷键' : '[Clear Context] Shortcut' }}</span>
+								<span>{{ settingsLanguage == 'cn' ? '[清除记忆] 快捷键' : '[Clear Context] Shortcut' }}</span>
 							</div>
 							<select class="dropdown" v-model="settingsShortcut_Clear" style="width: 100%;height: 24px;">
 								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsShortcutClearOptions_cn" :value="option.shortcut">{{ option.label }}</option>
@@ -804,7 +813,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<!-- 撤销快捷键 Undo Shortcut --> 
 						<div class="control-container" style="min-width: 95px;max-width: 195px;flex: 1 1 0%;margin: 0px 3px;">
 							<div>
-								<span>{{ settingsLanguage == 'cn' ? '[撤销]快捷键' : '[Undo] Shortcut' }}</span>
+								<span>{{ settingsLanguage == 'cn' ? '[撤销] 快捷键' : '[Undo] Shortcut' }}</span>
 							</div>
 							<select class="dropdown" v-model="settingsShortcut_Undo" style="width: 100%;height: 24px;">
 								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsShortcutUndoOptions_cn" :value="option.shortcut">{{ option.label }}</option>
@@ -815,7 +824,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						<!-- 重问快捷键 Retry Shortcut --> 
 						<div class="control-container" style="min-width: 95px;max-width: 195px;flex: 1 1 0%;margin: 0px 3px;">
 							<div>
-								<span>{{ settingsLanguage == 'cn' ? '[重问]快捷键' : '[Retry] Shortcut' }}</span>
+								<span>{{ settingsLanguage == 'cn' ? '[重问] 快捷键' : '[Retry] Shortcut' }}</span>
 							</div>
 							<select class="dropdown" v-model="settingsShortcut_Retry" style="width: 100%;height: 24px;">
 								<option v-if="settingsLanguage == 'cn'" v-for="option in settingsShortcutRetryOptions_cn" :value="option.shortcut">{{ option.label }}</option>
@@ -1286,8 +1295,12 @@ to{transform:translate(-50%,-18px);opacity:1}
 					</div>
 					<div class="panelrow" :style="{ display: isThirdPartyAPIKeyEnabled ? 'block' : 'none' }"  style="line-height: 14px;align-items: end; height:auto;flex-wrap: wrap;">
 						<span style="color: #f94000;font-size: 11px;">
-							{{ settingsLanguage == 'cn' ? ' Tips：1) 当前为单Key模式，请在下方选择第三方接口的专用Key；2) 如何添加第三方Key？仅支持在 [设置] 中逐个添加，请先在 [更多] > [API专业设置] > [接口网址] 中设置第三方接口的URL，然后再验证Key，通过后，添加成功。' : ' Tips: 1) Currently in single-key mode, please select the key for the third-party API below.  2) How to add a third-party key? Only one key can be added at a time. First, modify [Settings] > [API URL] to the third-party API Endpoint. Then, fill in and check the third-party key.' }}
+							{{ settingsLanguage == 'cn' ? ' Tips：1) 当前为单Key模式，请在下方选择第三方接口的专用Key；2) 如何添加第三方Key？仅支持在 [设置] 中逐个添加，请先在 [更多] > [API专业设置] > [接口网址] 中设置第三方接口的URL，然后再验证Key，通过后，添加成功。  ' : ' Tips: 1) Currently in single-key mode, please select the key for the third-party API below.  2) How to add a third-party key? Only one key can be added at a time. First, modify [Settings] > [API URL] to the third-party API Endpoint. Then, fill in and check the third-party key.  ' }}
 						</span>
+						<a :href="settingsLanguage == 'cn' ? 'https://lin2025.github.io/img/lingpt-sample01-cn.png' : 'https://lin2025.github.io/img/lingpt-sample01-en.png' " 
+							:style="{ display: apiCheckedData.filter(data => data.vpn === 'third-party').length < 2 ? 'inline' : 'none' }" target="_blank" style="font-size: 11px;">
+						{{ settingsLanguage == 'cn' ? '查看示例 (图)' : 'View Sample (pic)' }}
+						</a>
 					</div>
 					<div class="panelrow" :style="{ display: !isThirdPartyAPIKeyEnabled && !apiGPTModel.includes('gpt-4') ? 'block' : 'none' }"  style="line-height: 14px;align-items: end; height:auto;flex-wrap: wrap;">
 						<span style="color: #f94000;font-size: 11px;">
@@ -1550,7 +1563,6 @@ to{transform:translate(-50%,-18px);opacity:1}
 				////	'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',
 				////	'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',
 				////	'',	
-				////	'',
 				////	''
 				////],
 				
@@ -1562,8 +1574,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 				//此变量仅支持OpenAI的API KEy。  This variable only supports OpenAI's API Key.
 				default_apiKeyArray_WrittenInTheCode_Encrypted_Base64: [
 					'',
+					'',
 					''
 				],
+				////以下是示范 Example
+				////default_apiKeyArray_WrittenInTheCode_Encrypted_Base64: [
+				////	'c2stRHhGMHBuQmtWS3VpMHNqMWEzZ1dUM0JsYmtGSnFUa3hjVWxyd1VCeUJoclpKaW00', // OpenAI Key
+				////	'',
+				////	''
+				////],
+				
 				////工具 Tool: Base64编码/解码:https://tool.ip138.com/base64/   Base64 Encode/Decode: https://www.base64encode.org  https://www.base64encode.net
 				////编码示例 Example of encoding：'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' => 'c2stTzJxTEREUHRjZTRnaDBmQ25wZHpUM0JsYmtGSmpoaDVZMTZwUWdZTHpMaFBDNDAx'
 				
@@ -1576,7 +1596,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				timerId: null, // *是否曾验证过apikey有借用此变量进行判断
 				
 				btnDisabledState_Export: true,
-				//settingsContextualMode 也与chat data相关，写在后面
+				//settingsContextualMode  与chat data相关，写在后面
 				hasSystemPromptBeenSaved: false,
 				userMsgTokensForRetry: 0, //int 临时记录重问时的tokens数据
 				succQA_Count: 0, //int 当前有效的上下文数量，一问一答succQA_Count = 2 。 数量变化对应this.msgContent
@@ -1863,16 +1883,46 @@ to{transform:translate(-50%,-18px);opacity:1}
 				],
 				
 				//**常规设置第二排 
-				//上下文模式 默认连续对话  待开发  目前只有：不限制  1. 0-不限制 ；2. 固定次数后自动清空 ； 3. 永远保留最后几条的记录
-				settingsContextualMode: 0, // 数字，数值型 0代表连续对话，其他代表固定次数后会自动清空记忆，即 1 = 1*Q&A ; 2 = 2*Q&A *考虑如果只是次数到了自动清空，这个意义不是很大。最好是永远保留最后几次的上下文，这样的设置会更实用，能结合压缩上下文就更好了。这个功能待开发。。。
+				//上下文模式 默认连续对话  待开发  目前只有：不限制  1. 0-不限制 ；2. 固定次数后自动清除 ； 3. 永远保留最后几条的记录
+				settingsContextualMode: 0, // Int 数字，数值型 0代表连续对话。   2 = 2 messages = 1*Q&A ; 4 = 4 messages =  2*Q&A 
 				settingsContextualModeOptions_cn: [
-					{ label: '不限制', mode: 0 }
+					{ label: '不限制', mode: 0 },
+					{ label: '记忆上限 2 条', mode: 2 },{ label: '记忆上限 4 条', mode: 4 },{ label: '记忆上限 6 条', mode: 6 },{ label: '记忆上限 8 条', mode: 8 },{ label: '记忆上限 10 条', mode: 10 },
+					{ label: '记忆上限 12 条', mode: 12 },{ label: '记忆上限 14 条', mode: 14 },{ label: '记忆上限 16 条', mode: 16 },{ label: '记忆上限 18 条', mode: 18 },{ label: '记忆上限 20 条', mode: 20 },
+					{ label: '记忆上限 22 条', mode: 22 },{ label: '记忆上限 24 条', mode: 24 },{ label: '记忆上限 26 条', mode: 26 },{ label: '记忆上限 28 条', mode: 28 },{ label: '记忆上限 30 条', mode: 30 },
+					
+					{ label: '记忆上限 32 条', mode: 32 },{ label: '记忆上限 34 条', mode: 34 },{ label: '记忆上限 36 条', mode: 36 },{ label: '记忆上限 38 条', mode: 38 },{ label: '记忆上限 40 条', mode: 40 },
+					{ label: '记忆上限 42 条', mode: 42 },{ label: '记忆上限 44 条', mode: 44 },{ label: '记忆上限 46 条', mode: 46 },{ label: '记忆上限 48 条', mode: 48 },{ label: '记忆上限 50 条', mode: 50 },
+	//待开发 To be developed			 	{ label: '保留最后 4 条', mode: 104 }, // > 100 ， 104 - 100 = 4
+	//待开发 To be developed				{ label: '保留最后 6 条', mode: 106 },
+	//待开发 To be developed				{ label: '保留最后 8 条', mode: 108 },
+	//待开发 To be developed				{ label: '保留最后 10 条', mode: 110 },{ label: '保留最后 12 条', mode: 112 },{ label: '保留最后 14 条', mode: 114 },{ label: '保留最后 16 条', mode: 116 },{ label: '保留最后 18 条', mode: 118 },
+	//待开发 To be developed				{ label: '保留最后 20 条', mode: 120 },{ label: '保留最后 22 条', mode: 122 },{ label: '保留最后 24 条', mode: 124 },{ label: '保留最后 26 条', mode: 126 },{ label: '保留最后 28 条', mode: 128 },
+	//待开发 To be developed				{ label: '保留最后 30 条', mode: 130 },{ label: '保留最后 32 条', mode: 132 },{ label: '保留最后 34 条', mode: 134 },{ label: '保留最后 36 条', mode: 136 },{ label: '保留最后 38 条', mode: 138 },
+	//待开发 To be developed				{ label: '保留最后 40 条', mode: 140 },{ label: '保留最后 42 条', mode: 142 },{ label: '保留最后 44 条', mode: 144 },{ label: '保留最后 46 条', mode: 146 },{ label: '保留最后 48 条', mode: 148 },
+	//待开发 To be developed				{ label: '保留最后 50 条', mode: 150 },{ label: '保留最后 52 条', mode: 152 },{ label: '保留最后 54 条', mode: 154 },{ label: '保留最后 56 条', mode: 156 },{ label: '保留最后 58 条', mode: 158 },
+	//待开发 To be developed				{ label: '保留最后 60 条', mode: 160 }
 				],
 				settingsContextualModeOptions_en: [
-					{ label: 'No Limit', mode: 0 }
+					{ label: 'No Limit', mode: 0 },
+					{ label: 'Limit: 2', mode: 2 },{ label: 'Limit: 4', mode: 4 },{ label: 'Limit: 6', mode: 6 },{ label: 'Limit: 8', mode: 8 },{ label: 'Limit: 10', mode: 10 },
+					{ label: 'Limit: 12', mode: 12 },{ label: 'Limit: 14', mode: 14 },{ label: 'Limit: 16', mode: 16 },{ label: 'Limit: 18', mode: 18 },{ label: 'Limit: 20', mode: 20 },
+					{ label: 'Limit: 22', mode: 22 },{ label: 'Limit: 24', mode: 24 },{ label: 'Limit: 26', mode: 26 },{ label: 'Limit: 28', mode: 28 },{ label: 'Limit: 30', mode: 30 },
+					
+					{ label: 'Limit: 32', mode: 32 },{ label: 'Limit: 34', mode: 34 },{ label: 'Limit: 36', mode: 36 },{ label: 'Limit: 38', mode: 38 },{ label: 'Limit: 40', mode: 40 },
+					{ label: 'Limit: 42', mode: 42 },{ label: 'Limit: 44', mode: 44 },{ label: 'Limit: 46', mode: 46 },{ label: 'Limit: 48', mode: 48 },{ label: 'Limit: 50', mode: 50 },
+	//待开发 To be developed				{ label: 'Keep Last: 4', mode: 104 }, // > 100 ， 104 - 100 = 4
+	//待开发 To be developed				{ label: 'Keep Last: 6', mode: 106 },
+	//待开发 To be developed				{ label: 'Keep Last: 8', mode: 108 },
+	//待开发 To be developed				{ label: 'Keep Last: 10', mode: 110 },{ label: 'Keep Last: 12', mode: 112 },{ label: 'Keep Last: 14', mode: 114 },{ label: 'Keep Last: 16', mode: 116 },{ label: 'Keep Last: 18', mode: 118 },
+	//待开发 To be developed				{ label: 'Keep Last: 20', mode: 120 },{ label: 'Keep Last: 22', mode: 122 },{ label: 'Keep Last: 24', mode: 124 },{ label: 'Keep Last: 26', mode: 126 },{ label: 'Keep Last: 28', mode: 128 },
+	//待开发 To be developed				{ label: 'Keep Last: 30', mode: 130 },{ label: 'Keep Last: 32', mode: 132 },{ label: 'Keep Last: 34', mode: 134 },{ label: 'Keep Last: 36', mode: 136 },{ label: 'Keep Last: 38', mode: 138 },
+	//待开发 To be developed				{ label: 'Keep Last: 40', mode: 140 },{ label: 'Keep Last: 42', mode: 142 },{ label: 'Keep Last: 44', mode: 144 },{ label: 'Keep Last: 46', mode: 146 },{ label: 'Keep Last: 48', mode: 148 },
+	//待开发 To be developed				{ label: 'Keep Last: 50', mode: 150 },{ label: 'Keep Last: 52', mode: 152 },{ label: 'Keep Last: 54', mode: 154 },{ label: 'Keep Last: 56', mode: 156 },{ label: 'Keep Last: 58', mode: 158 },
+	//待开发 To be developed				{ label: 'Keep Last: 60', mode: 160 }
 				],
 				
-				//是否开启验证API Key的快捷键 （电脑端使用） 默认开启
+				//是否开启验证API Key的快捷键 （电脑端使用） 默认开启 ***v8.27 改用途 改成"打开Key模式窗口"的快捷键 Change the original purpose to "Open Key Mode window".
 				settingsShortcut_CheckApiKey: true, 
 				settingsShortcutCheckApiKeyOptions_cn: [
 					{ label: 'F2', shortcut: true },
@@ -1883,7 +1933,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					{ label: 'None', shortcut: false }
 				],
 				
-				//是否开启 清空 的快捷键 （电脑端使用） 默认关闭
+				//是否开启 清除记忆 (Clear Context) 的快捷键 （电脑端使用） 默认关闭
 				settingsShortcut_Clear: false, 
 				settingsShortcutClearOptions_cn: [
 					{ label: 'F1', shortcut: true },
@@ -2028,7 +2078,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 示范{ thefirstmessage: "hi~ ", }  提醒：1、不能换行，但可以使用换行符{ \r\n }； 2、支持Markdown语法。
 				// The First Message, This message is out of context,
 				// Example{ thefirstmessage: "hi~ ", }  Tips：1.No line breaks. You can use the line break characters{ \r\n }.  2.Supports Markdown.
-				thefirstmessage: "### **LinGPT** ***v8.21*** \r\n##### **v8.21** ① 支持所有 GPT-3.5 与 GPT-4 模型; ② 支持第三方API Key (优化兼容多个反代平台)。\r\n###### v8.21 ① Supports all GPT-3.5 and GPT-4 models; ② Supports third-party API keys (reverse proxy service providers).\r\n\r\n_LinGPT - A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
+				thefirstmessage: "### **LinGPT** ***v8.28*** \r\n##### **v8.28** 新增记忆模式 (上下文模式)。\r\n###### v8.28 Added [Contextual mode].\r\n\r\n_LinGPT - A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File_ \r\n###### _Change Language: [Settings] > [Language]_ \r\n```\r\nIf you like it, please give me a star on my GitHub repository.\r\n```\r\n[![](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lin2025/gpt3.5/) [![](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/lin2025/gpt3.5/) " ,
 				
 				// v7.05 开始提示词不建议写在代码中。Starting from v7.05, it is advised not to write system prompt in the code. 
 				// 系统提示词。不填的话，gptSystemPrompt后面单引号内留空{ gptSystemPrompt: '', }，填写后，会出现在“提示词编辑器中”，不会自动生效，需要手动保存后才会生效。
@@ -2092,8 +2142,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 					settingsTime_Message: 1, //是否显示时间(消息) 默认不显示 数字，数值型 代表三种状态 state.  1:hide ; 2:show height:0 ; 3:show height:+10
 					settingsDividerLine: true, //是否显示分割线 默认显示
 					
-					settingsShortcut_CheckApiKey: true, //是否开启验证API Key的快捷键 （电脑端使用） 默认开启
-					settingsShortcut_Clear: false, //是否开启 清空 的快捷键 （电脑端使用） 默认关闭
+					settingsShortcut_CheckApiKey: true, //是否开启验证API Key的快捷键 （电脑端使用） 默认开启 ***v8.27 改用途 改成"打开Key模式窗口"的快捷键 Change the original purpose to "Open Key Mode window".
+					settingsShortcut_Clear: false, //是否开启 清除记忆 的快捷键 （电脑端使用） 默认关闭
 					settingsShortcut_Undo: false, //是否开启 撤销 的快捷键 （电脑端使用） 默认关闭
 					settingsShortcut_Retry: true, //是否开启 重问 的快捷键 （电脑端使用） 默认开启
 					
@@ -2110,7 +2160,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				// 不改动 Non-editable
 				chatVariables_default: {
 					btnDisabledState_Export: true,
-					settingsContextualMode: 0, //上下文模式 默认连续对话  待开发。  数字，数值型 0代表连续对话，其他代表固定次数后会自动清空记忆，即 1 = 1*Q&A ; 2 = 2*Q&A *考虑如果只是次数到了自动清空，这个意义不是很大。最好是永远保留最后几次的上下文，这样的设置会更实用，能结合压缩上下文就更好了。这个功能待开发。。。
+					settingsContextualMode: 0, //上下文模式 默认连续对话。  Int 数字，数值型 0代表连续对话
 					hasSystemPromptBeenSaved: false,
 					userMsgTokensForRetry: 0, //int 临时记录重问时的tokens数据
 					succQA_Count: 0, //int 当前有效的上下文数量，一问一答succQA_Count = 2 。 数量变化对应this.msgContent
@@ -2427,14 +2477,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 				  	title = '';
 					break;
 				  case 'A-CheckAPIKey':
-				  	notifcn = 'API Key，即接口密钥。支持OpenAI官方密钥和第三方平台密钥，将密钥粘贴到输入框，然后开始验证。\r\n\r\n  • 验证成功后，开始聊天或查询 OpenAI API 余额。\r\n\r\n  • 当"Key模式"为 [使用 OpenAI 官方Key] 时，[自动轮换 API Key] 功能开启，无法关闭。支持 Key 数量：1 个或以上。点击 [Key模式: 自动轮换API Key] 可以批量添加 OpenAI 官方Key。';
-					notifen = 'Enter OpenAI API Key or third-party platform API Key and check.\r\n\r\n  • After checking, you can chat or check OpenAI API balance.\r\n\r\n  • When the "Key Mode" is set to [Use OpenAI API Key], the [Auto Key Rotation] function is enabled and cannot be turned off. It supports a minimum of 1 key or more.  By clicking on [Key Mode: Auto Key Rotation], you can add OpenAI API Keys in bulk.';
-
-					notifcn += '\r\n\r\n  • 可点击 [Key模式: ...]，在弹出窗口中点击蓝色小问号 [?] 了解更多。';
-					notifen += '\r\n\r\n  • Click on [Key Mode: ...] to learn more by clicking the blue question mark [?] in the pop-up window.';
+				  	notifcn = 'API Key，即接口密钥。支持OpenAI官方密钥和第三方平台密钥，将密钥粘贴到输入框，然后开始验证。 (点击 [Key模式: ...]，在弹出窗口中点击蓝色小问号 [?] 可以了解更多。)\r\n\r\n  • 验证成功后，开始聊天或查询 OpenAI API 余额。\r\n  • 当 Key 模式为 [使用 OpenAI 官方Key] 时，[自动轮换 API Key] 功能会自动开启，该功能不支持手动关闭。\r\n  • [自动轮换 API Key] 支持 Key 的数量：1 个或以上。';
+					notifen = 'Enter OpenAI API Key or third-party platform API Key and check. (Click on [Key Mode: ...] to learn more by clicking the blue question mark [?] in the pop-up window.)\r\n\r\n  • After checking, you can chat or check OpenAI API balance.\r\n  • When the Key Mode is set to [Use OpenAI API Key], the [Auto Key Rotation] function is enabled and cannot be manually turned off. \r\n  • [Auto Key Rotation] supports a minimum of 1 key or more.';
 					
-					notifcn += '\r\n\r\n  • API Key 是什么样的？\r\n    1) OpenAI 官方的 API Key 是以“sk-”开头的一串密钥，例如 sk-bkR8V4tjmD7lXq9aZheZVpc6DtR8vw9VTYFJ1iaohMPpT3Bl\r\n    2) 第三方平台的 API Key 格式由第三方平台设定，可能同样以"sk-"开头，也可能是其他任意形式。';
-					notifen += '\r\n\r\n  • Q: What does API Key look like?\r\n    A: 1) The API Key from OpenAI starts with "sk-", like this: sk-bkR8V4tjmD7lXq9aZheZVpc6DtR8vw9VTYFJ1iaohMPpT3Bl .\r\n    2) The format of an API Key for a third-party platform is determined by that platform and may also start with "sk-" or be in any other format they choose.';
+					notifcn += '\r\n\r\n  • API Key 是什么样的？\r\n    1) OpenAI 官方的 API Key 是以“sk-”开头的一串密钥，例如 sk-bkR8V4tjmD7lXq9aZheZVpc6DtR8vw9VTYFJ1iaohMPpT3Bl\r\n    2) 第三方平台的 API Key 格式由第三方平台设定，可能同样以 "sk-" 开头，也可能是其他任意形式。';
+					notifen += "\r\n\r\n  • What does API Key look like?\r\n    1) The API Key from OpenAI starts with 'sk-', like this: sk-bkR8V4tjmD7lXq9aZheZVpc6DtR8vw9VTYFJ1iaohMPpT3Bl .\r\n    2) The format of an API Key for a third-party platform is determined by that platform and may also start with 'sk-' or be in any other format they choose. ( * In countries or regions where OpenAI does not provide services, users may need to use a third-party platform's intermediary service to access GPT.)";
 					
 					if(!this.isSimpleMode){
 						notifcn += '\r\n\r\n  • 如何获取官方的API Key？\r\n    注册成功后，打开官方接口页面免费获取即可，地址 https://platform.openai.com/account/api-keys   但是，国内IP无法直接注册OpenAI账号，网上有很多注册教程，其中最基础的条件是需要优质的魔法（"魔法"是一种可以让您的手机或电脑出趟国的技术，好的魔法会让OpenAI认为您的设备是真的在国外），满足这个条件就有机会免费注册账号并拥有API Key。';
@@ -2503,8 +2550,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 					title = '';
 					break;
 				  case 'A-GeneralSettings':
-				  	notifcn = '  • 关于头像设置：支持"上传图片"、"网络图片网址"、"本地图片路径"三种方式。\r\n\r\n  • 1) 如何上传图片？(推荐，支持手机和电脑)\r\n    点击 [设置] > 右侧头像，或者点击左侧下拉框选择上传图片。\r\n\r\n  • 2) 如何使用网络图片？\r\n    填入图片网址，并点击更新。\r\n\r\n  • 3) 电脑端如何使用"本地图片路径"？\r\n    需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片路径（填入相对路径或绝对路径的方式，不明白的建议直接使用第一种方式上传本地图片）。\r\n    以下是本地图片路径的示范：\r\n    Mac/Windows上的相对路径例子：123.jpg （头像需要与html文件放在同一文件夹中）\r\n    Mac上的绝对路径例子：/Users/LinTongXue/Downloads/123.jpg \r\n    windows上的绝对路径例子：D:\\LinTongXue\\123.jpg ';
-					notifen = '  • Regarding avatar settings: Upload image, Network image, and Local image (path).\r\n\r\n  • 1) How to upload an image as an avatar? (Recommended, supports both mobile and computer devices) \r\n    Click on "Settings" > Avatar on the right or select "upload an image" from the dropdown menu on the left.\r\n\r\n  • 2) How to use an online image?\r\n    Enter the URL of the image and click on update.\r\n\r\n  • 3) How to use a local image (path) as your avatar on Mac/PC?\r\n    You need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\n    Here are some examples of local image paths:\r\n    Mac/Windows relative path:   123.jpg   (the avatar needs to be placed in the same folder as the HTML file)\r\n    Mac absolute path:   /Users/LinTongXue/Downloads/123.jpg\r\n    Windows absolute path:   D:\\LinTongXue\\123.jpg';
+					notifcn = '  • 在 [常规设置] 中，除了 [记忆模式] 之外，其他都是通用设置。仅 [记忆模式] 是与 [对话] 绑定，每个对话的 [记忆模式] 都可以不同。\r\n';
+					notifcn += '  • 记忆，即上下文。新对话的 [记忆模式] 默认为: 不限制。\r\n';
+					notifcn += '  • 如果 [记忆模式] 设置了上限，在接近上限时，主界面上的 [清除记忆] 按钮会变为橘红色，当记忆达到上限时， [清除记忆] 按钮会变为红色 (只是提醒作用，无需用户操作。但如果您不想下次发送消息时记忆被清除，此刻仍然可以修改记忆模式)。\r\n\r\n';
+				  	notifcn += '  • 关于头像设置：支持"上传图片"、"网络图片网址"、"本地图片路径"三种方式。\r\n  • 1) 如何上传图片？(推荐，支持手机和电脑)\r\n    点击 [设置] > 右侧头像，或者点击左侧下拉框选择上传图片。\r\n  • 2) 如何使用网络图片？\r\n    填入图片网址，并点击更新。\r\n  • 3) 电脑端如何使用"本地图片路径"？\r\n    需要把html文件下载到电脑中，在本地打开使用时，才支持本地图片路径（填入相对路径或绝对路径的方式，不明白的建议直接使用第一种方式上传本地图片）。\r\n    以下是本地图片路径的示范：\r\n    - Mac/Windows上的相对路径例子：123.jpg （头像需要与html文件放在同一文件夹中）\r\n    - Mac上的绝对路径例子：/Users/LinTongXue/Downloads/123.jpg \r\n    - windows上的绝对路径例子：D:\\LinTongXue\\123.jpg ';
+					
+					notifen = '  • In the [General Settings] panel, all settings except for [Contextual Mode] are general settings. Only [Contextual Mode] is specific to Chat and can be different for each Chat.\r\n';
+					notifen += '  • The default [Contextual Mode] for new Chats is: No Limit.\r\n';
+					notifen += '  • If a limit is set for [Contextual Mode], the [Clear Context] button on the main interface will turn orange-red when it approaches the limit. When the Context reaches the limit, the [Clear Context] button will turn red (this is just a reminder, no user action is required. However, if you do not want the context to be cleared the next time you send a message, you can still modify the [Contextual Mode] at this time).\r\n\r\n';
+					notifen += '  • Regarding avatar settings: Upload image, Network image, and Local image (path).\r\n  • 1) How to upload an image as an avatar? (Recommended, supports both mobile and computer devices) \r\n    Click on "Settings" > Avatar on the right or select "upload an image" from the dropdown menu on the left.\r\n  • 2) How to use an online image?\r\n    Enter the URL of the image and click on update.\r\n  • 3) How to use a local image (path) as your avatar on Mac/PC?\r\n    You need to download the HTML file to your computer and open it locally to support local images (support relative or absolute paths). \r\n    Here are some examples of local image paths:\r\n    - Mac/Windows relative path:   123.jpg   (the avatar needs to be placed in the same folder as the HTML file)\r\n    - Mac absolute path:   /Users/LinTongXue/Downloads/123.jpg\r\n    - Windows absolute path:   D:\\LinTongXue\\123.jpg';
 				  	title = '';
 					break;
 				  case 'A-ExportChatHistory':
@@ -2513,7 +2567,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				  	title = '';
 					break;
 				  case 'C-ChatList':
-					notifcn = '  • 单个对话的数据包含聊天历史记录 (含上下文记忆)、当前系统提示词 (单条)、聊天输入框内的草稿、以及与对话直接关联的其他数据。';
+					notifcn = '  • 单个对话的数据包含聊天历史记录 (含上下文记忆)、当前系统提示词 (单条)、记忆模式 (上下文模式)、聊天输入框内的草稿、以及与对话直接关联的其他数据。';
 					notifcn += '\r\n  • 对话的数据不包括用户设置、用户头像、提示词模板、提示词编辑器草稿、密钥 (API Key) 及API参数信息，切换不同对话时，这些数据不会发生改变。';
 					notifcn += '\r\n  • 可导出单个对话数据，或一次导出所有对话的数据。可用于分享，对方导入后可恢复对话数据，完全一致。';
 					notifcn += '\r\n\r\n  • 若浏览器支持本地存储 (localStorage) ，所有对话数据将会自动保存在浏览器缓存中。';
@@ -2525,10 +2579,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notifcn += '\r\n  • 手动或自动创建对话副本时，副本的创建时间会自动加1秒或更多。';
 						notifcn += '\r\n  • 新对话 (未发送过消息) 不会被保存。';
 						notifcn += '\r\n  • 对话日志: 单个对话的所有记录 (包含操作记录、撤回的内容以及发送失败的内容等)，用于导出 Markdown 格式的纯文本聊天记录，有些对话日志可能会比较大。';
+						notifcn += '\r\n  • 每个对话都可以在 [设置] 中单独设置记忆模式 (上下文模式)，新对话的记忆模式默认为: 不限制。';
 						notifcn += '\r\n\r\n  • 使用浏览器普通模式时：标签页或浏览器窗口可随时刷新或关闭，打开时均能恢复数据，且不同标签页的数据是共享的 (同一浏览器打开相同网页的情况下)。';
 						notifcn += '\r\n  • 使用浏览器隐私模式 (无痕模式) 时：大多数支持本地存储，标签页可刷新，标签页或窗口之间不互通数据，标签页关闭时，所有数据都会被销毁。';
 					}
-					notifen = '  • Each chat data includes chat history, the current system prompt, the draft in the chat input box, and other data directly associated with the chat.';
+					notifen = '  • Each chat data includes chat history, the current system prompt, contextual mode, the draft in the chat input box, and other data directly associated with the chat.';
 					notifen += '\r\n  • Chat data does not include user settings, avatars, prompt generator data, prompt editor drafts, API keys, and API parameter information. These data will not change when switching between different chats.';
 					notifen += '\r\n  • You can export individual chat data or export all chats at once. This can be used for sharing, and the recipient can import and restore the chat data.';
 					notifen += '\r\n\r\n  • If the browser supports local storage (localStorage), all data will be automatically saved in the browser cache.';
@@ -2540,6 +2595,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notifen += '\r\n  • When manually or automatically creating a copy of a chat, the chat creation time of the copy will be incremented by 1 second or more.';
 						notifen += '\r\n  • New chat (with no messages sent) will not be saved.';
 						notifen += '\r\n  • Chat Logs: All records of individual conversations, including activity logs, retracted messages, and failed messages, are stored. These logs can be exported as plain text chat records in Markdown format. Some logs of chats may be large in size.';
+						notifen += '\r\n  • You can customize the [Contextual Mode] for each chat in [Settings]. Each chat can have a different setting. The default [Contextual Mode] for new chats is: No Limit.';
 						notifen += '\r\n\r\n  • In the normal mode of the browser, Tabs or browser windows can be refreshed or closed at any time, and data will be restored upon reopening. Data is shared between different tabs (when opening the same webpage in the same browser).';
 						notifen += '\r\n  • In private/incognito mode, Local storage is supported in most cases, tabs can be refreshed, but data is not shared between tabs or windows, and cache data is cleared when tabs are closed.';
 				  	}
@@ -2613,10 +2669,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifcn = '  • LinGPT 通过 Key 特征、第三方接口的关键词自动分类。如果未正确识别为第三方 Key ，则可以点击 [级别] 进行修改 (单向操作)。';
 					notifcn += '\r\n\r\n  • 自动轮换 API Key 算法是根据订阅计划和免费计划的密钥特性设计的。结合 OpenAI 错误代码，根据实际使用情况动态标记 API Key 并智能调用，无需人工干预。';
 					notifcn += '\r\n  • [自动轮换API Key] 与 [自动重问] 的结合：(第三方单Key模式下触发自动重问的情况会减少) 当请求出现错误时，会自动判断是否需要  [自动重问] 。为了提供更好的用户体验，自动重试不会无限制进行，有些情况会中止重试，而需要自动重试的情况会综合考虑错误类型、已重试次数和已等待时间来判断是否适合通过轮换 Key 来重发请求。';
-					notifcn += '\r\n  • 自动轮换 API Key 功能无法关闭。支持 Key 数量：1 个或以上。';
+					notifcn += '\r\n  • 自动轮换 API Key 功能不支持手动关闭。支持 Key 数量：1 个或以上。';
 					notifcn += '\r\n  • 对于非付费用户，如果您有两个 OpenAI 免费计划的账号，将获得很好的体验。建议往 LinGPT 添加每个 OpenAI 账号的 Key 的数量为 2～3 个 (虽然相同账号下的Key是共享请求配额的)，当然，每个账号只取  1 个 Key 也是可以的。';
 					notifcn += '\r\n  • 单个添加和批量添加没有区别。单个添加时不会记录无效 Key，而批量添加时，无效 Key 会在被记录。';
-					notifcn += '\r\n  • 批量添加支持识别两种格式：1）每行一个以"sk-"开头的 key；2）识别文本中带双引号的以"sk-"开头、长度为 51 位的 Key（支持不换行的文本，比如直接复制 JSON 文件的文本内容）。';
+					notifcn += '\r\n  • 批量添加仅支持以 "sk-" 开头的 Key，可识别两种格式：1）每行一个以"sk-"开头的 key；2）识别文本中带双引号的以"sk-"开头、长度为 51 位的 Key（支持不换行的文本，比如直接复制 JSON 文件的文本内容）。';
 					notifcn += '\r\n  • 批量添加时，不会立即验证有效性。如果添加了大量无效 Key，请求过程中，当单次连续检测到 20 个无效 Key 时，检测会中止。';
 					notifcn += '\r\n  • 可修改级别，点击 API Key 的级别，根据提示进行修改。通常不需要修改级别。如果您的付费 Key 没有被标记为付费，这不是一个问题，不会影响实际使用。当出现连续被调用的情况，并达到鉴别标准时，系统会自动标记为付费。这需要一个过程，取决于添加 Key 的数量、请求的频率以及 Key 是否独享的情况。';
 					notifcn += '\r\n  • 如果想恢复之前被标记为"超出配额"的 Key，可以手动修改它的级别，优先改成 0 或 1。';
@@ -2626,10 +2682,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 					notifen = '  • LinGPT uses key features and keywords from third-party interfaces to automatically categorize. If it is not correctly recognized as a third-party key, you can click [level] to modify it (one-way operation).';
 					notifen += '\r\n\r\n  • The algorithm of [Auto Key Rotation] is designed according to the characteristics of keys in subscription and free plans. Combining with OpenAI error codes, API Key is dynamically marked and intelligently called based on actual usage.';
 					notifen += '\r\n  • [Auto Key Rotation] and [Auto Retry]: (Under the "3rd party Key Mode", there will be fewer "Auto-Retry".) When a request encounters an error, the system will automatically determine whether to retry. To provide a better user experience, auto-retry will not be performed indefinitely. Some situations may stop retrying, while situations that require auto-retry will be judged comprehensively based on error types, number of retries, and waiting time to determine whether it is suitable to resend the request by rotating the Key.';
-					notifen += '\r\n  • [Auto Key Rotation] function cannot be turned off. Supports Key quantity: 1 or more.';
+					notifen += '\r\n  • [Auto Key Rotation] cannot be manually turned off. Supports Key quantity: 1 or more.';
 					notifen += '\r\n  • For non-paying users, if you have two OpenAI free plan accounts, you can get a better user experience. It is recommended to add 2-3 Keys for each OpenAI account added to LinGPT (although Keys under the same account share request quota), and of course, only adding 1 Key for each account is also acceptable.';
 					notifen += '\r\n  • There is no difference between adding a single Key or adding Keys in bulk. Invalid Keys will not be recorded when adding a single Key, while invalid Keys will be recorded when adding Keys in bulk.';
-					notifen += '\r\n  • Adding Keys in bulk supports identifying two formats: 1) one key starting with "sk-" per line; 2) a Key starting with "sk-" and with a length of 51 characters recognized in a text enclosed in double quotes (Supports text without line breaks, such as directly copying the text content of a JSON file.).';
+					notifen += '\r\n  • [Bulk Add] only supports keys starting with "sk-", and it can recognize two formats: 1) one key starting with "sk-" per line; 2) a Key starting with "sk-" and with a length of 51 characters recognized in a text enclosed in double quotes (Supports text without line breaks, such as directly copying the text content of a JSON file.).';
 					notifen += '\r\n  • When adding Keys in bulk, the system will not immediately check their validity. If a large number of invalid Keys are added, the check will be stopped when 20 consecutive invalid Keys are detected during the request process.';
 					notifen += '\r\n  • The level can be modified by clicking on the level of the API Key and following the prompts. Usually, there is no need to modify the level. If your paid Key is not marked as a paid account, it is not an issue and will not impact actual usage. When a Key is called continuously and reaches the identification standard, it will be automatically marked as a paid account. This is a process that depends on the number of Keys added, request frequency, and whether the Key is exclusively used.';
 					notifen += '\r\n  • If you want to restore a Key that was marked as "Quota exceeded", you can manually modify its level, preferably to 0 or 1.';
@@ -2693,12 +2749,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 				if ( ischange !== false ){
 					let notif = '';
+					let notif_time = 6000;
 					if(this.isSimpleMode){
-						notif = this.settingsLanguage == 'cn' ? '默认模式 (简约模式)' : 'Normal Mode (Simple Mode)' ;
+						notif = this.settingsLanguage == 'cn' ? '默认模式 (简约模式，适合已熟悉新版本 LinGPT 的用户)' : 'Normal Mode (Simple Mode, suitable for users familiar with the new version of LinGPT.)' ;
+						notif_time = this.settingsLanguage == 'cn' ? 4500 : 6000;
 					}else{
-						notif = this.settingsLanguage == 'cn' ? '新用户模式 (此模式下会增加提示)' : 'User Onboarding (This mode offers more functionality prompts.)' ;
+						notif = this.settingsLanguage == 'cn' ? '新用户模式 (此模式下会增加功能提示，并提供更丰富的帮助内容)' : 'User Onboarding (this mode provides more functional prompts and richer help content.)' ;
+						notif_time = this.settingsLanguage == 'cn' ? 5500 : 6000;
 					}
-					this.showNotification(notif, 'bottom', '',4000);
+					this.showNotification(notif, 'bottom', '',6000);
 				}
 				
 				//一些CSS样式/布局
@@ -3606,10 +3665,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 				}
 		 
 			},
-			// 设置窗口 - 上下文模式
+			// 设置窗口 - 记忆模式/上下文模式  Contextual Mode
 			changeContextualMode() {
-				//11111111
-
+				const notif = this.settingsLanguage == 'cn' ? '当前对话的 [记忆模式] 已变更' + (this.isSimpleMode ? '' : '。 提示: 每个对话的 [记忆模式] 都是独立的') : 'The [Contextual Mode] of the current Chat has been changed.' + (this.isSimpleMode ? '' : '  Tip: The [Contextual Mode] of each Chat is independent.') ;
+				const time = this.settingsLanguage == 'cn' ? (this.isSimpleMode ? 1600 : 2500) : (this.isSimpleMode ? 1900 : 3000) ;
+				this.showNotification(notif, 'bottom', '', time);
 			},
 			// 设置窗口 - 改变字体大小 
 			changeStyle_FontSize() {
@@ -3654,28 +3714,33 @@ to{transform:translate(-50%,-18px);opacity:1}
 				var key = event.key || event.keyCode || event.which;
 				if (key === 'F1' || key === 112) {
 					event.preventDefault(); // 防止浏览器默认行为
-					// 清空
+					// 清除记忆
 					if(!this.settingsShortcut_Clear){return;}//未开启快捷键时 返回
-					if(this.btnDisabledState_Clear){return;}//清空按钮不可用时 返回
+					if(this.btnDisabledState_Clear){return;}//清除记忆按钮不可用时 返回
 		
 					if(this.isShowDialog_Settings){return;}//设置窗口打开时 返回
 					if(this.isShowDialog_PromptGenerator){return;}//提示词窗口打开时 返回
-					if(this.isShowNotification){return;}//center / bottom 两种通知消息时 都返回 *底部通知时其实可以允许使用快捷键，但时长较短，仅3秒，干脆也禁了
+					if(this.isShowNotification && this.setNotificationPosition === 'center'){return;}// 通知为"中心通知"时，返回
 					if(this.isShowDialog_ChatList){return;}//对话列表窗口打开时 返回
 					if(this.isShowDialog_AutoKeyRotation){return;}//自动轮换API Key窗口打开时 返回
 					
 					//其他弹窗 1111111
 		
-					this.clearContext(); //清空
+					this.clearContext(); //清除记忆
 				} 
 	  
 				if (key === 'F2' || key === 113) {
 					event.preventDefault(); // 防止浏览器默认行为
-					// 验证API Key
+					// 验证API Key ***v8.27 改用途 改成"打开Key模式窗口"的快捷键 Change the original purpose to "Open Key Mode window".
 					if(!this.settingsShortcut_CheckApiKey){return;}//未开启快捷键时 返回
-					if(this.btnDisabledState_CheckAPI){return;}//验证按钮不可用时 返回
-		
-					this.checkAPIbtn(); //验证
+					if(this.isShowNotification && this.setNotificationPosition === 'center'){return;}// 通知为"中心通知"时，返回
+					
+					if(this.isShowDialog_AutoKeyRotation){
+						this.isShowDialog_AutoKeyRotation = false;
+						return;
+					}else{
+						this.clickOpenAutoKeyRotation();
+					}
 				} 
 	  
 				if (key === 'F3' || key === 114) {
@@ -3686,7 +3751,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 		
 					if(this.isShowDialog_Settings){return;}//设置窗口打开时 返回
 					if(this.isShowDialog_PromptGenerator){return;}//提示词窗口打开时 返回
-					if(this.isShowNotification){return;}//center / bottom 两种通知消息时 都返回
+					if(this.isShowNotification && this.setNotificationPosition === 'center'){return;}// 通知为"中心通知"时，返回
 					if(this.isShowDialog_ChatList){return;}//对话列表窗口打开时 返回
 					if(this.isShowDialog_AutoKeyRotation){return;}//自动轮换API Key窗口打开时 返回
 					
@@ -3703,7 +3768,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 		
 					if(this.isShowDialog_Settings){return;}//设置窗口打开时 返回
 					if(this.isShowDialog_PromptGenerator){return;}//提示词窗口打开时 返回
-					if(this.isShowNotification){return;}//center / bottom 两种通知消息时 都返回
+					if(this.isShowNotification && this.setNotificationPosition === 'center'){return;}// 通知为"中心通知"时，返回
 					if(this.isShowDialog_ChatList){return;}//对话列表窗口打开时 返回
 					if(this.isShowDialog_AutoKeyRotation){return;}//自动轮换API Key窗口打开时 返回
 					
@@ -3807,7 +3872,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.apiPresencePenalty = JSON.parse(JSON.stringify(this.userVariables_default.apiPresencePenalty));
 				this.apiFrequencyPenalty = JSON.parse(JSON.stringify(this.userVariables_default.apiFrequencyPenalty));
 
-				const notif = this.settingsLanguage == 'cn' ? 'API专业设置 已恢复默认值。 提示: 接口网址(API URL)需手动修改' : 'Professional API Settings have been reset to default values. Tip: API URL (Endpoint) needs to be manually modified.' ;
+				const notif = this.settingsLanguage == 'cn' ? 'API专业设置 已恢复默认值。 提示: 接口网址 (API URL) 需手动修改' : 'Professional API Settings have been reset to default values. Tip: API URL (Endpoint) needs to be manually modified.' ;
 				const time = this.settingsLanguage == 'cn' ? 5000 : 6500 ; 
 				this.showNotification(notif, 'bottom', '', time); //this.inputapichange 会弹第二个通知
 			},
@@ -3830,16 +3895,16 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.settingsDividerLine = JSON.parse(JSON.stringify(this.userVariables_default.settingsDividerLine ));
 				this.changeStyle_DividerLine();
 
-				// *this.chatVariables_default
-				this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode )); // ***ChatData
-				this.changeContextualMode();
+				//8.26 需手动 need manually // *this.chatVariables_default
+				//8.26 需手动 need manually this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode )); // ***ChatData
+				//8.26 需手动 need manually //this.changeContextualMode();
 
 				this.settingsShortcut_CheckApiKey = JSON.parse(JSON.stringify(this.userVariables_default.settingsShortcut_CheckApiKey ));
 				this.settingsShortcut_Clear = JSON.parse(JSON.stringify(this.userVariables_default.settingsShortcut_Clear ));
 				this.settingsShortcut_Undo = JSON.parse(JSON.stringify(this.userVariables_default.settingsShortcut_Undo ));
 				this.settingsShortcut_Retry = JSON.parse(JSON.stringify(this.userVariables_default.settingsShortcut_Retry ));
 
-				const notif = this.settingsLanguage == 'cn' ? '常规设置 已恢复默认设置。 提示: 语言和头像设置需手动修改' : 'General Settings have been reset to default values. Tip: Language and Avatar settings need to be manually modified.' ;
+				const notif = this.settingsLanguage == 'cn' ? '常规设置 已恢复默认设置。 提示: 记忆模式、语言和头像设置需手动修改' : 'General Settings have been reset to default values. Tip: Contextual Mode, Language, and Avatar settings need to be manually modified.' ;
 				const time = this.settingsLanguage == 'cn' ? 5000 : 6500 ;
 				this.showNotification(notif, 'bottom', '', time);
 			},
@@ -3944,7 +4009,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.setVariablesToThis(this.userVariables_default, this.userVariables_default, true); //*userVariables 变量
 						this.inputApiURL = this.apiURL;
 						this.selectedApiURL = this.inputApiURL;
-						this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode ));//属于chatdata的变量，不属于userVariables。需要手动设置
+						this.settingsContextualMode = JSON.parse(JSON.stringify(this.chatVariables_default.settingsContextualMode ));//属于chatdata的变量，不属于userVariables。需要手动设置 *8.26 这行代码有点多余
 						
 						this.openSmartMaxTokens = true; //localStorage无此变量。默认开启，需要手动设置。
 						this.changePageScaling(false);//需要在changeSimpleMode之前
@@ -3956,7 +4021,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.changeStyle_Time_WechatStyle();
 						this.changeStyle_Time();
 						this.changeStyle_DividerLine();
-						this.changeContextualMode();
+						//this.changeContextualMode();
 						
 						//最后再删一次  //不能使用localStorage.clear();
 						//改为分别删除4项数据 //先删1次
@@ -4036,7 +4101,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						this.changeStyle_Time_WechatStyle();
 						this.changeStyle_Time();
 						this.changeStyle_DividerLine();
-						this.changeContextualMode();
+						//this.changeContextualMode();
 						
 						
 						//无需保存
@@ -6645,11 +6710,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 					return;
 				}
 				
-				let notif_cn = '该 API Key 上次使用的接口与当前接口不一致。\r\n点击 [确定 (好)] 可快速更换为上次使用的接口网址，点击 [取消] 则保持当前接口网址不变，请选择...';
-				let notif_en = 'The API URL used with this API Key last time differs from the current API URL. \r\nClick [Confirm (OK)] to quickly change it to the API URL used last time, or click [Cancel] to keep the current API URL unchanged. Please choose...';
+				let notif_cn = '该 API Key 上次使用的接口与当前接口不一致。\r\n\r\n点击 [确定 (好)] 可快速更换为上次使用的接口网址，点击 [取消] 则保持当前接口网址不变，请选择...';
+				let notif_en = 'The API URL used with this API Key last time differs from the current API URL. \r\n\r\nClick [Confirm (OK)] to quickly change it to the API URL used last time, or click [Cancel] to keep the current API URL unchanged. Please choose...';
 				notif_cn = notif_cn + '\r\n\r\n上次接口: ' + apidata.apiurl + '\r\n当前接口: ' + this.apiURL ;
 				notif_en = notif_en + '\r\n\r\nLast API URL: ' + apidata.apiurl + '\r\nCurrent API URL: ' + this.apiURL ;
-				const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
+				let notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 	
 				this.is_Alert_Confirm_Prompt_Open = true;
 				const confirmed = confirm(notif); //用户选择是否继续，继续会自动更换接口URL
@@ -6684,6 +6749,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 				}else{
 					this.selectedApiURL = "";
 				}
+				
+				notif = this.settingsLanguage == 'cn' ? '接口网址已变更' : 'API URL has been changed' ;
+				this.showNotification(notif, 'bottom', '',1600);
 			},
 			
 			// 默认选中一个第三方Key
@@ -8002,8 +8070,8 @@ to{transform:translate(-50%,-18px);opacity:1}
 							vpn = 'third-party';
 						}else if( this.api.startsWith('sk-') && this.list_OnlyUseThirdPartyKey_DomainKeyword.some(char => this.apiURL.toLowerCase().includes(char)) ){
 						//3) "包含sk-" && "本来不应该支持sk-的第三方（现在竟然请求成功了，属于意外情况）"  *弹窗，需要手动确认
-							const notif_cn = '本次需要您手动标记当前 API Key 是否属于 OpenAI 官方Key。\r\n点击 [确定 (好)] 将标记为 OpenAI 官方Key，点击 [取消] 将标记为第三方接口的专用Key，请选择...\r\n\r\nAPI Key: ' + this.api + '\r\n接口网址: ' + this.apiURL ;
-							const notif_en = 'Please manually confirm if the current API Key belongs to OpenAI API Key this time. \r\nClick [Confirm (OK)] to mark it as OpenAI API Key, or click [Cancel] to mark it as a Third-party API Key. Please choose...\r\n\r\nAPI Key: ' + this.api + '\r\nAPI URL (Endpoint): ' + this.apiURL ;
+							const notif_cn = '本次需要您手动标记当前 API Key 是否属于 OpenAI 官方Key。\r\n\r\n点击 [确定 (好)] 将标记为 OpenAI 官方Key，点击 [取消] 将标记为第三方接口的专用Key，请选择...\r\n\r\nAPI Key: ' + this.api + '\r\n接口网址: ' + this.apiURL ;
+							const notif_en = 'Please manually confirm if the current API Key belongs to OpenAI API Key this time. \r\n\r\nClick [Confirm (OK)] to mark it as OpenAI API Key, or click [Cancel] to mark it as a Third-party API Key. Please choose...\r\n\r\nAPI Key: ' + this.api + '\r\nAPI URL (Endpoint): ' + this.apiURL ;
 							const notif_isThirdParty = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
 							if (confirm(notif_isThirdParty)) {//弹窗询问 手动选择 标记sk-开头的key是官方Key还是第三方Key
 								// 官方 && 属于gpt-4模型
@@ -8164,27 +8232,39 @@ to{transform:translate(-50%,-18px);opacity:1}
 				const tip_red_apiMaxTokens = ( !this.isSimpleMode && !this.apiGPTModel.includes('gpt-3.5') && this.apiMaxTokens > 3999 ) ? ( this.settingsLanguage == 'cn' ? '<红> ' : '<Red> ' ) : '' ;
 				const tip_red_totaltokens = ( !this.isSimpleMode && !this.apiGPTModel.includes('gpt-3.5') && this.totaltokens > 3999 ) ? ( this.settingsLanguage == 'cn' ? '<红> ' : '<Red> ' ) : '' ;
 							
-				notif += this.settingsLanguage == 'cn' ? '① 模型 :  ' + tip_blue_16k + tip_orangered_32k + tip_red_32k + this.apiGPTModel : '① Model:  ' + tip_blue_16k + tip_orangered_32k + tip_red_32k + this.apiGPTModel ;
-				notif += this.settingsLanguage == 'cn' ? '\r\n② Token用量 :  ' + tip_blue_totaltokens + tip_red_totaltokens + this.totaltokens + ' tokens' : '\r\n② Tokens of context:  ' + tip_blue_totaltokens + tip_red_totaltokens + this.totaltokens + ' tokens';
-				notif += this.settingsLanguage == 'cn' ? '\r\n③ max_tokens参数:  ' + tip_red_apiMaxTokens + this.apiMaxTokens : '\r\n③ max_tokens (completion):  ' + tip_red_apiMaxTokens + this.apiMaxTokens;
-				notif += this.settingsLanguage == 'cn' ? '\r\n④ 智能max_tokens :  ' + tip_red_SmartMaxTokens + (this.openSmartMaxTokens ? '已启用' : '已关闭' ) : '\r\n④ Smart max_tokens:  ' + tip_red_SmartMaxTokens + (this.openSmartMaxTokens ? 'Enabled' : 'Disabled' );
-				notif += this.settingsLanguage == 'cn' ? '\r\n⑤ API接口 :  ' + api_is_openai + this.apiURL : '\r\n⑤ API URL:  ' + api_is_openai + this.apiURL;
+				notif += this.settingsLanguage == 'cn' ? '① 模型 :  ' + tip_blue_16k + tip_orangered_32k + tip_red_32k + this.apiGPTModel : '① Model :  ' + tip_blue_16k + tip_orangered_32k + tip_red_32k + this.apiGPTModel ;
+				notif += this.settingsLanguage == 'cn' ? '\r\n② Token用量 :  ' + tip_blue_totaltokens + tip_red_totaltokens + this.totaltokens + ' tokens' : '\r\n② Tokens of context :  ' + tip_blue_totaltokens + tip_red_totaltokens + this.totaltokens + ' tokens';
+				notif += this.settingsLanguage == 'cn' ? '\r\n③ max_tokens参数 :  ' + tip_red_apiMaxTokens + this.apiMaxTokens : '\r\n③ max_tokens (completion) :  ' + tip_red_apiMaxTokens + this.apiMaxTokens;
+				notif += this.settingsLanguage == 'cn' ? '\r\n④ 智能max_tokens :  ' + tip_red_SmartMaxTokens + (this.openSmartMaxTokens ? '已启用' : '已关闭' ) : '\r\n④ Smart max_tokens :  ' + tip_red_SmartMaxTokens + (this.openSmartMaxTokens ? 'Enabled' : 'Disabled' );
+				notif += this.settingsLanguage == 'cn' ? '\r\n⑤ API接口 :  ' + api_is_openai + this.apiURL : '\r\n⑤ API URL :  ' + api_is_openai + this.apiURL;
 				if(this.isThirdPartyAPIKeyEnabled){ //第三方
-					notif += this.settingsLanguage == 'cn' ? '\r\n⑥ Key模式 :  第三方单Key模式 (使用第三方代理专用Key)' : '\r\n⑥ Key Mode:  3rd party Key Mode (Use Third-party Key)';
+					notif += this.settingsLanguage == 'cn' ? '\r\n⑥ Key模式 :  第三方单Key模式 (使用第三方代理专用Key)' : '\r\n⑥ Key Mode :  3rd party Key Mode (Use Third-party Key)';
 					notif += this.settingsLanguage == 'cn' ? '\r\n⑦ API Key :  ' + api_string : '\r\n⑦ API Key:  ' + api_string;
 				}else{ //OpenAI
-					notif += this.settingsLanguage == 'cn' ? '\r\n⑥ Key模式 :  自动轮换API Key (使用OpenAI官方Key)' : '\r\n⑥ Key Mode:  Auto Key Rotation (Use OpenAI API Keys)';
-					notif += this.settingsLanguage == 'cn' ? '\r\n⑦ API Key:  <上次> ' + api_string : '\r\n⑦ API Key:  <Last> ' + api_string;
+					notif += this.settingsLanguage == 'cn' ? '\r\n⑥ Key模式 :  自动轮换API Key (使用OpenAI官方Key)' : '\r\n⑥ Key Mode :  Auto Key Rotation (Use OpenAI API Keys)';
+					notif += this.settingsLanguage == 'cn' ? '\r\n⑦ API Key :  <上次> ' + api_string : '\r\n⑦ API Key :  <Last> ' + api_string;
 				}
 				notif += this.settingsLanguage == 'cn' ? '\r\n⑧ 系统提示词 :  ' + (this.gptSystemPromptReadOnly.trim() == '' ? '无' : '有') : '\r\n⑧ System Prompt :  ' + (this.gptSystemPromptReadOnly.trim() == '' ? 'No' : 'Yes') ;
-				// 9 ：上下文模式
+				// 9 ：记忆模式 上下文模式 Contextual Mode
+				let contextualModeStr = '';
+				if(!Number.isInteger(this.settingsContextualMode)){
+					contextualModeStr = ''
+				}else if(this.settingsContextualMode === 0){
+					contextualModeStr = this.settingsLanguage == 'cn' ? '不限制' : 'No Limit' ;
+				}else if(this.settingsContextualMode < 100){
+					contextualModeStr = this.settingsLanguage == 'cn' ? '上限 ' + this.settingsContextualMode + ' 条' : 'Limit: ' + this.settingsContextualMode;
+				}else if(this.settingsContextualMode > 100){
+					contextualModeStr = this.settingsLanguage == 'cn' ? '始终保留最后 ' + (this.settingsContextualMode - 100) + ' 条' : 'Keep Last: ' + (this.settingsContextualMode - 100);
+				}
+				notif += this.settingsLanguage == 'cn' ? '\r\n⑨ 记忆模式 :  ' + contextualModeStr : '\r\n⑨ Contextual Mode :  ' + contextualModeStr;
+				
 				const delaytime = this.isShowNotification ? 1900 : 0;
 				const notif_title = this.settingsLanguage == 'cn' ? '当前状态' : 'Current status' ;
 				setTimeout(() => {
 					this.showNotification(notif, 'center', notif_title);	
 				}, delaytime);
 			},
-			//按钮：清空 清空记忆 Clear context *同时清空发送失败的msg
+			//按钮：清除记忆 清空记忆 Clear context *同时清空发送失败的msg
 			clearContext(){
 				this.btnDisabledState_Clear = true;
 				this.btnDisabledState_Undo= true;
@@ -8195,7 +8275,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.msgContentForMsgList_SingleRound = [this.msgContentForMsgList_SingleRound[0]];//清零，仅记录单轮记忆的原文
 				this.userMsgTokensForRetry = 0; //清零
 				const txt_lang1 = this.settingsLanguage == 'cn' ? '### #清空上下文记忆\r\n\r\n' : '### #Clear Context\r\n\r\n' ;
-				this.chathistory  += (txt_lang1);
+				this.chathistory  += txt_lang1;
 				this.add_hr_newRoundContext(false); //添加记忆分割线
 				
 				//更新 保存 聊天数据 chatData chatDataList
@@ -8205,20 +8285,22 @@ to{transform:translate(-50%,-18px);opacity:1}
 			//按钮：说明 Help
 			openDialog_Help(){
 				let notif =  '';
-				let title = this.settingsLanguage == 'cn' ? 'LinGPT v8.21 - 帮助' : 'LinGPT v8.21 - Help' ;
+				let title = this.settingsLanguage == 'cn' ? 'LinGPT v8.28 - 帮助' : 'LinGPT v8.28 - Help' ;
 				let notifcn = 'LinGPT - A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File ';
 				notifcn += '\r\n\r\nLinGPT ，只有一个 html 文件的 ChatGPT (GPT-3.5 / GPT-4) 聊天网页。下载到电脑即可使用，像打开一张图片一样简单。支持上传至所有免费的静态网页托管平台，非常流畅。  1) 接口: 自定义接口，支持 OpenAI 官方API 和第三方平台API (反代)。  2) 模型: 支持最新的 GPT-3.5 和 GPT-4 模型。  3) 密钥: 支持 OpenAI 官方Key 和第三方平台专用Key，支持轮询。  4) 数据安全: 数据仅存储在浏览器本地存储中，支持导出、导入、删除。代码开源，安全无风险。\r\n\r\n#开始使用\r\n填入 API Key 或批量添加后即可开始聊天。';
 				notifcn += '\r\n\r\n#对话\r\n  • 功能: 多对话管理、全自动保存、支持创建副本、多标签页数据同步、可导出 (备份/迁移/分享)、可导入 (还原对话)。 \r\n  • 聊天: 1) 全自动智能调节 max_tokens。 2) 支持自动重问 (发送失败时智能判断是否重试)。 3) 支持 Markdown，方法与官网相同。*当 GPT 回复未使用 Markdown 语法时，可要求其使用 Markdown 格式回复（主要应用于代码、表格、文章排版、显示网络图片等）。 4) iPhone / iPad 中，搜狗输入法在换行时可能存在兼容性问题。 5) 电脑端支持 Shift + Enter 、Ctrl + Enter 、Command(⌘) + Enter 换行。 6) 如果想中断正在发送的请求，可通过刷新网页来实现。';
-				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v8.21 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、 API 设置、查询 API 余额和有效期、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。';
-				notifcn += '\r\n\r\n#其他\r\n  • [Tokens统计] 图标颜色: 1) 当上下文 tokens 已达到 2000 ，颜色为橘红色。2) 达到当前模型tokens上限的 90% 时，颜色变为红色并加粗。';
-				notifcn += '\r\n  • [状态 (仪表盘)] 图标颜色: 通过颜色区分不同模型与不同设置的费用差异。1) gpt-3.5 模型为绿色，16k 版本图标变为蓝色。 2) gpt-4 模型为橘红色，当满足以下任一条件时，图标变为红色：选用 32k 版本 / 开启"smart max_tokens" / max_tokens 参数的设置高于4000 / 上下文 tokens 已达到4000 。';
+				notifcn += '\r\n\r\n#提示词窗口\r\n截止 v8.28 版本，暂时只有设置系统提示词的功能，可在提示词窗口中点击蓝色小问号 [?] 了解更多。\r\n\r\n#设置窗口\r\n常规设置、记忆模式 (上下文模式)、 API 设置、查询 API 余额和有效期、 API 专业设置、上传头像、导出纯文本聊天记录、本地数据管理等，可在设置窗口中点击蓝色小问号 [?] 了解更多。';
+				notifcn += '\r\n\r\n#其他\r\n  • [清除记忆] 按钮颜色: 如果当前对话的 [记忆模式] 设置了上限，那么当记忆 (上下文) 接近上限时，颜色会变为橘红色，当记忆达到上限时，会变为红色 (颜色变化只是提醒作用，无需用户操作)。';
+				notifcn += '\r\n  • [Token用量] 文字颜色: 1) 当上下文 tokens 已达到 2000 ，颜色为橘红色。2) 达到当前模型tokens上限的 90% 时，颜色变为红色并加粗。';
+				notifcn += '\r\n  • [状态] 按钮颜色: 通过颜色区分不同模型与不同设置的费用差异。1) gpt-3.5 模型，按钮为绿色。选 16k 版本时，颜色会变为蓝色。 2) gpt-4 模型，按钮为橘红色。当满足以下任一条件时，颜色会变为红色：选用 32k 版本 / 开启"smart max_tokens" / max_tokens 参数的设置高于4000 / 上下文 tokens 已达到4000 。';
 				//有单引号
 				let notifen = "LinGPT - A ChatGPT (GPT-3.5 / GPT-4) Webpage with Just a Single HTML File \r\n\r\nLinGPT is a lightweight single-page chat application that can be deployed statically, with no need for a server. It can be uploaded to any static website hosting platform like GitHub and provides a very smooth browsing experience.  1) API: Supports OpenAI API and third-party API (reverse proxy). 2) Model: Supports the latest GPT-3.5 and GPT-4 models. 3) API Key: Supports both OpenAI API Key and third-party proxy website keys. Supports fully automatic intelligent rotation of API keys. 4) User Data Security: Supports browser local storage. All data is stored solely in the browser cache and supports export, import, and deletion. ";
 				notifen += "\r\n\r\n#Getting Started \r\nEnter API Key or add them in bulk, and start chatting. ";
 				notifen += '\r\n\r\n#Chat\r\n  • Features: Multiple chat management, automatic saving, support for creating copies, data synchronization across multiple tab pages, export capability (backup/migration/sharing), import capability (restore chats). \r\n  • Chatting:  1) Fully automatic intelligent adjustment of max_tokens.  2) Supports automatic retry (intelligently determines whether to retry when a request fails).  3) Markdown is supported, same as the official website. *When GPT replies without using Markdown syntax, you can ask it to reply in Markdown format (mainly used for code, tables, article formatting, displaying web images, etc.).  4) Line Breaks on Computer: Supports Shift + Enter, Ctrl + Enter line breaks, and Mac also support Command(⌘) + Enter line breaks.  5) There is no stop request function. If you want to interrupt a request that is being sent, you can do so by refreshing the web page.';
-				notifen += "\r\n\r\n#Prompt Generator \r\nv8.21, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, API settings, checking API balance and validity period, API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window.";
-				notifen += "\r\n\r\n#Other\r\n  • Tokens Icon Color:  1) When the context tokens reach 2000, the color becomes orange-red. 2) When the token usage reaches 90% of the current model's limit, the color turns red and bold.";
-				notifen += '\r\n  • Status (Dashboard) Icon Color:  By using different colors, distinguish cost variations based on different models and settings.  1) The gpt-3.5 model is represented by the color green, while the 16k version is depicted in blue. 2) The gpt-4 model is shown in orange-red. The icon turns red when any of the following conditions are met: selecting the 32k version, enabling "smart max_tokens", setting the max_tokens parameter higher than 4000, or reaching 4000 context tokens.';
+				notifen += "\r\n\r\n#Prompt Generator \r\nv8.28, only the function of setting system prompt is available. Click the blue question mark [?] in the prompt generator window to learn more. \r\n\r\n#Settings \r\nFeatures: General settings, Contextual Mode, API settings, checking API balance and validity period, API professional settings, uploading avatars, exporting chat history as plain text, local data management, etc. Learn more by clicking the blue question mark [?] in the settings window.";
+				notifen += "\r\n\r\n#Other\r\n  • [Clear Context] Button Color: If the [Contextual Mode] of the current chat has set a limit, the color will turn orange-red when the context is approaching the limit, and turn red when the context reaches the limit (the color change is only a reminder and does not require user action).";
+				notifen += "\r\n  • [Tokens Usage] Text Color:  1) When the context tokens reach 2000, the color will turn orange-red. 2) When the token usage reaches 90% of the current model's limit, the color will turn red and bold.";
+				notifen += '\r\n  • [Status] Button Color:  By using different colors, distinguish cost variations based on different models and settings.  1) For the gpt-3.5 model, the button color is green. When selecting the 16k version, the color will turn blue. 2) For the gpt-4 model, the button color is orange-red. It will turn red when any of the following conditions are met: selecting the 32k version, enabling "smart max_tokens", setting the max_tokens parameter above 4000, or reaching 4000 context tokens.';
 				
 				notif = this.settingsLanguage == 'cn' ? notifcn : notifen ;
 				this.showNotification(notif, 'center', title);		
@@ -8244,11 +8326,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 							return;
 						}
 					}else{
-						//当前操作是：清空记忆 清空上下文 Clear context
+						//当前操作是：清除记忆 清空上下文 Clear context
 						// Do nothing.
 					}
 
-					// 获取最后一个info。  ps：如果是撤销，class一定是aiinfo。如果是清空记忆，class有两种可能。
+					// 获取最后一个info。  ps：如果是撤销，class一定是aiinfo。如果是清除记忆，class有两种可能。
 					lastInfoElem = infoElems[infoElems.length - 1];
 						
 					// 如果当前不存在有<hr>分割线，才允许添加，避免重复添加
@@ -8329,7 +8411,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 					}
 					
 					if (this.msgContentForMsgList_SingleRound.length < 2){
-						//msgContentForMsgList_SingleRound.length == 1 ( msgList.length== 1)时，撤销&重问按钮-不可用，清空按钮-不可用
+						//msgContentForMsgList_SingleRound.length == 1 ( msgList.length== 1)时，撤销&重问按钮-不可用，清除记忆按钮-不可用
 					  	this.btnDisabledState_Undo = true;
 						this.btnDisabledState_Clear = true;
 						if ( this.sentext == '请重发'|| this.sentext == 'Please Retry'  ) {
@@ -8337,7 +8419,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 						}
 					}else if (this.msgContent.length < 2){
 						//只要本轮记忆界面上还存在有msg(包含失败的msg)，撤销&重问 就保持可用状态
-						//但记忆可能提前为空 msgContent.length == 1，此时清空不可用。即，只剩有失败的msg时，清空不可用。
+						//但记忆可能提前为空 msgContent.length == 1，此时清除记忆按钮不可用。即，只剩有失败的msg时，清除记忆按钮不可用。
 						this.btnDisabledState_Clear = true;
 						this.btnDisabledState_Undo = false; //保持可用
 					}
@@ -8374,6 +8456,26 @@ to{transform:translate(-50%,-18px);opacity:1}
 				if ( !this.check_KeyMode_Sending()){
 					return;
 				}
+				
+				try{  //上下文模式  Contextual Mode
+					const returned_str = this.sendMsg_ContextualMode("retry");
+					if( typeof returned_str !== 'string'){
+						//nothing
+					}else if( returned_str === 'no clear context and abort operation'){ // 记忆模式：记忆上限 / Limit  *中止操作
+						const notif =  this.settingsLanguage == 'cn' ?  '已中止[重问]' : 'Aborted [Retry]';
+						this.showNotification(notif, 'bottom', '', 1800);
+						return;
+					}else if( returned_str === 'clear context and cancel retry'){ // 记忆模式：记忆上限 / Limit  *重问专属  *清除记忆(clear context) and 取消重问
+						const notif =  this.settingsLanguage == 'cn' ?  '已清除记忆，并取消了 [重问]' : 'Context cleared and [Retry] canceled';
+						this.showNotification(notif, 'bottom', '', 3100);
+						return;
+					}
+					
+				}catch(e){
+					console.error('sendMsg_ContextualMode("retry") - 重问过程中，"上下文模式"执行时出错了',e);
+				}
+				
+				
 				
 				this.isRetry_RetryMessage = ''; //先重置
 				
@@ -8515,10 +8617,10 @@ to{transform:translate(-50%,-18px);opacity:1}
 					randomString = 'hi' ;
 				}
 				
-				// 设置axios的超时时间，默认是0（永不超时，实际上60秒就会报超时）。验证API时，请求的问题很简单，超时时间可以短点，设为35秒。
+				// 设置axios的超时时间，默认是0（永不超时，实际上60秒就会报超时）。验证API时，请求的问题很简单，超时时间可以短点。
 				// To set a timeout for axios, the default is 0 . For simple request issues when checking the API, the timeout can be set to 35 seconds or less.
 				// *Default is 0 (Never timeout,In actuality, it will report a timeout error in around 60 seconds.)
-				axios.defaults.timeout = 35000; //35000毫秒=35秒。  35000ms = 35s  
+				axios.defaults.timeout = 21000; //21000毫秒=21秒。  21000ms = 21s  //v8.23 从35秒改为21秒。 v8.23 Previously set to 35 seconds, it is now changed to 21 seconds. Usually, within 20 seconds is sufficient.
 				
 				// Check API Key, not chat
 				//下面这行是验证API Key时的参数，不是聊天的参数，一般不需要改动
@@ -8760,6 +8862,15 @@ to{transform:translate(-50%,-18px);opacity:1}
 					autoRetry_errortype = 'timeout exceeded';
 					autoRetry_bottomnotifCN = '连接超时，自动重发中...';
 					autoRetry_bottomnotifEN = 'Connection timed out, automatically retrying...';
+					//超时的等待时间太长，提醒"中止请求"的方法 The timeout for waiting is too long. Here is a reminder on how to "abort the request"
+					setTimeout(() => {
+						if(this.isSendingNow || this.isSendingNow_ForSmartMaxTokens){ //重发后，仍然在请求，请求未结束
+							if( !this.isShowNotification ){ //当前不存在通知
+								const notif_temp = this.settingsLanguage == 'cn' ?  '小提示: LinGPT 不支持中止请求。如果想中断请求，可通过刷新网页来实现。通常，刷新不会导致数据丢失，但某些刷新网页的方式可能无法触发"自动保存"，请根据使用经验做出相应的判断。' : 'Tip: LinGPT does not support interrupting requests. If you want to interrupt a request, you can do so by refreshing the webpage. Usually, refreshing will not cause data loss, but some ways of refreshing the webpage may not trigger "auto-save". Please use your experience to judge accordingly.';
+								this.showNotification(notif_temp, 'bottom', '', 18000);
+							}
+						}
+					}, 5000);
 				}else if ( error.message && error.message == 'Network Error' ){
 				// 网络故障 Network Error *第三方接口每分钟超3次也会导致这个错误(6月第三方接口好像有升级过，规则变了)
 					notif_cn = '网络错误，可能只是暂时的，建议先重试一次。';
@@ -9208,7 +9319,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							//自动修正max_tokens并自动重问时，无需关闭this.openSmartMaxTokens，继续保持启用状态
 							
 							this.isFixingMaxTokens_SmartMaxTokens = true; //标记为“正在修复MaxTokens”的状态，本次自动重问(Retry)时，不再自动调节max_tokens。 
-							//this.isFixingMaxTokens_SmartMaxTokens 什么时候变为false？ 1、重问（retry）成功，得到回复后需要变为false。2、自动重问失败后，用户不再选择重问，而是选择发送新内容时，需要变为false。(覆盖 发送、清空后发送、撤销后发送 三种情况)
+							//this.isFixingMaxTokens_SmartMaxTokens 什么时候变为false？ 1、重问（retry）成功，得到回复后需要变为false。2、自动重问失败后，用户不再选择重问，而是选择发送新内容时，需要变为false。(覆盖 发送、清除记忆后发送、撤销后发送 三种情况)
 							
 							this.apiMaxTokens = diffC - 1; //精准调节max_tokens的最大值
 							
@@ -9264,15 +9375,20 @@ to{transform:translate(-50%,-18px);opacity:1}
 						notif_cn = notif_cn + '\r\n  • 密钥无效' + (responseMessage.toLowerCase().includes("token") ? ' (令牌无效)' : '') + '，请核对接口网址 (API URL) 与密钥 (API Key) 是否匹配。';
 						notif_en = notif_en + '\r\n  • Invalid API Key' + (responseMessage.toLowerCase().includes("token") ? ' (Invalid API Token)' : '') + '. Please check if the API Endpoint (API URL) matches the API Key' + (responseMessage.toLowerCase().includes("token") ? ' (API Token).' : '.');
 					}
+					// 适配第三方API 通用 *model无效  
+					if ( responseMessage.toLowerCase().includes("not authorized") && responseMessage.toLowerCase().includes("this model") ) {
+						notif_cn = notif_cn + '\r\n  • 您无权使用此模型 (model: ' + this.apiGPTModel + ')，请更换模型 (model) 或升级权限。';
+						notif_en = notif_en + '\r\n  • 您无权使用此模型 (model: ' + this.apiGPTModel + ')，请更换模型 (model) 或升级权限。';
+					}
 					// 适配第三方API * chatai.beauty
 					if ( responseMessage.toLowerCase().includes("not enough credit")) {
 						notif_cn = notif_cn + '\r\n  • 您的账号信用/额度不足。';
 						notif_en = notif_en + '\r\n  • 您的账号信用/额度不足。';
 					}
-					// 适配第三方API 通用 *model无效  
-					if ( responseMessage.toLowerCase().includes("not authorized") && responseMessage.toLowerCase().includes("this model") ) {
-						notif_cn = notif_cn + '\r\n  • 您无权使用此模型 (model: ' + this.apiGPTModel + ')，请更换模型 (model) 或升级权限。';
-						notif_en = notif_en + '\r\n  • 您无权使用此模型 (model: ' + this.apiGPTModel + ')，请更换模型 (model) 或升级权限。';
+					// 适配第三方API * (Use OpenAI API Key 使用官方Key) chatgpt1.nextweb.fun/api/proxy/  code:502
+					if ( responseMessage.toLowerCase().includes("an error occurred with this application")) {
+						notif_cn = notif_cn + '\r\n  • 服务器发生了错误，可能只是暂时的，建议先重试一次。';
+						notif_en = notif_en + '\r\n  • An error occurred with the server. The error may be temporary, so it is recommended to try again first.';
 					}
 					// 适配第三方API *api2d点数不允许设置较大的max_tokens
 					if ( responseMessage.toLowerCase().includes("reduce the max_tokens") && this.api.startsWith('fk') ) {
@@ -9734,7 +9850,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 				this.isRetry_RetryMessage = ''; //**重置，不再使用isRetry_RetryMessage，减少出错风险。 Reset, stop using isRetry_RetryMessage to reduce the risk of errors.
 				
 												
-				// **如果不是[重问]，是在[正常发问] - 那么需要判断this.msg是否为空 
+				// **如果不是[重问]，而是[正常发送] - 那么需要判断this.msg是否为空 
 				if ( !isRetry && this.msg.trim() == ""){
 					let notif =  this.settingsLanguage == 'cn' ?  '无法发送空白消息' : 'Unable to send blank messages' ;
 					let notiftime = 1500;
@@ -9746,9 +9862,25 @@ to{transform:translate(-50%,-18px);opacity:1}
 					return;
 				}
 				
-				//**如果不是[重问]，是在[正常发问] - check_KeyMode_byURL_ChangeKey 初步修正Key模式。 *修正后，getFirstAvailableAPIKey才会准确。
+				//**如果不是[重问]，而是[正常发送] - check_KeyMode_byURL_ChangeKey 初步修正Key模式。 *修正后，getFirstAvailableAPIKey才会准确。
 				if ( !isRetry && !this.check_KeyMode_Sending()){
 					return;
+				}
+				
+				//**如果不是[重问]，而是[正常发送]
+				if ( !isRetry ){
+					try{ //上下文模式  Contextual Mode
+						const returned_str = this.sendMsg_ContextualMode("send");
+						if( typeof returned_str !== 'string'){
+							//nothing
+						}else if( returned_str === 'no clear context and abort operation'){ // 记忆模式：记忆上限 / Limit  *中止操作
+							const notif =  this.settingsLanguage == 'cn' ?  '已中止[发送]' : 'Aborted [Send]';
+							this.showNotification(notif, 'bottom');
+							return;
+						}
+					}catch(e){
+						console.error('sendMsg_ContextualMode("send") - 发送过程中，"上下文模式"执行时出错了',e);
+					}
 				}
 				
 				//提醒一次：提醒打开智能max_tokens  Smart max_tokens 
@@ -10080,7 +10212,9 @@ to{transform:translate(-50%,-18px);opacity:1}
 					this.btnDisabledState_Export = false;
 					this.sentext = this.settingsLanguage == 'cn' ? '发送' : 'Send';
 					this.userMsgTokensForRetry = 0;
-						  
+					
+					//GPT回复后，记忆(上下文)达到上限时的提醒
+					this.sendMsg_ContextualMode_ReachLimit_Reminder();
 						  
 					//更新 保存 聊天数据 chatData chatDataList
 					//更新最后活动时间
@@ -10113,11 +10247,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 					this.succQA_Count = this.msgContent.length - 1; //int. 更新
 					//以下改变按钮状态的代码 必须在pop()后面
 					if (this.msgContent.length > 1){
-						//清空-恢复可用 撤销&重问-恢复可用
+						//清除记忆-恢复可用 撤销&重问-恢复可用
 						this.btnDisabledState_Clear = false;
 						this.btnDisabledState_Undo = false; 
 					}else if (this.msgContentForMsgList_SingleRound.length > 1){
-						//清空-保持不可用 撤销&重问-恢复可用 
+						//清除记忆-保持不可用 撤销&重问-恢复可用 
 						this.btnDisabledState_Clear = true;
 						this.btnDisabledState_Undo = false; 
 					}					
@@ -10228,8 +10362,140 @@ to{transform:translate(-50%,-18px);opacity:1}
 				
 				return responseObj;
 			},
+			
+			//When "Retry" or "Send", execute the operation according to the setting of the [Contextual Mode].     actionStr: "retry" or "send"
+			sendMsg_ContextualMode(actionStr){ 
+				if( !Number.isInteger(this.settingsContextualMode) ){ //非数字/整数
+					return '';
+				}
+				if(this.settingsContextualMode === 0){ //不限制
+					return '';
+				}
+				
+				const context_limit_number = this.settingsContextualMode > 100 ? (this.settingsContextualMode - 100) : this.settingsContextualMode;
+				let succQAcount = this.succQA_Count;
+				
+				//修正succQAcount，重问时succQAcount有2种情况：1) succQAcount = this.succQA_Count ,  2) succQAcount = this.succQA_Count - 2
+				//1) 最后一条为发送失败的消息时，本身没有被计入succQA_Count，所以 succQAcount = this.succQA_Count
+				//2) 最后一条为AI的回复时，重问时这里需要减2，即 succQAcount = this.succQA_Count - 2
+				if( actionStr === "retry"){ // 重问 
+					// 2) 本轮记忆存在发送过消息(包括发送失败的消息) &&  最后一条消息为AI的回复
+					if(this.msgContentForMsgList_SingleRound.length > 1 && !this.msgList[this.msgList.length - 1]['my'] ){
+						succQAcount = succQAcount - 2; 
+					}
+				}
+				
+				
+				//A: 记忆上限 / Limit
+				if(this.settingsContextualMode < 100){
+					// A-1 未达到上限
+					if(succQAcount < context_limit_number){ 
+						return '';
+					}
+					
+					//isRetryNeedConfirm tip: 1.如果是重问，应该对比this.succQA_Count *如果对比succQAcount，succQAcount刚好减2，又刚好达到上限(等于context_limit_number)，会直接自动清除记忆，没有提示。应该要有提示
+					//		  || 2.重问的特殊情况: 当重发的是失败的消息时 && 刚好达到上限(等于context_limit_number)。也应该要有提示
+					const isRetryNeedConfirm = (actionStr === "retry" && this.succQA_Count > context_limit_number) || (actionStr === "retry" && succQAcount === this.succQA_Count && this.succQA_Count === context_limit_number) ;
 
-			//更新最后活动时间 + 保存   调用：1保存提示词 2撤销 3清空记忆 4发送成功 5发送失败
+					// A-2 达到/超出上限   *大概率是设置错误，或者其他情况。此时用户可能并不想清除掉记忆(上下文)，提醒用户，给出选择
+					if(succQAcount > context_limit_number || isRetryNeedConfirm){ 
+						const temp_cn = actionStr === "send" ? '并继续发送消息' : '并取消 [重问]';
+						const temp_en = actionStr === "send" ? 'continue sending messages' : 'cancel [Retry]';
+						//*以下使用 this.succQA_Count 而不是 succQAcount
+						const notif_cn = '当前已有 ' + this.succQA_Count + ' 条记忆 (上下文)，已达到当前记忆模式设置的上限 (' + context_limit_number + '条)，本次需手动确认下一步的操作。\r\n\r\n点击 [确定 (好)] 将执行默认操作，记忆会被清除，' + temp_cn + '。点击 [取消] 将中止当前操作，记忆会被保留，您可以在 [设置] 中修改 [记忆模式]。请选择...';
+						const notif_en = this.succQA_Count + ' messages in current context have reached the ' + context_limit_number + '-message limit set in [Contextual Mode]. Please manually confirm next step.\r\n\r\nClick [Confirm (OK)] to execute default action, clear context, and ' + temp_en + ', or click [Cancel] to abort current operation, the context will not be cleared, and then you can modify [Contextual Mode] in [Settings]. Please choose...';
+						const notif = this.settingsLanguage == 'cn' ? notif_cn : notif_en ;
+	
+						this.is_Alert_Confirm_Prompt_Open = true;
+						const confirmed = confirm(notif); //用户选择是否继续，继续会清除历史记忆 + 继续发送。
+						if (!confirmed) { //点击取消
+							setTimeout(() => {
+								this.is_Alert_Confirm_Prompt_Open = false;
+							}, 100);
+							return "no clear context and abort operation";//取消 将中止操作/发送 + 记忆不会被清除
+						}
+						setTimeout(() => {
+							this.is_Alert_Confirm_Prompt_Open = false;
+						}, 100);
+						
+						//点击确认 继续执行下方A-3的代码  共用代码
+					}
+					
+					// A-3 以下：if succQAcount === context_limit_number 刚好达到上限。  *部分情况归为A-2
+					//清除上下文记忆 
+					const txt_lang1 = (this.settingsLanguage == 'cn' ? '#### #记忆模式 - 达上限: ' : '#### #Contextual mode - Limit reached: ' ) + context_limit_number + '\r\n' ;
+					this.chathistory  += txt_lang1;
+					this.clearContext();
+					
+					if(isRetryNeedConfirm){ //说明是 "A-2" + "isRetryNeedConfirm" + "点击了确认"
+						return 'clear context and cancel retry';
+					}
+					return '';
+					
+					
+				}else{
+				//B: 保留最后**条 / Keep Last
+				
+	//v8.27 待开发 To be developed
+				
+					return '';
+				}
+				
+			},
+
+			// GPT回复后，记忆(上下文)达到上限时的提醒。 When the context reaches the limit, a reminder is given after GPT's response. 
+			sendMsg_ContextualMode_ReachLimit_Reminder(){
+				try{ 
+					if(Number.isInteger(this.settingsContextualMode)){ //数据合法 + 当前为AI回复(此时succQA_Count一定是偶数)
+
+						let tip_type_str = '';
+						if(this.settingsContextualMode > 0 && this.settingsContextualMode < 100){
+						//A: 记忆上限 上下文上限  Limit 
+							if(this.succQA_Count === this.settingsContextualMode - 2){
+							// A-1 即将达到 
+								tip_type_str = 'Limit-1';
+							}else if(this.succQA_Count === this.settingsContextualMode){
+							// A-2 刚好达到
+								tip_type_str = 'Limit-2';
+							}
+						}else if(this.settingsContextualMode > 100){
+						//B: 保留最后**条记忆  Keep Last
+							if(this.succQA_Count === this.settingsContextualMode - 102){
+							// B-1 即将达到 
+								tip_type_str = 'KeepLast-1';
+							}else if(this.succQA_Count === this.settingsContextualMode - 100){
+							// B-2 刚好达到
+								tip_type_str = 'KeepLast-2';
+							}
+						}
+						
+						let delaytime = this.isShowNotification ? 3000 : 0; //存在其他通知，则延迟3秒通知
+						if(tip_type_str !== ''){ //无
+							setTimeout(() => {
+								if( !this.isShowNotification ){ //再次确认，如果存在其他通知，则不通知
+									let notif = '';
+									let notiftime = 0;
+									if(tip_type_str === 'Limit-2'){ // A-2 刚好达到
+										notif = this.settingsLanguage == 'cn' ? '记忆 (上下文) 达到上限，下次发送时将自动清除' : 'Context limit reached, will be cleared on next send.' ;
+										notiftime = this.settingsLanguage == 'cn' ? 2300 : 2400;
+									}else if(tip_type_str === 'KeepLast-2'){ // B-2 刚好达到
+										notif = this.settingsLanguage == 'cn' ? '记忆 (上下文) 达到上限，记忆将只保留最近的 ' + (this.settingsContextualMode - 100) + ' 条消息' : 'Context reached limit, only the latest ' + (this.settingsContextualMode - 100) + ' messages will be retained in the context.' ;
+										notiftime = this.settingsLanguage == 'cn' ? 2700 : 3100;
+									}
+									
+									if(notif !== ''){
+										this.showNotification(notif, 'bottom', '', notiftime);
+									}
+								}
+							}, delaytime);
+						}
+					}
+				}catch (error) {
+					console.error('sendMsg_ContextualMode_ReachLimit_Reminder - 出错了', error);
+				}
+			},
+			
+			//更新最后活动时间 + 保存   调用：1保存提示词 2撤销 3清除记忆 4发送成功 5发送失败
 			updateChatLastTime(lasttime){
 				//更新 保存 聊天数据 chatData chatDataList
 				//更新最后活动时间
@@ -10311,11 +10577,11 @@ to{transform:translate(-50%,-18px);opacity:1}
 					this.btnDisabledState_Sending = false;
 					//恢复按钮的准确状态
 					if (this.msgContent.length > 1){
-						//清空-恢复可用 撤销&重问-恢复可用
+						//清除记忆-恢复可用 撤销&重问-恢复可用
 						this.btnDisabledState_Clear = false;
 						this.btnDisabledState_Undo = false; 
 					}else if (this.msgContentForMsgList_SingleRound.length > 1){
-						//清空-保持不可用 撤销&重问-恢复可用 
+						//清除记忆-保持不可用 撤销&重问-恢复可用 
 						this.btnDisabledState_Clear = true;
 						this.btnDisabledState_Undo = false; 
 					}else {
@@ -10672,7 +10938,7 @@ to{transform:translate(-50%,-18px);opacity:1}
 							const notif_cn = '在Mac电脑上，如果您使用Safari直接打开本地的.html文件，即Mac电脑、Safari浏览器以及网页地址以"file:"开头，这三个条件同时存在时，标签页之间的数据同步功能将失效。\r\n要解决这个问题，只需改变其中任何一个条件即可。您可以尝试换个浏览器，或者使用在线的版本，或者使用Mac自带的本地web服务器功能。' ;
 							const notif_en = 'If you open a local .html file directly in Safari on a Mac computer, under the conditions of using Safari browser, Mac computer, and having the URL starting with "file:", the data syncing feature between tabs will be disabled. To resolve this issue, you can try changing any one of these conditions. You can switch to a different browser, use an online version, or utilize the built-in local web server functionality on Mac.';
 							const notif = this.settingsLanguage == 'cn' ? notif_cn + '\r\n\r\n' + notif_en : notif_en ;
-							const title = this.settingsLanguage == 'cn' ? '提醒 Tip' : 'Tip' ;
+							const title = this.settingsLanguage == 'cn' ? '提醒 Reminder' : 'Reminder' ;
 							setTimeout(() => {
 								this.showNotification(notif, 'center', title);
 							}, delaytime);
